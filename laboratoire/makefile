@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 CMLX = -lmlx -lXext -lX11 -lm
-SRC_BONUS = maintest.c
+SRC_BONUS = mini_map_test.c
 NAME_BONUS = test
 OBJECT_BONUS = $(SRC_BONUS:%.c=%.o)
 
@@ -19,3 +19,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: clean fclean all re bonus
+	
