@@ -28,6 +28,15 @@ typedef struct s_img
     int     endian;
 }   t_img;
 
+typedef struct s_ray
+{
+	double	start_x;
+	double start_y;
+	double ray_angle;
+	double end_x;
+	double end_y;
+} t_ray;
+
 typedef struct s_oldmove
 {
     int left;
@@ -287,49 +296,101 @@ t_direction *facing_direction(double ray_angle)
     dir->y = (ray_angle < 0.5 * PI || ray_angle > 1.5 * PI) ? 1 : 0;
     return (dir);
 }
-
-void define_ray_position(t_data *data, double ray_angle)
+void insert_end_ray(t_ray *ray, t_direction *dir)
 {
-    if (ray_angle > 2 * PI || ray_angle < 0)
-        ray_angle = normalize_angle(ray_angle);
-    t_direction *dir = facing_direction(ray_angle);
-    t_direction *horizontal_intersiction =
-        find_horizontal_intersiction(data, ray_angle, dir->x, dir->y);
-    t_direction *vertical_intersiction =
-        find_vertical_intersiction(data, ray_angle, dir->x, dir->y);
-    if (horizontal_intersiction && vertical_intersiction)
-    {
-        double dist_h = hypot(horizontal_intersiction->x - data->player->x,
-                horizontal_intersiction->y - data->player->y);
-        double dist_v = hypot(vertical_intersiction->x - data->player->x,
-                vertical_intersiction->y - data->player->y);
-        if (dist_h < dist_v)
-            render_direction(data, horizontal_intersiction);
-        else
-            render_direction(data, vertical_intersiction);
-    }
-    else if (horizontal_intersiction)
-        render_direction(data, horizontal_intersiction);
-    else if (vertical_intersiction)
-        render_direction(data, vertical_intersiction);
-    free(dir);
-    free(horizontal_intersiction);
-    free(vertical_intersiction);
+	ray->end_x = dir->x;
+	ray->end_y = dir->y;
 }
 
-void render_ray_casting(t_data *data)
+void short_ray(t_data * data, t_ray *ray, t_direction *horizontal_inters, t_direction *vertical_inters)
+{
+	double dist_h;
+	double dist_v;
+
+	if (horizontal_inters && vertical_inters)
+    {
+        dist_h = hypot(horizontal_inters->x - data->player->x,
+                horizontal_inters->y - data->player->y);
+        dist_v = hypot(vertical_inters->x - data->player->x,
+                vertical_inters->y - data->player->y);
+        if (dist_h < dist_v)
+            insert_end_ray(ray, horizontal_inters);
+        else
+            insert_end_ray(ray, vertical_inters);
+    }
+    else if (horizontal_inters)
+        insert_end_ray(ray, horizontal_inters);
+    else if (vertical_inters)
+        insert_end_ray(ray, vertical_inters);
+}
+void render_rays(t_data *data, double x, double y, double z, double w)
+{
+    double xi;
+    double yi;
+    int step;
+
+    if (fabs(z - x) > fabs(w - y))
+        step = fabs(z - x);
+    else
+        step = fabs(w - y);
+    xi = (z - x) / step;
+    yi = (w - y) / step;
+    for (int i = 0; i < step; i++)
+    {
+        put_pixel(&data->new_image, x, y, BLUE);
+        put_pixel(&data->new_image, x + 1, y, BLUE);
+        put_pixel(&data->new_image, x, y + 1, BLUE);
+        put_pixel(&data->new_image, x, y - 1, BLUE);
+        put_pixel(&data->new_image, x -1, y, BLUE);       
+        x += xi;
+        y += yi;
+    }
+}
+void define_ray_position(t_data *data, double ray_angle, t_ray *ray)
+{
+    t_direction *dir;
+    t_direction *horizontal_inters;
+    t_direction *vertical_inters;
+
+	dir = facing_direction(ray_angle);
+    horizontal_inters = find_horizontal_intersiction(data, ray_angle, dir->x, dir->y);
+    vertical_inters = find_vertical_intersiction(data, ray_angle, dir->x, dir->y);
+	short_ray(data, ray, horizontal_inters, vertical_inters);
+    render_rays(data, data->player->x, data->player->y, ray->end_x, ray->end_y);
+    free(dir);
+    free(horizontal_inters);
+    free(vertical_inters);
+}
+
+t_ray **creat_ray_casting(t_data *data)
 {
     double ray_angle;
     int column;
+	t_ray **rays;
 
+	rays = malloc(sizeof(t_ray *) * NUM_COLUMNS);
+	if (!rays)
+    	return NULL;
+	for (int i = 0; i < NUM_COLUMNS; i++)
+	{
+		rays[i] = malloc(sizeof(t_ray));
+		if (!rays[i])
+			return NULL; 
+	}
     column = 0;
     ray_angle = data->player->rotation_angle - (FOV / 2);
     while (column < NUM_COLUMNS)
     {
-        define_ray_position(data, ray_angle);
+		if (ray_angle > 2 * PI || ray_angle < 0)
+        	ray_angle = normalize_angle(ray_angle);
+		rays[column]->ray_angle = ray_angle;
+		rays[column]->start_x = data->player->x;
+		rays[column]->start_y = data->player->y;
+        define_ray_position(data, ray_angle, rays[column]);
         ray_angle += FOV / NUM_COLUMNS;
         column++;
     }
+	return(rays);
 }
 
 int is_wall(t_data *data, double *x, double *y)
@@ -359,32 +420,49 @@ void find_position(t_data *data, t_player *player)
     double x = player->x;
     double y = player->y;
 
-    if (player->back_forw == -1)
-    {
-        x -= cos(player->rotation_angle) * player->walking_speed / 3;
-        y -= sin(player->rotation_angle) * player->walking_speed / 3;
-    }
-    else if (player->back_forw == 1)
-    {
-        x += cos(player->rotation_angle) * player->walking_speed / 3;
-        y += sin(player->rotation_angle) * player->walking_speed / 3;
-    }
-    if (player->left_right == -1)
-    {
-        x += cos(player->rotation_angle - PI / 2) * player->walking_speed / 3;
-        y += sin(player->rotation_angle - PI / 2) * player->walking_speed / 3;
-    }
-    else if (player->left_right == 1)
-    {
-        x += cos(player->rotation_angle + PI / 2) * player->walking_speed / 3;
-        y += sin(player->rotation_angle + PI / 2) * player->walking_speed / 3;
-    }
+    //update the x and y position of the player
+    x += ((cos(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
+    y += ((sin(player->rotation_angle) * player->walking_speed / 3) * player->back_forw) ;
+    x += ((cos(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
+    y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
+
+    //check if the new position isn't a wall
     if (is_wall(data, &x, &y))
     {
         player->x = x;
         player->y = y;
     }
 }
+
+
+void render_rays_mini_map(t_data *data, t_ray ** rays)
+{
+	int x;
+    int y;
+	int y_end;
+	int x_end;
+	int i = 0;
+
+	while (i < NUM_COLUMNS)
+	{
+        x = data->player->x;
+        y = data->player->y;
+		y_end = rays[i]->end_y;
+		x_end = rays[i]->end_x;
+		render_rays(data, x, y, x_end, y_end);
+		i++;
+	}
+}
+
+void free_old_rays(t_ray **rays)
+{
+	int i;
+
+	i = 0;
+	while (i < NUM_COLUMNS)
+		free(rays[i++]);
+	free(rays);
+} 
 
 void render_player(t_data *data)
 {
@@ -395,8 +473,10 @@ void render_player(t_data *data)
     int y = cy - data->player->radius;
     int r = data->player->radius;
     t_direction *dir;
+    t_ray **rays;
 
-    render_ray_casting(data);
+    rays = creat_ray_casting(data);
+    // render_rays_mini_map(data, rays);
     while (x <= cx + data->player->radius)
     {
         y = cy - data->player->radius;
@@ -413,6 +493,7 @@ void render_player(t_data *data)
         data->player->rotation_angle = normalize_angle(data->player->rotation_angle);
     dir = find_direction(data);
     free(dir);
+    free_old_rays(rays);
     // render_direction(data, dir);
 }
 

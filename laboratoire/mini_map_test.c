@@ -1,88 +1,4 @@
-#include <stdlib.h>     // malloc, free
-#include <stdio.h>
-#include <unistd.h>
-#include <math.h>       // sin, cos, tan, hypot, fabs, fmod, floor
-#include "mlx.h"        // MiniLibX functions (mlx_new_image, etc.)
-
-#define PI 3.14159265358979323846
-// =================== DEFINES ===================
-#define TILE_SIZE 64
-#define MINIMAP_SCALE 2
-#define MAP_LENGTH 26   // number of columns
-#define MAP_WIDTH 15    // number of rows
-#define FOV (60 * (PI / 180)) // 60° field of view in radians
-#define NUM_COLUMNS 300 // how many rays to cast (e.g. screen width)
-
-// Colors (RGBA or 0x00RRGGBB depending on MLX build)
-#define WHITE 0xFFFFFF
-#define BLACK 0x000000
-#define RED   0xFF0000
-#define BLUE  0x0000FF
-
-#define DIRECTION_LENGTH 20          // length of player direction line
-#define VERTICAL_RAY_THRESHOLD 1e-6  // epsilon for vertical ray checks
-
-typedef struct s_img
-{
-    void    *img;
-    char    *addr;
-    int     bpp;
-    int     line_length;
-    int     endian;
-}   t_img;
-
-typedef struct s_ray
-{
-	int	start_x;
-	int start_y;
-	double ray_angle;
-	int end_x;
-	int end_y;
-} t_ray;
-typedef struct s_oldmove
-{
-    int left;
-    int right;
-    int forw;
-    int back;
-    int turn_left;
-    int turn_right;
-} t_oldmove; 
- 
-typedef struct s_player
-{
-    double  x;
-    double  y;
-    int     radius;
-    int     back_forw;
-    int     left_right;
-    int     turn;
-    double  rotation_angle;
-    double  walking_speed;
-    double  rotation_speed;
-    t_oldmove *old_move;
-}   t_player;
-
-typedef struct s_direction
-{
-    double x;
-    double y;
-}   t_direction;
-
-typedef struct mlx
-{
-    void *init;
-    void *win;
-} t_mlx;
-
-typedef struct s_data
-{
-    t_mlx       *mlx;
-    t_img       new_image;
-    t_player    *player;
-	t_ray		**rays;
-    char        **map;
-}   t_data;
+#include "cub.h"
 
 t_player *initialize()
 {
@@ -288,7 +204,7 @@ t_ray **creat_ray_casting(t_data *data)
 	{
 		rays[i] = malloc(sizeof(t_ray));
 		if (!rays[i])
-			return NULL; // handle allocation error
+			return NULL; 
 	}
     column = 0;
     ray_angle = data->player->rotation_angle - (FOV / 2);
@@ -335,7 +251,7 @@ void update_palyer_state(t_data *data, t_player *player)
 
     //update the x and y position of the player
     x += ((cos(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
-    y += ((sin(player->rotation_angle) * player->walking_speed / 3) * player->back_forw) ;
+    y += ((sin(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
     x += ((cos(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
     y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
 
@@ -350,62 +266,62 @@ void update_palyer_state(t_data *data, t_player *player)
     data->player->rotation_angle += (data->player->rotation_speed * data->player->turn);
 }
 
-#define X_START_POINT (TILE_SIZE)
-#define Y_START_POINT ((MAP_WIDTH * TILE_SIZE) / 3 * 2)
-#define MAP_SIZE (((MAP_WIDTH * TILE_SIZE) / 3) - TILE_SIZE)
-#define MAP_RADIUS (MAP_SIZE / 2)
-#define CENTER_MAP_X (X_START_POINT + MAP_RADIUS)
-#define CENTER_MAP_Y (Y_START_POINT + MAP_RADIUS)
+// #define X_START_POINT (TILE_SIZE)
+// #define Y_START_POINT ((MAP_WIDTH * TILE_SIZE) / 3 * 2)
+// #define MAP_SIZE (((MAP_WIDTH * TILE_SIZE) / 3) - TILE_SIZE)
+// #define MAP_RADIUS (MAP_SIZE / 2)
+// #define CENTER_MAP_X (X_START_POINT + MAP_RADIUS)
+// #define CENTER_MAP_Y (Y_START_POINT + MAP_RADIUS)
 
 
-void base_of_mini_map(t_data *data)
-{
-    int y = Y_START_POINT - 3;
-    int x = X_START_POINT - 3;
-    while (y < MAP_SIZE + Y_START_POINT + 3)
-    {
-        x = X_START_POINT - 3;
-        while (x < MAP_SIZE + X_START_POINT + 3)
-        {
-            if (((x - CENTER_MAP_X) * (x - CENTER_MAP_X) + (y - CENTER_MAP_Y) * (y - CENTER_MAP_Y)) <= ((MAP_RADIUS + 3) * (MAP_RADIUS + 3)))
-                put_pixel(&data->new_image, x, y, WHITE);
-            x++;
-        }
-        y++;
-    }
-}
+// void base_of_mini_map(t_data *data)
+// {
+//     int y = Y_START_POINT - 3;
+//     int x = X_START_POINT - 3;
+//     while (y < MAP_SIZE + Y_START_POINT + 3)
+//     {
+//         x = X_START_POINT - 3;
+//         while (x < MAP_SIZE + X_START_POINT + 3)
+//         {
+//             if (((x - CENTER_MAP_X) * (x - CENTER_MAP_X) + (y - CENTER_MAP_Y) * (y - CENTER_MAP_Y)) <= ((MAP_RADIUS + 3) * (MAP_RADIUS + 3)))
+//                 put_pixel(&data->new_image, x, y, WHITE);
+//             x++;
+//         }
+//         y++;
+//     }
+// }
 
 
 
-void mini_map(t_data *data)
-{
-    int y = Y_START_POINT;
-    int x;
-    int x_map, y_map;
-    int color;
+// void mini_map(t_data *data)
+// {
+//     int y = Y_START_POINT;
+//     int x;
+//     int x_map, y_map;
+//     int color;
 
-    while (y < Y_START_POINT + MAP_SIZE)
-    {
-        x = X_START_POINT;
-        while (x < X_START_POINT + MAP_SIZE)
-        {
-            if (((x - CENTER_MAP_X) * (x - CENTER_MAP_X) +
-                 (y - CENTER_MAP_Y) * (y - CENTER_MAP_Y)) <= (MAP_RADIUS * MAP_RADIUS))
-            {
-				x_map = ((data->player->x - ((x - CENTER_MAP_X) * MINIMAP_SCALE))) / TILE_SIZE;
-				y_map = ((data->player->y - ((y - CENTER_MAP_Y) * MINIMAP_SCALE))) / TILE_SIZE;
-                color = BLACK;
-                if (y_map >= 0 && y_map < MAP_WIDTH &&
-                    x_map >= 0 && x_map < MAP_LENGTH)
-                    if (data->map[y_map][x_map] == '0')
-                        color = WHITE;
-                put_pixel(&data->new_image, x, y, color);
-            }
-            x++;
-        }
-        y++;
-    }
-}
+//     while (y < Y_START_POINT + MAP_SIZE)
+//     {
+//         x = X_START_POINT;
+//         while (x < X_START_POINT + MAP_SIZE)
+//         {
+//             if (((x - CENTER_MAP_X) * (x - CENTER_MAP_X) +
+//                  (y - CENTER_MAP_Y) * (y - CENTER_MAP_Y)) <= (MAP_RADIUS * MAP_RADIUS))
+//             {
+// 				x_map = ((data->player->x - ((x - CENTER_MAP_X) * MINIMAP_SCALE))) / TILE_SIZE;
+// 				y_map = ((data->player->y - ((y - CENTER_MAP_Y) * MINIMAP_SCALE))) / TILE_SIZE;
+//                 color = BLACK;
+//                 if (y_map >= 0 && y_map < MAP_WIDTH &&
+//                     x_map >= 0 && x_map < MAP_LENGTH)
+//                     if (data->map[y_map][x_map] == '0')
+//                         color = WHITE;
+//                 put_pixel(&data->new_image, x, y, color);
+//             }
+//             x++;
+//         }
+//         y++;
+//     }
+// }
 
 void render_player_mini_map(t_data *data)
 {
@@ -427,14 +343,10 @@ void render_player_mini_map(t_data *data)
         x++;
     }
 }
-void render_direction(t_data *data, t_direction *dir)
+void render_rays(t_data *data, double x, double y, double z, double w)
 {
-    double x = data->player->x;
-    double y = data->player->y;
     double xi;
     double yi;
-    double z = dir->x;
-    double w = dir->y;
     int step;
 
     if (fabs(z - x) > fabs(w - y))
@@ -445,57 +357,49 @@ void render_direction(t_data *data, t_direction *dir)
     yi = (w - y) / step;
     for (int i = 0; i < step; i++)
     {
+        if (x - X_START_POINT >  MAP_RADIUS || X_START_POINT - x>  MAP_RADIUS
+            || y - Y_START_POINT >  MAP_RADIUS || Y_START_POINT - y >  MAP_RADIUS)
+            break;
         put_pixel(&data->new_image, x, y, BLUE);
-        put_pixel(&data->new_image, x + 1, y, BLUE);
-        put_pixel(&data->new_image, x, y + 1, BLUE);
-        put_pixel(&data->new_image, x, y - 1, BLUE);
-        put_pixel(&data->new_image, x -1, y, BLUE);       
         x += xi;
         y += yi;
     }
 }
+// void render_rays_mini_map(t_data *data)
+// {
+//     int cx = X_START_POINT + (MAP_SIZE / 2);
+//     int cy = Y_START_POINT + (MAP_SIZE / 2);
+//     double dx, dy;
+//     int x_end, y_end;
+//     int i = 0;
 
-void render_rays(t_data *data,int x0, int y0, int x1, int y1)
-{
-    int dx = abs(x1 - x0);
-    int sx = (x0 < x1) ? 1 : -1;
-    int dy = -abs(y1 - y0);
-    int sy = (y0 < y1) ? 1 : -1;
-    int err = dx + dy;
-    int e2;
-
-    while (1)
-    {
-        put_pixel(&data->new_image, x0, y0, RED); // draw the ray pixel
-        if (x0 == x1 && y0 == y1)
-            break;
-        e2 = 2 * err;
-        if (e2 >= dy)
-        {
-            err += dy;
-            x0 += sx;
-        }
-        if (e2 <= dx)
-        {
-            err += dx;
-            y0 += sy;
-        }
-    }
-}
+//     while (i < NUM_COLUMNS)
+//     {
+//         dx = (data->rays[i]->end_x - data->player->x) / MINIMAP_SCALE;
+//         dy = (data->rays[i]->end_y - data->player->y) / MINIMAP_SCALE;
+//         if (sqrt(dx * dx + dy * dy) <= MAP_RADIUS)
+//         {
+//             x_end = cx + dx;
+//             y_end = cy + dy;
+//             render_rays(data, cx, cy, x_end, y_end);
+//         }
+//         i++;
+//     }
+// }
 
 
 void render_rays_mini_map(t_data *data)
 {
-	int x = X_START_POINT + (MAP_SIZE / 2);
-    int y = Y_START_POINT + (MAP_SIZE / 2);
-	int y_end;
-	int x_end;
+	double x = X_START_POINT + (MAP_SIZE / 2);
+    double y = Y_START_POINT + (MAP_SIZE / 2);
+	double y_end;
+	double x_end;
 	int i = 0;
 
 	while (i < NUM_COLUMNS)
 	{
-		y_end = y + ((data->rays[i]->end_y - data->player->y) /  4);
-		x_end = x + ((data->rays[i]->end_x - data->player->x) / 4);
+		y_end = y + ((data->rays[i]->end_y - data->player->y) / MINIMAP_SCALE);
+		x_end = x + ((data->rays[i]->end_x - data->player->x) / MINIMAP_SCALE);
 		render_rays(data, x, y, x_end, y_end);
 		i++;
 	}
@@ -544,30 +448,6 @@ int the_animation(t_data *data)
     l++;
 	free_old_rays(data->rays);
     return (0);
-}
-
-void	move_back(t_player *player)
-{
-	player->x -= cos(player->rotation_angle) * player->walking_speed;
-	player->y -= sin(player->rotation_angle) * player->walking_speed;
-}
-
-void	move_forward(t_player *player)
-{
-	player->x += cos(player->rotation_angle) * player->walking_speed;
-	player->y += sin(player->rotation_angle) * player->walking_speed;
-}
-
-void	move_left(t_player *player)
-{
-	player->x += cos(player->rotation_angle - PI / 2) * player->walking_speed;
-	player->y += sin(player->rotation_angle - PI / 2) * player->walking_speed;
-}
-
-void	move_right(t_player *player)
-{
-	player->x += cos(player->rotation_angle + PI / 2) * player->walking_speed;
-	player->y += sin(player->rotation_angle + PI / 2) * player->walking_speed;
 }
 # define LEFT 65361
 # define RIGHT 65363
@@ -740,4 +620,28 @@ char *map[] = {
 //     dir = find_direction(data);
 //     free(dir);
 //     // render_direction(data, dir);
+// }
+
+// void	move_back(t_player *player)
+// {
+// 	player->x -= cos(player->rotation_angle) * player->walking_speed;
+// 	player->y -= sin(player->rotation_angle) * player->walking_speed;
+// }
+
+// void	move_forward(t_player *player)
+// {
+// 	player->x += cos(player->rotation_angle) * player->walking_speed;
+// 	player->y += sin(player->rotation_angle) * player->walking_speed;
+// }
+
+// void	move_left(t_player *player)
+// {
+// 	player->x += cos(player->rotation_angle - PI / 2) * player->walking_speed;
+// 	player->y += sin(player->rotation_angle - PI / 2) * player->walking_speed;
+// }
+
+// void	move_right(t_player *player)
+// {
+// 	player->x += cos(player->rotation_angle + PI / 2) * player->walking_speed;
+// 	player->y += sin(player->rotation_angle + PI / 2) * player->walking_speed;
 // }
