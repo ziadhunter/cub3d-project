@@ -8,10 +8,10 @@
 // =================== DEFINES ===================
 #define TILE_SIZE 64
 #define MINIMAP_SCALE 2
-#define MAP_WIDTH 26   // number of columns
-#define MAP_HEIGHT 15    // number of rows
-#define FOV (60 * (PI / 180)) // 60° field of view in radians
-#define NUM_COLUMNS 320 // how many rays to cast (e.g. screen width)
+#define WIN_WIDTH 1080   // number of columns
+#define WIN_HEIGHT 720   // number of rows
+#define FOV 1.0471975512 // 60° field of view in radians
+#define NUM_COLUMNS 1080 // how many rays to cast (e.g. screen width)
 
 // Colors (RGBA or 0x00RRGGBB depending on MLX build)
 #define WHITE 0xFFFFFF
@@ -21,8 +21,8 @@
 
 // Mini map macros
 #define X_START_POINT (TILE_SIZE)
-#define Y_START_POINT ((MAP_HEIGHT * TILE_SIZE) / 3 * 2)
-#define MAP_SIZE (((MAP_HEIGHT * TILE_SIZE) / 3) - TILE_SIZE)
+#define Y_START_POINT ((WIN_HEIGHT) / 3 * 2)
+#define MAP_SIZE (((MAP_HEIGHT) / 3) - TILE_SIZE)
 #define MAP_RADIUS (MAP_SIZE / 2)
 #define CENTER_MAP_X (X_START_POINT + MAP_RADIUS)
 #define CENTER_MAP_Y (Y_START_POINT + MAP_RADIUS)
