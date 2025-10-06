@@ -28,10 +28,37 @@ void put_pixel(t_img *data, int x, int y, int color)
 {
     char *dst;
 
+    if (x < 0 || y < 0 || x >= MAP_WIDTH * 64 || y >= MAP_HEIGHT * 64)
+    {
+    // printf("hello \n");
+
+        return;
+    }
     dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
     *(unsigned int *)dst = color;
 }
+void render_static_map(t_data *data)
+{
+    int color;
 
+    for (int row = 0; row < MAP_HEIGHT; row++)
+    {
+        for (int col = 0; col < MAP_WIDTH; col++)
+        {
+            color = WHITE;
+            if (data->map[row][col] == '1')
+                color = BLACK;
+            for (int y = 0; y < TILE_SIZE; y++)
+            {
+                for (int x = 0; x < TILE_SIZE; x++)
+                {
+                    put_pixel(&data->new_image, col * TILE_SIZE + x,
+                        row * TILE_SIZE + y, color);
+                }
+            }
+        }
+    }
+}
 
 int wall(t_data *data, double x, double y)
 {
@@ -73,8 +100,8 @@ t_direction *find_horizontal_intersiction(
         x_step *= -1;
     if (facing_up)
         y_intr--;
-    while (x_intr >= 0 && x_intr < MAP_LENGTH * TILE_SIZE
-        && y_intr >= 0 && y_intr < MAP_WIDTH * TILE_SIZE)
+    while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
+        && y_intr >= 0 && y_intr < MAP_HEIGHT * TILE_SIZE)
     {
         if (wall(data, x_intr, y_intr))
         {
@@ -114,8 +141,8 @@ t_direction *find_vertical_intersiction(
         y_step *= -1;
     if (!facing_right)
         x_intr--;
-    while (x_intr >= 0 && x_intr < MAP_LENGTH * TILE_SIZE
-        && y_intr >= 0 && y_intr < MAP_WIDTH * TILE_SIZE)
+    while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
+        && y_intr >= 0 && y_intr < MAP_HEIGHT * TILE_SIZE)
     {
         if (wall(data, x_intr, y_intr))
         {
@@ -176,6 +203,30 @@ void short_ray(t_data * data, t_ray *ray, t_direction *horizontal_inters, t_dire
     else if (vertical_inters)
         insert_end_ray(ray, vertical_inters);
 }
+
+void render_rays(t_data *data, double x, double y, double z, double w)
+{
+    double xi;
+    double yi;
+    int step;
+
+    if (fabs(z - x) > fabs(w - y))
+        step = fabs(z - x);
+    else
+        step = fabs(w - y);
+    xi = (z - x) / step;
+    yi = (w - y) / step;
+    for (int i = 0; i < step; i++)
+    {
+        put_pixel(&data->new_image, x, y, BLUE);
+        put_pixel(&data->new_image, x + 1, y, BLUE);
+        put_pixel(&data->new_image, x, y + 1, BLUE);
+        put_pixel(&data->new_image, x, y - 1, BLUE);
+        put_pixel(&data->new_image, x -1, y, BLUE);       
+        x += xi;
+        y += yi;
+    }
+}
 void define_ray_position(t_data *data, double ray_angle, t_ray *ray)
 {
     t_direction *dir;
@@ -186,6 +237,7 @@ void define_ray_position(t_data *data, double ray_angle, t_ray *ray)
     horizontal_inters = find_horizontal_intersiction(data, ray_angle, dir->x, dir->y);
     vertical_inters = find_vertical_intersiction(data, ray_angle, dir->x, dir->y);
 	short_ray(data, ray, horizontal_inters, vertical_inters);
+    // render_rays(data, data->player->x, data->player->y, ray->end_x, ray->end_y);
     free(dir);
     free(horizontal_inters);
     free(vertical_inters);
@@ -266,70 +318,26 @@ void update_palyer_state(t_data *data, t_player *player)
     data->player->rotation_angle += (data->player->rotation_speed * data->player->turn);
 }
 
-// #define X_START_POINT (TILE_SIZE)
-// #define Y_START_POINT ((MAP_WIDTH * TILE_SIZE) / 3 * 2)
-// #define MAP_SIZE (((MAP_WIDTH * TILE_SIZE) / 3) - TILE_SIZE)
-// #define MAP_RADIUS (MAP_SIZE / 2)
-// #define CENTER_MAP_X (X_START_POINT + MAP_RADIUS)
-// #define CENTER_MAP_Y (Y_START_POINT + MAP_RADIUS)
-
-
-// void base_of_mini_map(t_data *data)
-// {
-//     int y = Y_START_POINT - 3;
-//     int x = X_START_POINT - 3;
-//     while (y < MAP_SIZE + Y_START_POINT + 3)
-//     {
-//         x = X_START_POINT - 3;
-//         while (x < MAP_SIZE + X_START_POINT + 3)
-//         {
-//             if (((x - CENTER_MAP_X) * (x - CENTER_MAP_X) + (y - CENTER_MAP_Y) * (y - CENTER_MAP_Y)) <= ((MAP_RADIUS + 3) * (MAP_RADIUS + 3)))
-//                 put_pixel(&data->new_image, x, y, WHITE);
-//             x++;
-//         }
-//         y++;
-//     }
-// }
-
-
-
-// void mini_map(t_data *data)
-// {
-//     int y = Y_START_POINT;
-//     int x;
-//     int x_map, y_map;
-//     int color;
-
-//     while (y < Y_START_POINT + MAP_SIZE)
-//     {
-//         x = X_START_POINT;
-//         while (x < X_START_POINT + MAP_SIZE)
-//         {
-//             if (((x - CENTER_MAP_X) * (x - CENTER_MAP_X) +
-//                  (y - CENTER_MAP_Y) * (y - CENTER_MAP_Y)) <= (MAP_RADIUS * MAP_RADIUS))
-//             {
-// 				x_map = ((data->player->x - ((x - CENTER_MAP_X) * MINIMAP_SCALE))) / TILE_SIZE;
-// 				y_map = ((data->player->y - ((y - CENTER_MAP_Y) * MINIMAP_SCALE))) / TILE_SIZE;
-//                 color = BLACK;
-//                 if (y_map >= 0 && y_map < MAP_WIDTH &&
-//                     x_map >= 0 && x_map < MAP_LENGTH)
-//                     if (data->map[y_map][x_map] == '0')
-//                         color = WHITE;
-//                 put_pixel(&data->new_image, x, y, color);
-//             }
-//             x++;
-//         }
-//         y++;
-//     }
-// }
-
-void render_player_mini_map(t_data *data)
+void free_old_rays(t_ray **rays)
 {
-    int cx = X_START_POINT + (MAP_SIZE / 2);
-    int cy = Y_START_POINT + (MAP_SIZE / 2);
+	int i;
+
+	i = 0;
+	while (i < NUM_COLUMNS)
+		free(rays[i++]);
+	free(rays);
+} 
+
+
+void render_player(t_data *data)
+{
+    int cx = data->player->x;
+    int cy = data->player->y;
     int x = cx - data->player->radius;
     int y = cy - data->player->radius;
     int r = data->player->radius;
+
+
 
     while (x <= cx + data->player->radius)
     {
@@ -342,123 +350,114 @@ void render_player_mini_map(t_data *data)
         }
         x++;
     }
+    if (data->player->rotation_angle > 2 * PI
+        || data->player->rotation_angle < 0)
+        data->player->rotation_angle = normalize_angle(data->player->rotation_angle);
+
 }
-void render_rays(t_data *data, double x, double y, double z, double w)
+void render_wall(t_data *data, double x, double y, double z, double w)
 {
     double xi;
     double yi;
     int step;
 
-    if (fabs(z - x) > fabs(w - y))
-        step = fabs(z - x);
-    else
-        step = fabs(w - y);
+    // if (fabs(z - x) > fabs(w - y))
+    //     step = fabs(z - x);
+    // else
+    step = fabs(w - y);
     xi = (z - x) / step;
     yi = (w - y) / step;
     for (int i = 0; i < step; i++)
     {
-        if (x - X_START_POINT >  MAP_RADIUS || X_START_POINT - x>  MAP_RADIUS
-            || y - Y_START_POINT >  MAP_RADIUS || Y_START_POINT - y >  MAP_RADIUS)
-            break;
         put_pixel(&data->new_image, x, y, BLUE);
+        put_pixel(&data->new_image, x + 1, y, BLUE);
+        put_pixel(&data->new_image, x + 2, y, BLUE);
+        put_pixel(&data->new_image, x + 3, y, BLUE);
+        put_pixel(&data->new_image, x + 4, y, BLUE);
+        put_pixel(&data->new_image, x + 5, y, BLUE);
+        // put_pixel(&data->new_image, x, y + 1, BLUE);
+        // put_pixel(&data->new_image, x, y - 1, BLUE);
+        // put_pixel(&data->new_image, x -1, y, BLUE);       
         x += xi;
         y += yi;
     }
 }
-// void render_rays_mini_map(t_data *data)
-// {
-//     int cx = X_START_POINT + (MAP_SIZE / 2);
-//     int cy = Y_START_POINT + (MAP_SIZE / 2);
-//     double dx, dy;
-//     int x_end, y_end;
-//     int i = 0;
-
-//     while (i < NUM_COLUMNS)
-//     {
-//         dx = (data->rays[i]->end_x - data->player->x) / MINIMAP_SCALE;
-//         dy = (data->rays[i]->end_y - data->player->y) / MINIMAP_SCALE;
-//         if (sqrt(dx * dx + dy * dy) <= MAP_RADIUS)
-//         {
-//             x_end = cx + dx;
-//             y_end = cy + dy;
-//             render_rays(data, cx, cy, x_end, y_end);
-//         }
-//         i++;
-//     }
-// }
-
-
-void render_rays_mini_map(t_data *data)
+void projaction (t_data *data)
 {
-	double x = X_START_POINT + (MAP_SIZE / 2);
-    double y = Y_START_POINT + (MAP_SIZE / 2);
-	double y_end;
-	double x_end;
-	int i = 0;
-
-	while (i < NUM_COLUMNS)
-	{
-		y_end = y + ((data->rays[i]->end_y - data->player->y) / MINIMAP_SCALE);
-		x_end = x + ((data->rays[i]->end_x - data->player->x) / MINIMAP_SCALE);
-		render_rays(data, x, y, x_end, y_end);
-		i++;
-	}
+    int i = 0;
+    double ray_distance;
+    double distanceProjactionPlane;
+    double wall_hight;
+    t_ray *ray;
+    distanceProjactionPlane = ((MAP_WIDTH * TILE_SIZE) / 2) / tan(FOV/2);
+    while (i < NUM_COLUMNS)
+    {
+        ray = data->rays[i];
+        ray_distance = hypot(ray->end_x - ray->start_x, ray->end_y - ray->start_y);
+        wall_hight = (TILE_SIZE / ray_distance) * distanceProjactionPlane;
+        render_wall(data, (MAP_WIDTH / NUM_COLUMNS) * i, (MAP_HEIGHT / 2) - (wall_hight / 2),
+            (MAP_WIDTH / NUM_COLUMNS) * i , (MAP_HEIGHT / 2) - (wall_hight /2) + wall_hight);
+        i++;
+    }
 }
 
-void render_mini_map(t_data *data)
+void clear_window(t_data * data)
 {
-    base_of_mini_map(data);
-    mini_map(data);
-	render_rays_mini_map(data);
-    render_player_mini_map(data);
+    int i;
+    int j;
+
+    i = 0;
+    j= 0;
+    while (j < MAP_HEIGHT * 64)
+    {
+        i = 0;
+        while (i < MAP_WIDTH * 64)
+        {
+            if (j < (MAP_HEIGHT * TILE_SIZE) / 2)
+                put_pixel(&data->new_image, i, j, WHITE);
+            else
+                put_pixel(&data->new_image, i, j, BLACK);
+            i++;
+        }
+        j++;
+    }
 }
-
-void free_old_rays(t_ray **rays)
-{
-	int i;
-
-	i = 0;
-	while (i < NUM_COLUMNS)
-		free(rays[i++]);
-	free(rays);
-} 
-
 int the_animation(t_data *data)
 {
     static unsigned int l = 0;
     int i;
     int j;
-    t_img new_image;
 
     i = 0;
     j = 0;
-    new_image.img = mlx_new_image(data->mlx->init,
-            TILE_SIZE * MAP_LENGTH, TILE_SIZE * MAP_WIDTH);
-    new_image.addr = mlx_get_data_addr(new_image.img,
-            &new_image.bpp, &new_image.line_length, &new_image.endian);
-    data->new_image = new_image;
+    clear_window(data);
     update_palyer_state(data, data->player);
-	data->rays = creat_ray_casting(data);
-    render_mini_map(data);
     // render_static_map(data);
+	data->rays = creat_ray_casting(data);
+    projaction(data);
     // render_player(data);
-    mlx_put_image_to_window(data->mlx->init, data->mlx->win, new_image.img, 0, 0);
-    mlx_destroy_image(data->mlx->init, data->new_image.img);
-    data->new_image.img = NULL;
+    render_mini_map(data);
+    mlx_put_image_to_window(data->mlx->init, data->mlx->win, data->new_image.img, 0, 0);
     l++;
 	free_old_rays(data->rays);
     return (0);
 }
-# define LEFT 65361
-# define RIGHT 65363
 
+void free_all_data_and_exit(t_data *data, char *str)
+{
+    mlx_destroy_image(data->mlx->init, data->new_image.img);
+    free(data->mlx);
+    free(data->player->old_move);
+    free(data->player);
+    free(data);
+    printf("%s", str);
+    exit(0);
+}
 
 int	key_press(int key, t_data *data)
 {
-	// if (key == ESC)
-	// 	free_all_data_and_exit(data, "you exit the game!!\n");
-	// if (data->map->player.movement == 1)
-	// 	return (0);
+	if (key == ESC)
+		free_all_data_and_exit(data, "you exit the game!!\n");
 
 	if (key == 'a')
     {
@@ -555,6 +554,7 @@ int	main(void)
 {
 	t_data	*data;
 	t_mlx	*mlx;
+    t_img new_image;
 char *map[] = {
     "11111111111111111111111111",
     "10000010011100001000000001",
@@ -572,17 +572,21 @@ char *map[] = {
     "11111111111111111111111111",
     "11111111111111111111111111"
 };
-
-
 	data = malloc(sizeof(t_data));
 	mlx = malloc(sizeof(t_mlx));
-	data->map = map;
 	data->mlx = mlx;
+	mlx->init = mlx_init();
+	mlx->win = mlx_new_window(mlx->init, TILE_SIZE * MAP_WIDTH, TILE_SIZE * MAP_HEIGHT, "3D game");
+    new_image.img = mlx_new_image(data->mlx->init,
+            TILE_SIZE * MAP_WIDTH, TILE_SIZE * MAP_HEIGHT);
+    new_image.addr = mlx_get_data_addr(new_image.img,
+            &new_image.bpp, &new_image.line_length, &new_image.endian);
+    data->new_image = new_image;
+
+	data->map = map;
 	data->rays = NULL;
 	data->player = initialize();
 
-	mlx->init = mlx_init();
-	mlx->win = mlx_new_window(mlx->init, TILE_SIZE * MAP_LENGTH, TILE_SIZE * MAP_WIDTH, "3D game");
 
 	mlx_hook(mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(mlx->win, 3, 1L << 1, key_release, data);
@@ -591,57 +595,3 @@ char *map[] = {
 	mlx_loop_hook(mlx->init, the_animation, data);
 	mlx_loop(mlx->init);
 }
-
-// void render_player(t_data *data)
-// {
-//     find_position(data, data->player);
-//     int cx = data->player->x;
-//     int cy = data->player->y;
-//     int x = cx - data->player->radius;
-//     int y = cy - data->player->radius;
-//     int r = data->player->radius;
-//     t_direction *dir;
-
-    // render_ray_casting(data);
-//     while (x <= cx + data->player->radius)
-//     {
-//         y = cy - data->player->radius;
-//         while (y <= cy + data->player->radius)
-//         {
-//             if (((x - cx) * (x - cx) + (y - cy) * (y - cy)) <= (r * r))
-//                 put_pixel(&data->new_image, x, y, RED);
-//             y++;
-//         }
-//         x++;
-//     }
-//     if (data->player->rotation_angle > 2 * PI
-//         || data->player->rotation_angle < 0)
-//         data->player->rotation_angle = normalize_angle(data->player->rotation_angle);
-//     dir = find_direction(data);
-//     free(dir);
-//     // render_direction(data, dir);
-// }
-
-// void	move_back(t_player *player)
-// {
-// 	player->x -= cos(player->rotation_angle) * player->walking_speed;
-// 	player->y -= sin(player->rotation_angle) * player->walking_speed;
-// }
-
-// void	move_forward(t_player *player)
-// {
-// 	player->x += cos(player->rotation_angle) * player->walking_speed;
-// 	player->y += sin(player->rotation_angle) * player->walking_speed;
-// }
-
-// void	move_left(t_player *player)
-// {
-// 	player->x += cos(player->rotation_angle - PI / 2) * player->walking_speed;
-// 	player->y += sin(player->rotation_angle - PI / 2) * player->walking_speed;
-// }
-
-// void	move_right(t_player *player)
-// {
-// 	player->x += cos(player->rotation_angle + PI / 2) * player->walking_speed;
-// 	player->y += sin(player->rotation_angle + PI / 2) * player->walking_speed;
-// }

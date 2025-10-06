@@ -8,10 +8,10 @@
 // =================== DEFINES ===================
 #define TILE_SIZE 64
 #define MINIMAP_SCALE 2
-#define MAP_LENGTH 26   // number of columns
-#define MAP_WIDTH 15    // number of rows
+#define MAP_WIDTH 26   // number of columns
+#define MAP_HEIGHT 15    // number of rows
 #define FOV (60 * (PI / 180)) // 60° field of view in radians
-#define NUM_COLUMNS 300 // how many rays to cast (e.g. screen width)
+#define NUM_COLUMNS 320 // how many rays to cast (e.g. screen width)
 
 // Colors (RGBA or 0x00RRGGBB depending on MLX build)
 #define WHITE 0xFFFFFF
@@ -21,11 +21,16 @@
 
 // Mini map macros
 #define X_START_POINT (TILE_SIZE)
-#define Y_START_POINT ((MAP_WIDTH * TILE_SIZE) / 3 * 2)
-#define MAP_SIZE (((MAP_WIDTH * TILE_SIZE) / 3) - TILE_SIZE)
+#define Y_START_POINT ((MAP_HEIGHT * TILE_SIZE) / 3 * 2)
+#define MAP_SIZE (((MAP_HEIGHT * TILE_SIZE) / 3) - TILE_SIZE)
 #define MAP_RADIUS (MAP_SIZE / 2)
 #define CENTER_MAP_X (X_START_POINT + MAP_RADIUS)
 #define CENTER_MAP_Y (Y_START_POINT + MAP_RADIUS)
+
+# define LEFT 65361
+# define RIGHT 65363
+# define ESC 65307
+
 
 #define DIRECTION_LENGTH 20          // length of player direction line
 #define VERTICAL_RAY_THRESHOLD 1e-6  // epsilon for vertical ray checks
@@ -78,7 +83,7 @@ typedef struct s_direction
     double y;
 }   t_direction;
 
-typedef struct mlx
+typedef struct mlxcenter_x
 {
     void *init;
     void *win;
@@ -92,3 +97,8 @@ typedef struct s_data
 	t_ray		**rays;
     char        **map;
 }   t_data;
+
+
+
+void render_mini_map(t_data *data);
+void put_pixel(t_img *data, int x, int y, int color);
