@@ -19,8 +19,8 @@ t_player *initialize()
     player->back_forw = 0;
     player->left_right = 0;
     player->rotation_angle = PI / 2;
-    player->walking_speed = 1;
-    player->rotation_speed = (PI / 180) / 2;
+    player->walking_speed = 2;
+    player->rotation_speed = (PI / 180) ;
     return(player);
 }
 
@@ -29,9 +29,7 @@ void put_pixel(t_img *data, int x, int y, int color)
     char *dst;
 
     if (x < 0 || y < 0 || x >= WIN_WIDTH || y >= WIN_HEIGHT)
-    {
         return;
-    }
     dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
     *(unsigned int *)dst = color;
 }
@@ -58,264 +56,29 @@ void put_pixel(t_img *data, int x, int y, int color)
 //     }
 // }
 
-// int wall(t_data *data, double x, double y)
-// {
-//     double rx = x / TILE_SIZE;
-//     double ry = y / TILE_SIZE;
-
-//     if (data->map[(int)ry][(int)rx] != '0')
-//         return (1);
-//     return (0);
-// }
-
-t_direction *find_horizontal_intersiction(
-    t_data *data, double ray_angle, int facing_up, int facing_right)
-{
-    double x_step;
-    double y_step;
-    double x_intr;
-    double y_intr;
-    t_direction *dir;
-
-    dir = malloc(sizeof(t_direction));
-    if (!dir)
-        return (NULL);
-    if (fabs(tan(ray_angle)) < 1e-6)
-    {
-        free(dir);
-        return (NULL);
-    }
-    y_intr = floor(data->player->y / TILE_SIZE) * TILE_SIZE;
-    if (!facing_up)
-        y_intr += TILE_SIZE;
-    x_intr = ((y_intr - data->player->y) / tan(ray_angle))
-        + data->player->x;
-    y_step = TILE_SIZE;
-    if (facing_up)
-        y_step *= -1;
-    x_step = TILE_SIZE / tan(ray_angle);
-    if ((x_step > 0 && !facing_right) || (x_step < 0 && facing_right))
-        x_step *= -1;
-    if (facing_up)
-        y_intr--;
-    while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
-        && y_intr >= 0 && y_intr < MAP_HEIGHT * TILE_SIZE)
-    {
-        if (wall(data, x_intr, y_intr))
-        {
-            dir->x = x_intr;
-            dir->y = y_intr;
-            return dir;
-        }
-        x_intr += x_step;
-        y_intr += y_step;
-    }
-    return NULL;
-}
-
-// t_direction *find_vertical_intersiction(
-//     t_data *data, double ray_angle, int facing_up, int facing_right)
-// {
-//     double x_step;
-//     double y_step;
-//     double x_intr;
-//     double y_intr;
-//     t_direction *dir;
-
-//     if (fabs(cos(ray_angle)) < VERTICAL_RAY_THRESHOLD)
-//         return (NULL);
-//     dir = malloc(sizeof(t_direction));
-//     if (!dir)
-//         return (NULL);
-//     x_intr = floor(data->player->x / TILE_SIZE) * TILE_SIZE;
-//     if (facing_right)
-//         x_intr += TILE_SIZE;
-//     y_intr = data->player->y + (x_intr - data->player->x) * tan(ray_angle);
-//     x_step = TILE_SIZE;
-//     if (!facing_right)
-//         x_step *= -1;
-//     y_step = TILE_SIZE * tan(ray_angle);
-//     if ((y_step > 0 && facing_up) || (y_step < 0 && !facing_up))
-//         y_step *= -1;
-//     if (!facing_right)
-//         x_intr--;
-//     while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
-//         && y_intr >= 0 && y_intr < MAP_HEIGHT * TILE_SIZE)
-//     {
-//         if (wall(data, x_intr, y_intr))
-//         {
-//             dir->x = x_intr;
-//             dir->y = y_intr;
-//             return dir;
-//         }
-//         x_intr += x_step;
-//         y_intr += y_step;
-//     }
-//     return NULL;
-// }
-
-// double normalize_angle(double angle)
-// {
-//     angle = fmod(angle, 2 * PI);
-//     if (angle < 0)
-//         angle += 2 * PI;
-//     return (angle);
-// }
 
 
-// void insert_end_ray(t_ray *ray, t_direction *dir)
-// {
-// 	ray->end_x = dir->x;
-// 	ray->end_y = dir->y;
-// }
 
-// // void short_ray(t_data * data, t_ray *ray, t_direction *horizontal_inters, t_direction *vertical_inters)
+// // void free_old_rays(t_ray **rays)
 // // {
-// // 	double dist_h;
-// // 	double dist_v;
+// // 	int i;
 
-// // 	if (horizontal_inters && vertical_inters)
-// //     {
-// int is_wall(t_data *data, double *x, double *y)
-// {
-//     double px = data->player->x / TILE_SIZE;
-//     double py = data->player->y / TILE_SIZE;
-//     double rx = *x / TILE_SIZE;
-//     double ry = *y / TILE_SIZE;
+// // 	i = 0;
+// // 	while (i < NUM_COLUMNS)
+// // 		free(rays[i++]);
+// // 	free(rays);
+// // } 
 
-//     if (data->map[(int)ry][(int)rx] != '1')
-//         return (1);
-//     else if (data->map[(int)ry][(int)px] != '1')
-//     {
-//         *x = data->player->x;
-//         return (1);
-//     }
-//     else if (data->map[(int)py][(int)rx] != '1')
-//     {
-//         *y = data->player->y;
-//         return (1);
-//     }
-//     return (0);
-// }
-
-
-// void free_old_rays(t_ray **rays)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (i < NUM_COLUMNS)
-// 		free(rays[i++]);
-// 	free(rays);
-// } 
-// //         dist_h = hypot(horizontal_inters->x - data->player->x,
-// //                 horizontal_inters->y - data->player->y);
-// //         dist_v = hypot(vertical_inters->x - data->player->x,
-// //                 vertical_inters->y - data->player->y);
-// //         if (dist_h < dist_v)
-// //             insert_end_ray(ray, horizontal_inters);
-// //         else
-// //             insert_end_ray(ray, vertical_inters);
-// //     }
-// //     else if (horizontal_inters)
-// //         insert_end_ray(ray, horizontal_inters);
-// //     else if (vertical_inters)
-// //         insert_end_ray(ray, vertical_inters);
-// // }
-
-// void render_rays(t_data *data, double x, double y, double z, double w)
-// {
-//     double xi;
-//     double yi;
-//     int step;
-
-//     if (fabs(z - x) > fabs(w - y))
-//         step = fabs(z - x);
-//     else
-//         step = fabs(w - y);
-//     xi = (z - x) / step;
-//     yi = (w - y) / step;
-//     for (int i = 0; i < step; i++)
-//     {
-//         put_pixel(&data->new_image, x, y, BLUE);
-//         put_pixel(&data->new_image, x + 1, y, BLUE);
-//         put_pixel(&data->new_image, x, y + 1, BLUE);
-//         put_pixel(&data->new_image, x, y - 1, BLUE);
-//         put_pixel(&data->new_image, x -1, y, BLUE);       
-//         x += xi;
-//         y += yi;
-//     }
-// }
-t_direction *facing_direction(double ray_angle)
+double normalize_angle(double angle)
 {
-    t_direction *dir;
-
-    dir = malloc(sizeof(t_direction));
-    if (!dir)
-        return (NULL);
-    dir->x = (ray_angle > 0 && ray_angle < PI) ? 0 : 1;
-    dir->y = (ray_angle < 0.5 * PI || ray_angle > 1.5 * PI) ? 1 : 0;
-    return (dir);
-}
-void define_ray_position(t_data *data, double ray_angle, t_ray *ray)
-{
-    t_direction *dir;
-    t_direction *horizontal_inters;
-    t_direction *vertical_inters;
-
-	dir = facing_direction(ray_angle);
-    horizontal_inters = find_horizontal_intersiction(data, ray_angle, dir->x, dir->y);
-    vertical_inters = find_vertical_intersiction(data, ray_angle, dir->x, dir->y);
-	short_ray(data, ray, horizontal_inters, vertical_inters);
-    // render_rays(data, data->player->x, data->player->y, ray->end_x, ray->end_y);
-    free(dir);
-    free(horizontal_inters);
-    free(vertical_inters);
-}
-
-t_ray **creat_ray_casting(t_data *data)
-{
-    double ray_angle;
-    int column;
-	t_ray **rays;
-
-	rays = malloc(sizeof(t_ray *) * NUM_COLUMNS);
-	if (!rays)
-    	return NULL;
-	for (int i = 0; i < NUM_COLUMNS; i++)
-	{
-		rays[i] = malloc(sizeof(t_ray));
-		if (!rays[i])
-			return NULL; 
-	}
-    column = 0;
-    ray_angle = data->player->rotation_angle - (FOV / 2);
-    while (column < NUM_COLUMNS)
-    {
-		if (ray_angle > 2 * PI || ray_angle < 0)
-        	ray_angle = normalize_angle(ray_angle);
-		rays[column]->ray_angle = ray_angle;
-		rays[column]->start_x = data->player->x;
-		rays[column]->start_y = data->player->y;
-        define_ray_position(data, ray_angle, rays[column]);
-
-        ray_angle += FOV / NUM_COLUMNS;
-        column++;
-    }
-	return(rays);
+    angle = fmod(angle, 2 * PI);
+    if (angle < 0)
+        angle += 2 * PI;
+    return (angle);
 }
 
 
 
-// void free_old_rays(t_ray **rays)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (i < NUM_COLUMNS)
-// 		free(rays[i++]);
-// 	free(rays);
-// } 
 
 
 // void render_player(t_data *data)
@@ -344,51 +107,52 @@ t_ray **creat_ray_casting(t_data *data)
 //         data->player->rotation_angle = normalize_angle(data->player->rotation_angle);
 
 // }
-// void render_wall(t_data *data, double x, double y, double z, double w)
-// {
-//     double xi;
-//     double yi;
-//     int step;
+void render_wall(t_data *data, int x, int y, int wall_hight)
+{
+    int i = 0;
+    int tmp;
 
-//     // if (fabs(z - x) > fabs(w - y))
-//     //     step = fabs(z - x);
-//     // else
-//     step = fabs(w - y);
-//     xi = (z - x) / step;
-//     yi = (w - y) / step;
-//     for (int i = 0; i < step; i++)
-//     {
-//         put_pixel(&data->new_image, x, y, BLUE);
-//         put_pixel(&data->new_image, x + 1, y, BLUE);
-//         put_pixel(&data->new_image, x + 2, y, BLUE);
-//         put_pixel(&data->new_image, x + 3, y, BLUE);
-//         put_pixel(&data->new_image, x + 4, y, BLUE);
-//         put_pixel(&data->new_image, x + 5, y, BLUE);
-//         // put_pixel(&data->new_image, x, y + 1, BLUE);
-//         // put_pixel(&data->new_image, x, y - 1, BLUE);
-//         // put_pixel(&data->new_image, x -1, y, BLUE);       
-//         x += xi;
-//         y += yi;
-//     }
-// }
-// void projaction (t_data *data)
-// {
-//     int i = 0;
-//     double ray_distance;
-//     double distanceProjactionPlane;
-//     double wall_hight;
-//     t_ray *ray;
-//     distanceProjactionPlane = ((MAP_WIDTH * TILE_SIZE) / 2) / tan(FOV/2);
-//     while (i < NUM_COLUMNS)
-//     {
-//         ray = data->rays[i];
-//         ray_distance = hypot(ray->end_x - ray->start_x, ray->end_y - ray->start_y);
-//         wall_hight = (TILE_SIZE / ray_distance) * distanceProjactionPlane;
-//         render_wall(data, (MAP_WIDTH / NUM_COLUMNS) * i, (MAP_HEIGHT / 2) - (wall_hight / 2),
-//             (MAP_WIDTH / NUM_COLUMNS) * i , (MAP_HEIGHT / 2) - (wall_hight /2) + wall_hight);
-//         i++;
-//     }
-// }
+    tmp = y + wall_hight;
+
+    // printf("wall h: %d\n", wall_hight);
+    // printf("w: %d\n", y);
+    while (i < y)
+    {
+        put_pixel(&data->new_image, x, i, WHITE);
+        i++;
+    }
+    // printf("b: %d\n", tmp);
+    while ( i < tmp)
+    {
+        put_pixel(&data->new_image, x, i, BLUE);
+        i++;
+    }
+    // printf("d: %d\n", WIN_HEIGHT);
+    while (i < WIN_HEIGHT)
+    {
+        put_pixel(&data->new_image, x, i, BLACK);
+        i++;
+    }
+}
+void projaction (t_data *data)
+{
+    int i = 0;
+    double ray_distance;
+    double distanceProjactionPlane;
+    double wall_hight;
+    t_ray *ray;
+    distanceProjactionPlane = ((MAP_WIDTH * TILE_SIZE) / 2) / tan(FOV/2);
+    while (i < NUM_COLUMNS)
+    {
+        ray = data->rays[i];
+        ray_distance = hypot(ray->end_x - ray->start_x, ray->end_y - ray->start_y);
+        wall_hight = (TILE_SIZE / ray_distance) * distanceProjactionPlane;
+        if (wall_hight > 720)
+            wall_hight = 720;
+        render_wall(data, i, (WIN_HEIGHT / 2) - ((int)wall_hight / 2), (int)wall_hight);
+        i++;
+    }
+}
 
 void clear_window(t_data * data)
 {
@@ -455,6 +219,16 @@ void update_palyer_state(t_data *data, t_player *player)
     data->player->rotation_angle += (data->player->rotation_speed * data->player->turn);
 }
 
+void free_old_rays(t_ray **rays)
+{
+	int i;
+
+	i = 0;
+	while (i < NUM_COLUMNS)
+		free(rays[i++]);
+	free(rays);
+} 
+
 
 int the_animation(t_data *data)
 {
@@ -464,17 +238,17 @@ int the_animation(t_data *data)
 
     i = 0;
     j = 0;
-    clear_window(data);
+    // clear_window(data);
     update_palyer_state(data, data->player);
 	data->rays = creat_ray_casting(data);
-    // projaction(data);
-    // render_player(data);
-    // render_mini_map(data);
+    projaction(data);
+    render_mini_map(data);
     mlx_put_image_to_window(data->mlx->init, data->mlx->win, data->new_image.img, 0, 0);
     l++;
 	// free_old_rays(data->rays);
     return (0);
     // render_static_map(data);
+    // render_player(data);
 }
 
 void free_all_data_and_exit(t_data *data, char *str)
@@ -591,19 +365,15 @@ int	main(void)
     t_img new_image;
 char *map[] = {
     "11111111111111111111111111",
-    "10000010011100001000000001",
-    "10100011110101111111111001",
-    "10100000000000000000001001",
-    "10100000010000101111101001",
-    "10101000010000000000101001",
-    "10101010111111111110101001",
-    "10101000010000000000101001",
-    "10101111110010001110100111",
-    "10100000000000000000001001",
-    "10111111111111111111111001",
     "10000000000000000000000001",
-    "11111111111111111111111111",
-    "11111111111111111111111111",
+    "10000000010000000000000001",
+    "10000000100000000000000001",
+    "10000000000000000001000001",
+    "10000011000000000000000001",
+    "10000000000100000000000001",
+    "10000000000100000001000001",
+    "10000001000000000000000001",
+    "10000000000000000000000001",
     "11111111111111111111111111"
 };
 	data = malloc(sizeof(t_data));

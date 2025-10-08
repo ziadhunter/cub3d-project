@@ -13,6 +13,10 @@
 #define FOV 1.0471975512 // 60° field of view in radians
 #define NUM_COLUMNS 1080 // how many rays to cast (e.g. screen width)
 
+
+#define MAP_WIDTH 26
+#define MAP_HEIGHT 11
+
 // Colors (RGBA or 0x00RRGGBB depending on MLX build)
 #define WHITE 0xFFFFFF
 #define BLACK 0x000000
@@ -22,7 +26,7 @@
 // Mini map macros
 #define X_START_POINT (TILE_SIZE)
 #define Y_START_POINT ((WIN_HEIGHT) / 3 * 2)
-#define MAP_SIZE (((MAP_HEIGHT) / 3) - TILE_SIZE)
+#define MAP_SIZE (((WIN_HEIGHT) / 3) - TILE_SIZE)
 #define MAP_RADIUS (MAP_SIZE / 2)
 #define CENTER_MAP_X (X_START_POINT + MAP_RADIUS)
 #define CENTER_MAP_Y (Y_START_POINT + MAP_RADIUS)
@@ -102,3 +106,5 @@ typedef struct s_data
 
 void render_mini_map(t_data *data);
 void put_pixel(t_img *data, int x, int y, int color);
+t_ray **creat_ray_casting(t_data *data);
+double normalize_angle(double angle);
