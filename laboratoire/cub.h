@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <math.h>       // sin, cos, tan, hypot, fabs, fmod, floor
-#include "mlx.h"        // MiniLibX functions (mlx_new_image, etc.)
+#include "mlx.h"      // MiniLibX functions (mlx_new_image, etc.)
+#include "./gnl/get_next_line.h"
+#include "./libft/libft.h"
 
-#define PI 3.14159265358979323846
 // =================== DEFINES ===================
+#define PI 3.14159265358979323846
 #define TILE_SIZE 64
 #define MINIMAP_SCALE 2
 #define WIN_WIDTH 1080   // number of columns

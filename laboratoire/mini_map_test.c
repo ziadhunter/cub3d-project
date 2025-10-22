@@ -20,7 +20,7 @@ t_player *initialize()
     player->left_right = 0;
     player->rotation_angle = PI / 2;
     player->walking_speed = 2;
-    player->rotation_speed = (PI / 180) ;
+    player->rotation_speed = (PI / 180) / 2 ;
     return(player);
 }
 
@@ -205,8 +205,8 @@ void update_palyer_state(t_data *data, t_player *player)
     //update the x and y position of the player
     x += ((cos(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
     y += ((sin(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
-    x += ((cos(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
-    y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
+            x += ((cos(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
+            y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
 
     //check if the new position isn't a wall
     if (is_wall(data, &x, &y))
@@ -364,6 +364,22 @@ int	main(void)
 	t_mlx	*mlx;
     t_img new_image;
 char *map[] = {
+
+// "    1111111111111111111111111"
+// "1000000000110000000000001"
+// "1011000001110000000000001"
+// "1001000000000000000000001"
+// "111111111011000001110000000000001"
+// "100000000011000001110111111111111"
+// "11110111111111011100000010001"
+// "11110111111111011101010010001"
+// "11000000110101011100000010001"
+// "10000000000000001100000010001"
+// "10000000000000001101010010001"
+// "110000011101010111110111100111"
+// "11110111 1110101 101111010001"
+// "11111111 1111111 111111111111"
+
     "11111111111111111111111111",
     "10000000000000000000000001",
     "10000000010000000000000001",
