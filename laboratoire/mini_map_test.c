@@ -15,7 +15,7 @@ t_player *initialize()
     player->old_move = old;
     player->x = 17 * 64 - 32;
     player->y = 5 * 64 - 32;
-    player->radius = 9;
+    player->radius = 6;
     player->back_forw = 0;
     player->left_right = 0;
     player->rotation_angle = PI / 2;
@@ -198,50 +198,15 @@ void clear_window(t_data * data)
 //     return (0);
 // }
 
-t_direction *find_shortest_ray(t_data *data, t_direction *h_inters, t_direction *v_inters)
+int is_position_wall(t_data *data, double x, double y)
 {
-    double dist_h;
-    double dist_v;
-
-    if (h_inters && v_inters)
-    {
-        dist_h = hypot(h_inters->x - data->player->x,
-                h_inters->y - data->player->y);
-        dist_v = hypot(v_inters->x - data->player->x,
-                v_inters->y - data->player->y);
-        if (dist_h < dist_v)
-            return (h_inters);
-        else
-            return (v_inters);
-    }
-    else if (h_inters)
-        return (h_inters);
-    else if (v_inters)
-        return (v_inters);
-    return (NULL);
-}
-
-int is_wall(t_data *data, double *x, double *y)
-{
-    t_direction *dir;
-    t_direction *horizontal_inters;
-    t_direction *vertical_inters;
-    t_direction *short_ray;
-    double ray_angle;
-    // double ;
-
-    ray_angle = data->player->rotation_angle;
-    dir = facing_direction(ray_angle);
-    horizontal_inters = find_horizontal_intersiction(data, ray_angle, dir->x, dir->y);
-    vertical_inters = find_vertical_intersiction(data, ray_angle, dir->x, dir->y);
-
-    short_ray = find_shortest_ray(data, horizontal_inters, vertical_inters);
-    // handle NULL
-
-    // if (abs(data->player->x - short_ray->x) )
-    //     return (1);
-
-    return (1);
+    double map_x = x / TILE_SIZE;
+    double map_y = y / TILE_SIZE;
+    
+    if (map_x < 0 || map_y < 0 || map_x >= MAP_WIDTH || map_y >= MAP_HEIGHT)
+        return (1);
+    
+    return (data->map[(int)map_y][(int)map_x] == '1');
 }
 
 
@@ -257,12 +222,10 @@ void update_palyer_state(t_data *data, t_player *player)
     y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
 
     //check if the new position isn't a wall
-    if (is_wall(data, &x, &y))
-    {
+    if (!is_position_wall(data, x, player->y))
         player->x = x;
+    if (!is_position_wall(data, player->x, y))
         player->y = y;
-    }
-
     //update the direction of the player
     data->player->rotation_angle += (data->player->rotation_speed * data->player->turn);
 }
