@@ -13,14 +13,14 @@ t_player *initialize()
     old->turn_right = 0;
     player = malloc(sizeof(t_player));
     player->old_move = old;
-    player->x = 7 * 64;
-    player->y = 5 * 64;
+    player->x = 17 * 64 - 32;
+    player->y = 5 * 64 - 32;
     player->radius = 9;
     player->back_forw = 0;
     player->left_right = 0;
     player->rotation_angle = PI / 2;
     player->walking_speed = 2;
-    player->rotation_speed = (PI / 180) ;
+    player->rotation_speed = (PI / 180) / 2;
     return(player);
 }
 
@@ -141,7 +141,7 @@ void projaction (t_data *data)
     double distanceProjactionPlane;
     double wall_hight;
     t_ray *ray;
-    distanceProjactionPlane = ((MAP_WIDTH * TILE_SIZE) / 2) / tan(FOV/2);
+    distanceProjactionPlane = ((MAP_WIDTH * TILE_SIZE) / 2) / tan(FOV * 2/3);
     while (i < NUM_COLUMNS)
     {
         ray = data->rays[i];
@@ -176,27 +176,75 @@ void clear_window(t_data * data)
     }
 }
 
+// int is_wall(t_data *data, double *x, double *y)
+// {
+//     double px = data->player->x / TILE_SIZE;
+//     double py = data->player->y / TILE_SIZE;
+//     double rx = *x / TILE_SIZE;
+//     double ry = *y / TILE_SIZE;
+
+//     if (data->map[(int)ry][(int)rx] != '1')
+//         return (1);
+//     else if (data->map[(int)ry][(int)px] != '1')
+//     {
+//         *x = data->player->x;
+//         return (1);
+//     }
+//     else if (data->map[(int)py][(int)rx] != '1')
+//     {
+//         *y = data->player->y;
+//         return (1);
+//     }
+//     return (0);
+// }
+
+t_direction *find_shortest_ray(t_data *data, t_direction *h_inters, t_direction *v_inters)
+{
+    double dist_h;
+    double dist_v;
+
+    if (h_inters && v_inters)
+    {
+        dist_h = hypot(h_inters->x - data->player->x,
+                h_inters->y - data->player->y);
+        dist_v = hypot(v_inters->x - data->player->x,
+                v_inters->y - data->player->y);
+        if (dist_h < dist_v)
+            return (h_inters);
+        else
+            return (v_inters);
+    }
+    else if (h_inters)
+        return (h_inters);
+    else if (v_inters)
+        return (v_inters);
+    return (NULL);
+}
+
 int is_wall(t_data *data, double *x, double *y)
 {
-    double px = data->player->x / TILE_SIZE;
-    double py = data->player->y / TILE_SIZE;
-    double rx = *x / TILE_SIZE;
-    double ry = *y / TILE_SIZE;
+    t_direction *dir;
+    t_direction *horizontal_inters;
+    t_direction *vertical_inters;
+    t_direction *short_ray;
+    double ray_angle;
+    // double ;
 
-    if (data->map[(int)ry][(int)rx] != '1')
-        return (1);
-    else if (data->map[(int)ry][(int)px] != '1')
-    {
-        *x = data->player->x;
-        return (1);
-    }
-    else if (data->map[(int)py][(int)rx] != '1')
-    {
-        *y = data->player->y;
-        return (1);
-    }
-    return (0);
+    ray_angle = data->player->rotation_angle;
+    dir = facing_direction(ray_angle);
+    horizontal_inters = find_horizontal_intersiction(data, ray_angle, dir->x, dir->y);
+    vertical_inters = find_vertical_intersiction(data, ray_angle, dir->x, dir->y);
+
+    short_ray = find_shortest_ray(data, horizontal_inters, vertical_inters);
+    // handle NULL
+
+    // if (abs(data->player->x - short_ray->x) )
+    //     return (1);
+
+    return (1);
 }
+
+
 void update_palyer_state(t_data *data, t_player *player)
 {
     double x = player->x;

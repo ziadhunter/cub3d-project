@@ -7,10 +7,10 @@
 #define PI 3.14159265358979323846
 // =================== DEFINES ===================
 #define TILE_SIZE 64
-#define MINIMAP_SCALE 2
+#define MINIMAP_SCALE 4
 #define WIN_WIDTH 1080   // number of columns
 #define WIN_HEIGHT 720   // number of rows
-#define FOV 1.0471975512 // 60° field of view in radians
+#define FOV (60 * (PI / 180)) // 60° field of view in radians
 #define NUM_COLUMNS 1080 // how many rays to cast (e.g. screen width)
 
 
@@ -107,4 +107,15 @@ typedef struct s_data
 void render_mini_map(t_data *data);
 void put_pixel(t_img *data, int x, int y, int color);
 t_ray **creat_ray_casting(t_data *data);
+double normalize_angle(double angle);
+
+void insert_end_ray(t_ray *ray, t_direction *dir);
+void short_ray(t_data * data, t_ray *ray, t_direction *horizontal_inters, t_direction *vertical_inters);
+void render_rays(t_data *data, double x, double y, double z, double w);
+void define_ray_position(t_data *data, double ray_angle, t_ray *ray);
+t_ray **creat_ray_casting(t_data *data);
+t_direction *find_vertical_intersiction(t_data *data, double ray_angle, int facing_up, int facing_right);
+t_direction *find_horizontal_intersiction(t_data *data, double ray_angle, int facing_up, int facing_right);
+
+t_direction *facing_direction(double ray_angle);
 double normalize_angle(double angle);
