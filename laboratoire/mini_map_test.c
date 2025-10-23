@@ -176,28 +176,6 @@ void clear_window(t_data * data)
     }
 }
 
-// int is_wall(t_data *data, double *x, double *y)
-// {
-//     double px = data->player->x / TILE_SIZE;
-//     double py = data->player->y / TILE_SIZE;
-//     double rx = *x / TILE_SIZE;
-//     double ry = *y / TILE_SIZE;
-
-//     if (data->map[(int)ry][(int)rx] != '1')
-//         return (1);
-//     else if (data->map[(int)ry][(int)px] != '1')
-//     {
-//         *x = data->player->x;
-//         return (1);
-//     }
-//     else if (data->map[(int)py][(int)rx] != '1')
-//     {
-//         *y = data->player->y;
-//         return (1);
-//     }
-//     return (0);
-// }
-
 int is_position_wall(t_data *data, double x, double y)
 {
     double map_x = x / TILE_SIZE;
@@ -221,11 +199,12 @@ void update_palyer_state(t_data *data, t_player *player)
     x += ((cos(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
     y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
 
-    //check if the new position isn't a wall
+    // check if the new position isn't a wall by checking X axis then Y axis
     if (!is_position_wall(data, x, player->y))
         player->x = x;
     if (!is_position_wall(data, player->x, y))
         player->y = y;
+
     //update the direction of the player
     data->player->rotation_angle += (data->player->rotation_speed * data->player->turn);
 }
@@ -342,7 +321,7 @@ int	key_release(int key, t_data *data)
 	else if (key == 'w')
     {
         data->player->old_move->forw = 0;
-        if (data->player->old_move->forw)
+        if (data->player->old_move->back)
 		    data->player->back_forw = 1;
         else
             data->player->back_forw = 0;
