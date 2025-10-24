@@ -43,6 +43,12 @@
 #define HORIZONTAL 1
 #define VERTICAL 2
 
+typedef struct s_direction
+{
+    double x;
+    double y;
+}   t_direction;
+
 typedef struct s_img
 {
     void    *img;
@@ -51,6 +57,14 @@ typedef struct s_img
     int     line_length;
     int     endian;
 }   t_img;
+
+typedef struct s_texture
+{
+    t_img no;
+    t_img so;
+    t_img we;
+    t_img ea;
+} t_texture;
 
 typedef struct s_ray
 {
@@ -65,6 +79,7 @@ typedef struct s_ray
                 will be used when applying texture to the walls
     */
    int intersection;
+   t_direction ray_direction;
 } t_ray;
 
 typedef struct s_oldmove
@@ -91,12 +106,6 @@ typedef struct s_player
     t_oldmove *old_move;
 }   t_player;
 
-typedef struct s_direction
-{
-    double x;
-    double y;
-}   t_direction;
-
 typedef struct mlxcenter_x
 {
     void *init;
@@ -105,6 +114,7 @@ typedef struct mlxcenter_x
 
 typedef struct s_data
 {
+    t_texture   textures;
     t_img       wall;
     t_mlx       *mlx;
     t_img       new_image;

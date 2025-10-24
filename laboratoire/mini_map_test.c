@@ -120,6 +120,7 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     int ix, iy, iyoff;
     int wall_top_pix, wall_btm_pix;
     int dist_from_top;
+    t_img wall;
 
 
     tmp = y + wall_hight;
@@ -140,21 +141,35 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     iy = 0;
 
     if (ray->intersection == HORIZONTAL)
-        ix = data->rays[x]->end_x % TILE_SIZE;
+    {
+        ix = ray->end_x % TILE_SIZE;
+        if (ray->ray_direction.x == 0)
+        {
+            wall = data->textures.no;
+            ix = (TILE_SIZE - ix);
+        }
+        else
+            wall = data->textures.so;
+    }
     else if (ray->intersection == VERTICAL)
-        ix = data->rays[x]->end_y % TILE_SIZE;
-    if (ix < 0)
-        ix += TILE_SIZE;
+    {
+        ix = ray->end_y % TILE_SIZE;
+        if (ray->ray_direction.y == 0)
+        {
+            wall = data->textures.we;
+            ix = (TILE_SIZE - ix);
+        }
+        else
+            wall = data->textures.ea;
+    }
+
 
     while (i < tmp)
     {
             dist_from_top = i + (wall_hight / 2) - (WIN_HEIGHT / 2);
             iy = dist_from_top * ((float)TILE_SIZE / wall_hight);
-            if (iy < 0) iy = 0;
-            if (iy >= TILE_SIZE) iy = TILE_SIZE - 1;
-			color = *(unsigned int *)(data->wall.addr + (iy * data->wall.line_length + ix
-						* (data->wall.bpp / 8)));
-            //
+			color = *(unsigned int *)(wall.addr + (iy * wall.line_length + ix
+						* (wall.bpp / 8)));
             put_pixel(&data->new_image, x, i, color);
 
         i++;
@@ -208,7 +223,7 @@ void clear_window(t_data * data)
         j++;
     }
 }
-
+// Update this function to check collision with a buffer zone
 int is_position_wall(t_data *data, double x, double y)
 {
     double map_x = x / TILE_SIZE;
@@ -220,6 +235,32 @@ int is_position_wall(t_data *data, double x, double y)
     return (data->map[(int)map_y][(int)map_x] == '1');
 }
 
+
+int check_collision_with_buffer(t_data *data, double x, double y)
+{
+    double buffer = 10.0;
+    
+    // Check collision at multiple points around the player
+    // Center
+    if (is_position_wall(data, x, y))
+        return (1);
+    
+    // Check 4 cardinal directions
+    if (is_position_wall(data, x - buffer, y) ||
+        is_position_wall(data, x + buffer, y) ||
+        is_position_wall(data, x, y - buffer) ||
+        is_position_wall(data, x, y + buffer))
+        return (1);
+    
+    // Check 4 diagonal corners
+    if (is_position_wall(data, x - buffer, y - buffer) ||
+        is_position_wall(data, x + buffer, y - buffer) ||
+        is_position_wall(data, x - buffer, y + buffer) ||
+        is_position_wall(data, x + buffer, y + buffer))
+        return (1);
+    
+    return (0);
+}
 
 void update_palyer_state(t_data *data, t_player *player)
 {
@@ -233,9 +274,9 @@ void update_palyer_state(t_data *data, t_player *player)
     y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
 
     // check if the new position isn't a wall by checking X axis then Y axis
-    if (!is_position_wall(data, x, player->y))
+    if (!check_collision_with_buffer(data, x, player->y))
         player->x = x;
-    if (!is_position_wall(data, player->x, y))
+    if (!check_collision_with_buffer(data, player->x, y))
         player->y = y;
 
     //update the direction of the player
@@ -380,6 +421,28 @@ int	key_release(int key, t_data *data)
 	return (0);
 }
 
+void load_textures(t_data *data)
+{
+
+    data->wall.img = load_xpm(data, "textures/wall.xpm");
+    data->wall.addr = mlx_get_data_addr(data->wall.img, &data->wall.bpp,
+        &data->wall.line_length, &data->wall.endian);
+   
+    data->textures.no.img = load_xpm(data, "textures/no_wall.xpm");
+    data->textures.so.img = load_xpm(data, "textures/so_wall.xpm");
+    data->textures.we.img = load_xpm(data, "textures/we_wall.xpm");
+    data->textures.ea.img = load_xpm(data, "textures/ea_wall.xpm");
+
+    data->textures.no.addr = mlx_get_data_addr(data->textures.no.img, &data->textures.no.bpp,
+            &data->textures.no.line_length, &data->textures.no.endian);
+    data->textures.so.addr = mlx_get_data_addr(data->textures.so.img, &data->textures.so.bpp,
+            &data->textures.so.line_length, &data->textures.so.endian);
+    data->textures.we.addr = mlx_get_data_addr(data->textures.we.img, &data->textures.we.bpp,
+            &data->textures.we.line_length, &data->textures.we.endian);
+    data->textures.ea.addr = mlx_get_data_addr(data->textures.ea.img, &data->textures.ea.bpp,
+            &data->textures.ea.line_length, &data->textures.ea.endian);
+}
+
 
 int	main(void)
 {
@@ -413,12 +476,8 @@ char *map[] = {
 	data->rays = NULL;
 	data->player = initialize();
 
-    data->wall.img = load_xpm(data, "textures/wall.xpm");
-    data->wall.addr = mlx_get_data_addr(data->wall.img, &data->wall.bpp, &data->wall.line_length,
-			&data->wall.endian);
+    load_textures(data);
 
-            // the_animation(data);
-            // sleep(1);
 	mlx_hook(mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(mlx->win, 3, 1L << 1, key_release, data);
 	// mlx_hook(mlx->win, 2, 0, turn_press, data);
