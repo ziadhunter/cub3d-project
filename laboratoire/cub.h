@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <math.h>       // sin, cos, tan, hypot, fabs, fmod, floor
-#include "mlx.h"        // MiniLibX functions (mlx_new_image, etc.)
+#include <stdbool.h>
+#include <mlx.h>        // MiniLibX functions (mlx_new_image, etc.)
 
 #define PI 3.14159265358979323846
 // =================== DEFINES ===================
@@ -39,6 +40,9 @@
 #define DIRECTION_LENGTH 20          // length of player direction line
 #define VERTICAL_RAY_THRESHOLD 1e-6  // epsilon for vertical ray checks
 
+#define HORIZONTAL 1
+#define VERTICAL 2
+
 typedef struct s_img
 {
     void    *img;
@@ -55,6 +59,12 @@ typedef struct s_ray
 	double ray_angle;
 	int end_x;
 	int end_y;
+    /*
+        TODO: add a variable to hold whether the ray is
+                intersection verticaly or horisontaly
+                will be used when applying texture to the walls
+    */
+   int intersection;
 } t_ray;
 
 typedef struct s_oldmove
@@ -95,6 +105,7 @@ typedef struct mlxcenter_x
 
 typedef struct s_data
 {
+    t_img       wall;
     t_mlx       *mlx;
     t_img       new_image;
     t_player    *player;
@@ -109,7 +120,7 @@ void put_pixel(t_img *data, int x, int y, int color);
 t_ray **creat_ray_casting(t_data *data);
 double normalize_angle(double angle);
 
-void insert_end_ray(t_ray *ray, t_direction *dir);
+void insert_end_ray(t_ray *ray, t_direction *dir, int intersection);
 void short_ray(t_data * data, t_ray *ray, t_direction *horizontal_inters, t_direction *vertical_inters);
 void render_rays(t_data *data, double x, double y, double z, double w);
 void define_ray_position(t_data *data, double ray_angle, t_ray *ray);
@@ -119,3 +130,5 @@ t_direction *find_horizontal_intersiction(t_data *data, double ray_angle, int fa
 
 t_direction *facing_direction(double ray_angle);
 double normalize_angle(double angle);
+
+void *load_xpm(t_data *data, char *path);

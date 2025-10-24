@@ -21,8 +21,11 @@ t_player *initialize()
     player->rotation_angle = PI / 2;
     player->walking_speed = 2;
     player->rotation_speed = (PI / 180) / 2;
+    player->turn = 0;
     return(player);
 }
+
+
 
 void put_pixel(t_img *data, int x, int y, int color)
 {
@@ -107,33 +110,63 @@ double normalize_angle(double angle)
 //         data->player->rotation_angle = normalize_angle(data->player->rotation_angle);
 
 // }
+
 void render_wall(t_data *data, int x, int y, int wall_hight)
 {
     int i = 0;
     int tmp;
+    unsigned int color;
+    t_ray *ray = data->rays[x];
+    int ix, iy, iyoff;
+    int wall_top_pix, wall_btm_pix;
+    int dist_from_top;
+
 
     tmp = y + wall_hight;
+    if (y < 0)
+        y = 0;
+    if (tmp > WIN_HEIGHT)
+        tmp = WIN_HEIGHT;
 
-    // printf("wall h: %d\n", wall_hight);
-    // printf("w: %d\n", y);
+
     while (i < y)
     {
         put_pixel(&data->new_image, x, i, WHITE);
         i++;
     }
-    // printf("b: %d\n", tmp);
-    while ( i < tmp)
+
+    wall_top_pix = i;
+    wall_btm_pix = tmp;
+    iy = 0;
+
+    if (ray->intersection == HORIZONTAL)
+        ix = data->rays[x]->end_x % TILE_SIZE;
+    else if (ray->intersection == VERTICAL)
+        ix = data->rays[x]->end_y % TILE_SIZE;
+    if (ix < 0)
+        ix += TILE_SIZE;
+
+    while (i < tmp)
     {
-        put_pixel(&data->new_image, x, i, BLUE);
+            dist_from_top = i + (wall_hight / 2) - (WIN_HEIGHT / 2);
+            iy = dist_from_top * ((float)TILE_SIZE / wall_hight);
+            if (iy < 0) iy = 0;
+            if (iy >= TILE_SIZE) iy = TILE_SIZE - 1;
+			color = *(unsigned int *)(data->wall.addr + (iy * data->wall.line_length + ix
+						* (data->wall.bpp / 8)));
+            //
+            put_pixel(&data->new_image, x, i, color);
+
         i++;
     }
-    // printf("d: %d\n", WIN_HEIGHT);
+
     while (i < WIN_HEIGHT)
     {
         put_pixel(&data->new_image, x, i, BLACK);
         i++;
     }
 }
+
 void projaction (t_data *data)
 {
     int i = 0;
@@ -147,8 +180,8 @@ void projaction (t_data *data)
         ray = data->rays[i];
         ray_distance = hypot(ray->end_x - ray->start_x, ray->end_y - ray->start_y);
         wall_hight = (TILE_SIZE / ray_distance) * distanceProjactionPlane;
-        if (wall_hight > 720)
-            wall_hight = 720;
+        // if (wall_hight > 720)
+        //     wall_hight = 720;
         render_wall(data, i, (WIN_HEIGHT / 2) - ((int)wall_hight / 2), (int)wall_hight);
         i++;
     }
@@ -380,7 +413,12 @@ char *map[] = {
 	data->rays = NULL;
 	data->player = initialize();
 
+    data->wall.img = load_xpm(data, "textures/wall.xpm");
+    data->wall.addr = mlx_get_data_addr(data->wall.img, &data->wall.bpp, &data->wall.line_length,
+			&data->wall.endian);
 
+            // the_animation(data);
+            // sleep(1);
 	mlx_hook(mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(mlx->win, 3, 1L << 1, key_release, data);
 	// mlx_hook(mlx->win, 2, 0, turn_press, data);
