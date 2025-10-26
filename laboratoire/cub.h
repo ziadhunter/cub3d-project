@@ -10,10 +10,10 @@
 #define PI 3.14159265358979323846
 #define TILE_SIZE 64
 #define MINIMAP_SCALE 2
-#define WIN_WIDTH 1080   // number of columns
-#define WIN_HEIGHT 720   // number of rows
+#define WIN_WIDTH 2080   // number of columns
+#define WIN_HEIGHT 1440   // number of rows
 #define FOV 1.0471975512 // 60° field of view in radians
-#define NUM_COLUMNS 1080 // how many rays to cast (e.g. screen width)
+#define NUM_COLUMNS 2080 // how many rays to cast (e.g. screen width)
 
 
 #define MAP_WIDTH 26
@@ -40,6 +40,12 @@
 
 #define DIRECTION_LENGTH 20          // length of player direction line
 #define VERTICAL_RAY_THRESHOLD 1e-6  // epsilon for vertical ray checks
+
+typedef struct s_line
+{
+    char    *str;
+    int     length;
+} t_line;
 
 typedef struct s_img
 {
@@ -95,6 +101,21 @@ typedef struct mlxcenter_x
     void *win;
 } t_mlx;
 
+
+typedef struct s_map
+{
+    char **map;
+    char *no;
+    char *so;
+    char *we;
+    char *ea;
+    int    *f;
+    int *c;
+    int map_width;
+    int map_height;
+
+} t_map;
+
 typedef struct s_data
 {
     t_mlx       *mlx;
@@ -104,7 +125,12 @@ typedef struct s_data
     char        **map;
 }   t_data;
 
-
+typedef struct s_element
+{
+    char *type;
+    int length;
+    void (*handle)(t_map *map, char **str);
+} t_element;
 
 void render_mini_map(t_data *data);
 void put_pixel(t_img *data, int x, int y, int color);
