@@ -346,7 +346,7 @@ void render_rays(t_data *data, double x, double y, double z, double w)
         y += yi;
     }
 }
-void define_ray_position(t_data *data, double ray_angle, t_ray *ray)
+void  define_ray_position(t_data *data, double ray_angle, t_ray *ray)
 {
     t_direction *dir;
     t_direction *horizontal_inters;

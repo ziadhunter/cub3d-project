@@ -22,6 +22,7 @@ t_player *initialize()
     player->walking_speed = 2;
     player->rotation_speed = (PI / 180) / 2;
     player->turn = 0;
+    player->is_looking_at_door = false;
     return(player);
 }
 
@@ -111,6 +112,35 @@ double normalize_angle(double angle)
 
 // }
 
+// t_img *get_targeted_tail_type(t_data *data, t_ray *ray)
+// {
+    
+// }
+
+int get_door_type(char **map, int end_x, int end_y)
+{
+    int calc[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    int type = 0;
+    int i = 0;
+    int x, y;
+    int targ_x, targ_y;
+    int tmp;
+
+    x = (int)(end_x / 64);
+    y = (int)(end_y / 64);
+    while (i < 4)
+    {
+        targ_x = calc[i][0] + x;
+        targ_y = calc[i][1] + y;
+        if (targ_x > MAP_WIDTH || targ_y > MAP_HEIGHT || targ_x < 0 || targ_y < 0)
+            return (0);
+        type <<= 1;
+        type |= map[targ_y][targ_x] == '1';
+        i++;
+    }
+    return (type);
+}
+
 void render_wall(t_data *data, int x, int y, int wall_hight)
 {
     int i = 0;
@@ -121,6 +151,7 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     int wall_top_pix, wall_btm_pix;
     int dist_from_top;
     t_img wall;
+    int door_type;
 
 
     tmp = y + wall_hight;
@@ -139,30 +170,44 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     wall_top_pix = i;
     wall_btm_pix = tmp;
     iy = 0;
+    if (data->map[(int)(ray->end_y / 64)][(int)(ray->end_x / 64)] == 'D')
+    {
+        door_type = get_door_type(data->map, ray->end_x, ray->end_y);
+        if (door_type == 3 || door_type == 12)
+            wall = data->textures.door;
+        else
+            wall = data->textures.door_side;
 
-    if (ray->intersection == HORIZONTAL)
-    {
-        ix = ray->end_x % TILE_SIZE;
-        if (ray->ray_direction.x == 0)
-        {
-            wall = data->textures.no;
-            ix = (TILE_SIZE - ix);
-        }
-        else
-            wall = data->textures.so;
+        if (ray->intersection == HORIZONTAL)
+            ix = ray->end_x % TILE_SIZE;
+        else if (ray->intersection == VERTICAL)
+            ix = ray->end_y % TILE_SIZE;
     }
-    else if (ray->intersection == VERTICAL)
+    else
     {
-        ix = ray->end_y % TILE_SIZE;
-        if (ray->ray_direction.y == 0)
+        if (ray->intersection == HORIZONTAL)
         {
-            wall = data->textures.we;
-            ix = (TILE_SIZE - ix);
+            ix = ray->end_x % TILE_SIZE;
+            if (ray->ray_direction.x == 0)
+            {
+                wall = data->textures.no;
+                ix = (TILE_SIZE - ix);
+            }
+            else
+                wall = data->textures.so;
         }
-        else
+        else if (ray->intersection == VERTICAL)
+        {
+            ix = ray->end_y % TILE_SIZE;
+            if (ray->ray_direction.y == 0)
+            {
+                wall = data->textures.we;
+                ix = (TILE_SIZE - ix);
+            }
+            else
             wall = data->textures.ea;
+        }   
     }
-
 
     while (i < tmp)
     {
@@ -182,12 +227,43 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     }
 }
 
+void diplay_btn_msg(t_data *data)
+{
+    int x, y;
+    int i, j;
+    unsigned int color;
+    t_img door_btn = data->textures.open_door_btn;
+
+    x = (WIN_WIDTH / 2) - (120 / 2);
+    y = (WIN_HEIGHT / 4) - (39 / 2);
+
+    // x = 0;
+    // y = 0;
+
+    i = 0;
+    j = 0;
+    while (j < 39)
+    {
+        i = 0;
+        while (i < 120)
+        {
+            color = *(unsigned int *)(door_btn.addr + (j * door_btn.line_length + i
+						* (door_btn.bpp / 8)));
+            if (color != 0xFF000000)
+                put_pixel(&data->new_image, x + i, y + j, color);
+            i++;
+        }
+        j++;
+    }
+}
+
 void projaction (t_data *data)
 {
     int i = 0;
     double ray_distance;
     double distanceProjactionPlane;
     double wall_hight;
+    t_player *player;
     t_ray *ray;
     distanceProjactionPlane = ((MAP_WIDTH * TILE_SIZE) / 2) / tan(FOV * 2/3);
     while (i < NUM_COLUMNS)
@@ -200,6 +276,11 @@ void projaction (t_data *data)
         render_wall(data, i, (WIN_HEIGHT / 2) - ((int)wall_hight / 2), (int)wall_hight);
         i++;
     }
+    player = data->player;
+    // printf("checking: x: %d,y: %d\n", (int)(player->x + (TILE_SIZE * cos(player->rotation_angle))), (int)(player->y + (TILE_SIZE * sin(player->rotation_angle))));
+    // if (data->map[(int)((player->y + TILE_SIZE *2 * sin(player->rotation_angle)) / 64)][(int)((player->x + TILE_SIZE * 2 * cos(player->rotation_angle)) / 64)] == 'D')
+    if (player->is_looking_at_door == true)
+        diplay_btn_msg(data);
 }
 
 void clear_window(t_data * data)
@@ -232,7 +313,7 @@ int is_position_wall(t_data *data, double x, double y)
     if (map_x < 0 || map_y < 0 || map_x >= MAP_WIDTH || map_y >= MAP_HEIGHT)
         return (1);
     
-    return (data->map[(int)map_y][(int)map_x] == '1');
+    return (data->map[(int)map_y][(int)map_x] == '1' || (data->map[(int)map_y][(int)map_x] == 'D' && data->entites.door.state == CLOSED));
 }
 
 
@@ -432,6 +513,11 @@ void load_textures(t_data *data)
     data->textures.so.img = load_xpm(data, "textures/so_wall.xpm");
     data->textures.we.img = load_xpm(data, "textures/we_wall.xpm");
     data->textures.ea.img = load_xpm(data, "textures/ea_wall.xpm");
+    data->textures.door.img = load_xpm(data, "textures/door.xpm");
+    data->textures.door_side.img = load_xpm(data, "textures/door_side.xpm");
+
+    data->textures.close_door_btn.img = load_xpm(data, "textures/close_door_btn.xpm");
+    data->textures.open_door_btn.img = load_xpm(data, "textures/open_door_btn.xpm");
 
     data->textures.no.addr = mlx_get_data_addr(data->textures.no.img, &data->textures.no.bpp,
             &data->textures.no.line_length, &data->textures.no.endian);
@@ -441,6 +527,15 @@ void load_textures(t_data *data)
             &data->textures.we.line_length, &data->textures.we.endian);
     data->textures.ea.addr = mlx_get_data_addr(data->textures.ea.img, &data->textures.ea.bpp,
             &data->textures.ea.line_length, &data->textures.ea.endian);
+    data->textures.door.addr = mlx_get_data_addr(data->textures.door.img, &data->textures.door.bpp,
+            &data->textures.door.line_length, &data->textures.door.endian);
+    data->textures.door_side.addr = mlx_get_data_addr(data->textures.door_side.img, &data->textures.door_side.bpp,
+            &data->textures.door_side.line_length, &data->textures.door_side.endian);
+
+    data->textures.close_door_btn.addr = mlx_get_data_addr(data->textures.close_door_btn.img, &data->textures.close_door_btn.bpp,
+            &data->textures.close_door_btn.line_length, &data->textures.close_door_btn.endian);
+    data->textures.open_door_btn.addr = mlx_get_data_addr(data->textures.open_door_btn.img, &data->textures.open_door_btn.bpp,
+            &data->textures.open_door_btn.line_length, &data->textures.open_door_btn.endian);
 }
 
 
@@ -452,14 +547,14 @@ int	main(void)
 char *map[] = {
     "11111111111111111111111111",
     "10000000000000000000000001",
-    "10000000010000000000000001",
-    "10000000100000000000000001",
-    "10000000000000000001000001",
-    "10000011000000000000000001",
-    "10000000000100000000000001",
+    "10100000010000000000000001",
+    "10100000100000D00000000001",
+    "10D00000000000000001D10001",
+    "101D1011000000000000100001",
+    "10100000000100000000000001",
     "10000000000100000001000001",
     "10000001000000000000000001",
-    "10000000000000000000000001",
+    "100000000000000000000000D1",
     "11111111111111111111111111"
 };
 	data = malloc(sizeof(t_data));
@@ -477,6 +572,10 @@ char *map[] = {
 	data->player = initialize();
 
     load_textures(data);
+
+    data->entites.door.x = 2;
+    data->entites.door.y = 27;
+    data->entites.door.state = CLOSED;
 
 	mlx_hook(mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(mlx->win, 3, 1L << 1, key_release, data);

@@ -43,6 +43,12 @@
 #define HORIZONTAL 1
 #define VERTICAL 2
 
+typedef enum e_door_state
+{
+    OPENED,
+    CLOSED
+} t_door_state;
+
 typedef struct s_direction
 {
     double x;
@@ -64,6 +70,10 @@ typedef struct s_texture
     t_img so;
     t_img we;
     t_img ea;
+    t_img door;
+    t_img door_side;
+    t_img close_door_btn;
+    t_img open_door_btn;
 } t_texture;
 
 typedef struct s_ray
@@ -104,6 +114,7 @@ typedef struct s_player
     double  walking_speed;
     double  rotation_speed;
     t_oldmove *old_move;
+    bool is_looking_at_door;
 }   t_player;
 
 typedef struct mlxcenter_x
@@ -111,6 +122,18 @@ typedef struct mlxcenter_x
     void *init;
     void *win;
 } t_mlx;
+
+typedef struct s_door
+{
+    int x;
+    int y;
+    t_door_state state;
+} t_door;
+
+typedef struct s_entites
+{
+    t_door door;
+} t_entites;
 
 typedef struct s_data
 {
@@ -121,6 +144,7 @@ typedef struct s_data
     t_player    *player;
 	t_ray		**rays;
     char        **map;
+    t_entites entites;
 }   t_data;
 
 
