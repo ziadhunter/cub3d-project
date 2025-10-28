@@ -80,29 +80,30 @@ typedef struct s_data
     t_player    *player;
     char        **map;
 }   t_data;
-t_player *initialize()
-{
-    t_player *player;
-    t_oldmove *old;
-    old = malloc(sizeof(t_oldmove));
-    old->back = 0;
-    old->forw = 0;
-    old->left = 0;
-    old->right = 0;
-    old->turn_left = 0;
-    old->turn_right = 0;
-    player = malloc(sizeof(t_player));
-    player->old_move = old;
-    player->x = 7 * 64;
-    player->y = 5 * 64;
-    player->radius = 15;
-    player->back_forw = 0;
-    player->left_right = 0;
-    player->rotation_angle = PI / 2;
-    player->walking_speed = 1;
-    player->rotation_speed = (PI / 180) / 2;
-    return(player);
-}
+
+// t_player *initialize()
+// {
+//     t_player *player;
+//     t_oldmove *old;
+//     old = malloc(sizeof(t_oldmove));
+//     old->back = 0;
+//     old->forw = 0;
+//     old->left = 0;
+//     old->right = 0;
+//     old->turn_left = 0;
+//     old->turn_right = 0;
+//     player = malloc(sizeof(t_player));
+//     player->old_move = old;
+//     player->x = 7 * 64;
+//     player->y = 5 * 64;
+//     player->radius = 15;
+//     player->back_forw = 0;
+//     player->left_right = 0;
+//     player->rotation_angle = PI / 2;
+//     player->walking_speed = 1;
+//     player->rotation_speed = (PI / 180) / 2;
+//     return(player);
+// }
 
 void put_pixel(t_img *data, int x, int y, int color)
 {

@@ -45,6 +45,7 @@ typedef struct s_line
 {
     char    *str;
     int     length;
+    struct s_line *next;
 } t_line;
 
 typedef struct s_img
@@ -113,7 +114,7 @@ typedef struct s_map
     int *c;
     int map_width;
     int map_height;
-
+    char *line;
 } t_map;
 
 typedef struct s_data
@@ -122,16 +123,18 @@ typedef struct s_data
     t_img       new_image;
     t_player    *player;
 	t_ray		**rays;
-    char        **map;
+    t_map        *map;
 }   t_data;
 
 typedef struct s_element
 {
     char *type;
     int length;
-    void (*handle)(t_map *map, char **str);
+    void (*handle)(t_map *map, char **str, int fd);
 } t_element;
 
+
+t_player *initialize(char c, t_player *player, t_oldmove *old);
 void render_mini_map(t_data *data);
 void put_pixel(t_img *data, int x, int y, int color);
 t_ray **creat_ray_casting(t_data *data);

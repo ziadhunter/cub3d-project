@@ -1,9 +1,7 @@
 #include "cub.h"
 
-t_player *initialize()
+t_player *initialize(char c, t_player *player, t_oldmove *old)
 {
-    t_player *player;
-    t_oldmove *old;
     old = malloc(sizeof(t_oldmove));
     old->back = 0;
     old->forw = 0;
@@ -18,7 +16,13 @@ t_player *initialize()
     player->radius = 9;
     player->back_forw = 0;
     player->left_right = 0;
-    player->rotation_angle = PI / 2;
+    player->rotation_angle = 0;
+    if (c = 'S')
+        player->rotation_angle = PI / 2;
+    if (c = 'N')
+        player->rotation_angle = 3 * (PI / 2);
+    if (c = 'W')
+        player->rotation_angle = PI;
     player->walking_speed = 2;
     player->rotation_speed = (PI / 180) / 2 ;
     return(player);
@@ -404,7 +408,7 @@ char *map[] = {
 
 	data->map = map;
 	data->rays = NULL;
-	data->player = initialize();
+	data->player = initialize('N', NULL, NULL);
 
 
 	mlx_hook(mlx->win, 2, 1L << 0, key_press, data);
