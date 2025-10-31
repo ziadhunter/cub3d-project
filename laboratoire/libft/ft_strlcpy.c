@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:52:49 by zfarouk           #+#    #+#             */
-/*   Updated: 2024/10/27 22:12:27 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/10/29 14:15:59 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,5 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 		dst[i] = src[i];
 		i++;
 	}
-	dst[i] = '\0';
 	return (lensrc);
 }

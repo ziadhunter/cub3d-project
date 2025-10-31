@@ -41,6 +41,13 @@
 #define DIRECTION_LENGTH 20          // length of player direction line
 #define VERTICAL_RAY_THRESHOLD 1e-6  // epsilon for vertical ray checks
 
+
+typedef struct s_coordinates
+{
+    int x;
+    int y;
+}t_cord;
+
 typedef struct s_line
 {
     char    *str;
@@ -103,6 +110,13 @@ typedef struct mlxcenter_x
 } t_mlx;
 
 
+typedef struct s_db_po
+{
+    char **ptr;
+    char **ptrr;
+}
+t_db_pointer;
+
 typedef struct s_map
 {
     char **map;
@@ -112,9 +126,10 @@ typedef struct s_map
     char *ea;
     int    *f;
     int *c;
-    int map_width;
+    int map_length;
     int map_height;
-    char *line;
+    int map_start;
+    char *map_start_line;
 } t_map;
 
 typedef struct s_data
@@ -123,14 +138,14 @@ typedef struct s_data
     t_img       new_image;
     t_player    *player;
 	t_ray		**rays;
-    t_map        *map;
+    t_map        *map_info;
 }   t_data;
 
 typedef struct s_element
 {
     char *type;
     int length;
-    void (*handle)(t_map *map, char **str, int fd);
+    void (*handle)(t_map *map, char **str, char **lines);
 } t_element;
 
 

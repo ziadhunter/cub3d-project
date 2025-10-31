@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 18:56:06 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/10/22 16:58:18 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/10/29 20:11:18 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char				*ft_strnstr(const char *haystack, const char *needle,
 						size_t len);
 char				*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 char				*ft_substr(const char *s, unsigned int start, size_t len);
-char				*ft_strjoin(const char *s1, const char *s2);
+char				*ft_strjoin(char *s1, char *s2);
 char				*ft_strtrim(const char *s1, const char *set);
 char				**ft_split(const char *s, char c);
 char				*ft_strrchr(const char *s, int c);

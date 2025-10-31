@@ -36,7 +36,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 GNL_DIR = ./gnl
 GNL_SRC = $(GNL_DIR)/get_next_line.c $(GNL_DIR)/get_next_line_utils.c
 
-SRC = parsing/start.c $(GNL_SRC)
+SRC = parsing/fixed_version.c $(GNL_SRC)
 OBJ = $(SRC:.c=.o)
 
 NAME = test
