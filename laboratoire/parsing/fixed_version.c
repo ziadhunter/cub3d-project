@@ -31,6 +31,8 @@ void free_map(t_map *map)
             free(map->so);
         if (map->we)
             free(map->we);
+        if (map->map)
+            free_double_pointer(map->map);
         free(map);
     }
 }
@@ -39,14 +41,17 @@ void error_exit(t_map *map, char **value, t_db_pointer *double_pointers,char *st
     printf("%s", str);
     if (value)
         free_double_pointer(value);
-    if (double_pointers->ptr)
-        free_double_pointer(double_pointers->ptr);
-    if (double_pointers->ptrr)
-        free_double_pointer(double_pointers->ptrr);
+    if (double_pointers)
+    {
+        if (double_pointers->ptr)
+            free_double_pointer(double_pointers->ptr);
+        if (double_pointers->ptrr)
+            free_double_pointer(double_pointers->ptrr);
+    }
     free_map(map);
     exit(1);
 }
-void check_extension(char *file_name, char *ext)
+void check_extension(char *file_name, char *ext , t_map *map_info, t_db_pointer *pointers)
 {
     int fn = ft_strlen(file_name);
     int ex = ft_strlen(ext);
@@ -56,7 +61,7 @@ void check_extension(char *file_name, char *ext)
         if (ft_strncmp(ext, ".cub", ex) == 0)
             error_exit(NULL, NULL, NULL,"Error\nInvalid file extension: expected .cub\n");
         else
-            error_exit(NULL, NULL, NULL, "Error\nInvalid file extension: expected .xpm\n");
+            error_exit(map_info, NULL, pointers, "Error\nInvalid file extension: expected .xpm\n");
     }
 }
 
@@ -195,7 +200,7 @@ void add_we(t_map *map, char **str, char **lines)
         error_exit(map, lines, &(t_db_pointer){str, NULL},"Error\nWE element duplicated\n");
     if (str[1])
     {
-        check_extension(str[1], ".xpm");
+        check_extension(str[1], ".xpm", map, &(t_db_pointer){str, lines});
         fdd = open(str[1], O_RDONLY);
         if (fdd < 0)
             error_exit(map, lines, &(t_db_pointer){str, NULL}, "Error\nWE texture file doesn't exist\n");
@@ -216,7 +221,7 @@ void add_ea(t_map *map, char **str, char **lines)
         error_exit(map, lines, &(t_db_pointer){str, NULL}, "Error\nEA element duplicated\n");
     if (str[1])
     {
-        check_extension(str[1], ".xpm");
+        check_extension(str[1], ".xpm", map, &(t_db_pointer){str, lines});
         fdd = open(str[1], O_RDONLY);
         if (fdd < 0)
             error_exit(map, lines, &(t_db_pointer){str, NULL}, "Error\nEA texture file doesn't exist\n");
@@ -237,7 +242,7 @@ void add_so(t_map *map, char **str, char **lines)
         error_exit(map, lines, &(t_db_pointer){str, NULL}, "Error\nSO element duplicated\n");
     if (str[1])
     {
-        check_extension(str[1], ".xpm");
+        check_extension(str[1], ".xpm", map, &(t_db_pointer){str, lines});
         fdd = open(str[1], O_RDONLY);
         if (fdd < 0)
             error_exit(map, lines, &(t_db_pointer){str, NULL}, "Error\nSO texture file doesn't exist\n");
@@ -258,7 +263,7 @@ void add_no(t_map *map, char **str, char **lines)
         error_exit(map, lines, &(t_db_pointer){str, NULL}, "Error\nNO element duplicated\n");
     if (str[1])
     {
-        check_extension(str[1], ".xpm");
+        check_extension(str[1], ".xpm", map, &(t_db_pointer){str, lines});
         fdd = open(str[1], O_RDONLY);
         if (fdd < 0)
             error_exit(map, lines, &(t_db_pointer){str, NULL}, "Error\nNO texture file doesn't exist\n");
@@ -393,22 +398,48 @@ t_map *extract_element(char **lines)
         error_exit(map, NULL, NULL, "Error\nmissing some element(s)!!");
     }
     map->map_start = i;
-    map->map_start_line = lines[i];
     return (map);
 }
 
 int is_space_or_wall(char c)
 {
-    if (c == ' ' || c == '1' || c == '\n' || c == '\0')
+    if (c == ' ' || c == '1' || c == '\0')
         return (1);
     return (0);
 }
 
 int is_space_or_nl(char c)
 {
-    if (c == ' ' || c == '\n')
+    if (c == ' ' || c == '\0')
         return (1);
     return (0);
+}
+
+void invalid_position(t_map *map_info, t_player *player, char **lines, t_cord cor)
+{
+    int i;
+    int j;
+
+    i = cor.x;
+    j = cor.y;
+    if (i <= 0 || j <= 0 || i + 1 >= map_info->map_length || j + 1>= map_info->map_height)
+    {
+        if (player)
+        {
+            free(player->old_move);
+            free(player);
+        }
+        error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)1\n");
+    }
+    if (is_space_or_nl(lines[j][i - 1]) || is_space_or_nl(lines[j - 1][i]) || is_space_or_nl(lines[j + 1][i]) || is_space_or_nl(lines[j][i + 1]))
+    {
+        if (player)
+        {
+            free(player->old_move);
+            free(player);
+        }
+        error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)\n");
+    }
 }
 
 void check_element_position(t_map *map_info, t_player **player, char **lines, t_cord cor)
@@ -418,10 +449,7 @@ void check_element_position(t_map *map_info, t_player **player, char **lines, t_
 
     i = cor.x;
     j = cor.y;
-    if (i <= 0 || j <= 0 || i >= map_info->map_length || j + 1>= map_info->map_height)
-        error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)1\n");
-    if (is_space_or_nl(lines[j][i - 1]) || is_space_or_nl(lines[j - 1][i]) || is_space_or_nl(lines[j + 1][i]) || is_space_or_nl(lines[j][i + 1]))
-        error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)\n");
+    invalid_position(map_info, *player, lines, cor);
     if (lines[j][i] == 'N' || lines[j][i] == 'S' || lines[j][i] == 'W' || lines[j][i] == 'E')
     {
         if (!(*player))
@@ -449,7 +477,7 @@ void check_space_position(t_map *map_info, t_player *player, char **lines, t_cor
         !is_space_or_wall(lines[j][i + 1]) ||
         !is_space_or_wall(lines[j][i - 1]))
     {
-        if (player)
+        if (player != NULL)
         {
             free(player->old_move);
             free(player);
@@ -482,7 +510,7 @@ t_player *valid_map(t_map *map_info, char **map, int i, int j)
     return (player);
 }
 
-void check_empty_line(t_map *map_info, char *file_name)
+void check_empty_line(t_map *map_info, char **lines, char *file_name)
 {
     int fd;
     char *line;
@@ -491,7 +519,7 @@ void check_empty_line(t_map *map_info, char *file_name)
     i = map_info->map_start;
     fd = open(file_name, O_RDONLY);
     line = get_next_line(fd);
-    while(ft_strncmp(map_info->map_start_line, line, ft_strlen(map_info->map_start_line)) != 0)
+    while(ft_strncmp(lines[0], line, ft_strlen(lines[0])) != 0)
     {
         free(line);
         line = get_next_line(fd);
@@ -505,7 +533,8 @@ void check_empty_line(t_map *map_info, char *file_name)
                 if (line[0] != '\n')
                 {
                     close(fd);
-                    error_exit(map_info, NULL, NULL, "Error\nempty line inside map\n");
+                    free(line);
+                    error_exit(map_info, lines, NULL, "Error\nempty line inside map\n");
                 }
                 free(line);
                 line = get_next_line(fd);
@@ -517,12 +546,17 @@ void check_empty_line(t_map *map_info, char *file_name)
     }
 }
 
-char **set_new_lines(int len, int characters)
+char **set_new_lines(int len, int characters, char **lines)
 {
     char **new_lines;
     int i;
 
     i = 0;
+    if (len <= 0)
+    {
+        free_double_pointer(lines);
+        return (NULL);
+    }
     new_lines = malloc(sizeof(char *) * (len + 1));
     while(i < len)
     {
@@ -553,13 +587,12 @@ char **rebuild_map_with_same_size(t_map *map,char **lines, int start)
     }
     map->map_height = i - start;
     map->map_length = max_lenght;
-    new_lines = set_new_lines(i - start, max_lenght);
-    i = 0;
-    while (new_lines[i])
-    {
+    new_lines = set_new_lines(i - start, max_lenght, lines);
+    if (!new_lines)
+        return (NULL);
+    i = -1;
+    while (new_lines[++i])
         ft_strlcpy(new_lines[i], lines[start + i], max_lenght + 1);
-        i++;
-    }
     free_double_pointer(lines);
     return (new_lines);
 }
@@ -569,11 +602,13 @@ t_data *parsing_the_map(t_map *map_info, char **lines, char *file_name)
     t_player *player;
     t_data *data;
 
-    check_empty_line(map_info, file_name);
     lines = rebuild_map_with_same_size(map_info, lines, map_info->map_start);
+    if (!lines)
+        error_exit(map_info, NULL, NULL, "Error\nmap missing\n");
+    check_empty_line(map_info, lines, file_name);
     player = valid_map(map_info, lines, 0, 0);
     if (!player)
-         error_exit(map_info, NULL, NULL, "Error\nmissing a player\n");
+         error_exit(map_info, lines, NULL, "Error\nmissing a player\n");
     data = malloc(sizeof(t_data));
     data->map_info = map_info;
     data->player = player;
@@ -587,7 +622,7 @@ t_data *parsing(char *file_name)
     t_data * data;
     char **lines;
 
-    check_extension(file_name, ".cub");
+    check_extension(file_name, ".cub", NULL, NULL);
     fd = open(file_name, O_RDONLY);
     if (fd == -1)
         error_exit(NULL, NULL, NULL, "Error\ncould not find the file\n");
@@ -598,10 +633,13 @@ t_data *parsing(char *file_name)
     return (data);
 }
 
-// void free_data(t_data *data)
-// {
-
-// }
+void free_data(t_data *data)
+{
+    free_map(data->map_info);
+    free(data->player->old_move);
+    free(data->player);
+    free(data);
+}
 
 int main(int argc, char *argv[])
 {
@@ -628,6 +666,7 @@ int main(int argc, char *argv[])
             printf("%s\n", map->map[j]);
             j++;
         }
+        free_data(data);
     }
     // free_data(data);
 }

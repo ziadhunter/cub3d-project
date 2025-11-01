@@ -129,7 +129,6 @@ typedef struct s_map
     int map_length;
     int map_height;
     int map_start;
-    char *map_start_line;
 } t_map;
 
 typedef struct s_data
