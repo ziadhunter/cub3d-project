@@ -40,7 +40,7 @@
 #define VERTICAL_RAY_THRESHOLD 1e-6 // epsilon for vertical ray checks
 
 typedef struct s_coordinates
-{#include "./get_next_line/get_next_line.h"
+{
 	int				x;
 	int				y;
 }					t_cord;
