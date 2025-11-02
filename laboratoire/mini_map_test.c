@@ -19,8 +19,8 @@ t_player *initialize()
     player->back_forw = 0;
     player->left_right = 0;
     player->rotation_angle = PI / 2;
-    player->walking_speed = 2;
-    player->rotation_speed = (PI / 180) / 2;
+    player->walking_speed = 5;
+    player->rotation_speed = (PI / 180) ;
     player->turn = 0;
     player->is_looking_at_door = false;
     return(player);
@@ -152,6 +152,7 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     int dist_from_top;
     t_img wall;
     int door_type;
+    t_door *door;
 
 
     tmp = y + wall_hight;
@@ -170,10 +171,10 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     wall_top_pix = i;
     wall_btm_pix = tmp;
     iy = 0;
-    if (data->map[(int)(ray->end_y / 64)][(int)(ray->end_x / 64)] == 'D')
+    if (data->map.map[(int)(ray->end_y / 64)][(int)(ray->end_x / 64)].cell_type == DOOR)
     {
-        door_type = get_door_type(data->map, ray->end_x, ray->end_y);
-        if (door_type == 3 || door_type == 12)
+        door = (t_door *)(data->map.map[(int)(ray->end_y / 64)][(int)(ray->end_x / 64)].options);
+        if (door->is_valid)
             wall = data->textures.door;
         else
             wall = data->textures.door_side;
@@ -313,7 +314,9 @@ int is_position_wall(t_data *data, double x, double y)
     if (map_x < 0 || map_y < 0 || map_x >= MAP_WIDTH || map_y >= MAP_HEIGHT)
         return (1);
     
-    return (data->map[(int)map_y][(int)map_x] == '1' || (data->map[(int)map_y][(int)map_x] == 'D' && data->entites.door.state == CLOSED));
+    return (data->map.map[(int)map_y][(int)map_x].cell_type == WALL ||
+            (data->map.map[(int)map_y][(int)map_x].cell_type == DOOR &&
+                ((t_door *)(data->map.map[(int)map_y][(int)map_x].options))->is_open == false));
 }
 
 
@@ -555,7 +558,8 @@ char *map[] = {
     "10000000000100000001000001",
     "10000001000000000000000001",
     "100000000000000000000000D1",
-    "11111111111111111111111111"
+    "11111111111111111111111111",
+    NULL
 };
 	data = malloc(sizeof(t_data));
 	mlx = malloc(sizeof(t_mlx));
@@ -567,15 +571,11 @@ char *map[] = {
             &new_image.bpp, &new_image.line_length, &new_image.endian);
     data->new_image = new_image;
 
-	data->map = map;
+	data->map.map = create_map(data, map);
 	data->rays = NULL;
 	data->player = initialize();
 
     load_textures(data);
-
-    data->entites.door.x = 2;
-    data->entites.door.y = 27;
-    data->entites.door.state = CLOSED;
 
 	mlx_hook(mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(mlx->win, 3, 1L << 1, key_release, data);
@@ -584,25 +584,3 @@ char *map[] = {
 	mlx_loop_hook(mlx->init, the_animation, data);
 	mlx_loop(mlx->init);
 }
-
-// void update_palyer_state(t_data *data, t_player *player)
-// {
-//     double x = player->x;
-//     double y = player->y;
-
-//     //update the x and y position of the player
-//     x += ((cos(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
-//     y += ((sin(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
-//     x += ((cos(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
-//     y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3) * player->left_right);
-
-//     //check if the new position isn't a wall
-//     if (is_wall(data, &x, &y))
-//     {
-//         player->x = x;
-//         player->y = y;
-//     }
-
-//     //update the direction of the player
-//     data->player->rotation_angle += (data->player->rotation_speed * data->player->turn);
-// }

@@ -49,6 +49,14 @@ typedef enum e_door_state
     CLOSED
 } t_door_state;
 
+typedef enum e_cell_type
+{
+    NONE,
+    SPACE,
+    WALL,
+    DOOR
+} t_cell_type;
+
 typedef struct s_direction
 {
     double x;
@@ -123,17 +131,37 @@ typedef struct mlxcenter_x
     void *win;
 } t_mlx;
 
+// typedef struct s_door
+// {
+//     int x;
+//     int y;
+//     t_door_state state;
+// } t_door;
+
+// typedef struct s_entites
+// {
+//     t_door door;
+// } t_entites;
+
+
 typedef struct s_door
 {
-    int x;
-    int y;
-    t_door_state state;
+    bool is_valid;
+    bool is_open;
 } t_door;
 
-typedef struct s_entites
+typedef struct s_cell
 {
-    t_door door;
-} t_entites;
+    t_cell_type cell_type;
+    void *options;
+} t_cell;
+
+typedef struct s_map
+{
+    t_cell **map;
+    int w_map;
+    int h_map;
+} t_map;
 
 typedef struct s_data
 {
@@ -143,10 +171,17 @@ typedef struct s_data
     t_img       new_image;
     t_player    *player;
 	t_ray		**rays;
-    char        **map;
-    t_entites entites;
+    // char        **map;
+    t_map       map;
+    // t_entites entites;
 }   t_data;
 
+
+
+// typedef struct s_map
+// {
+//     t_cell **map;
+// } t_map;
 
 
 void render_mini_map(t_data *data);
@@ -166,3 +201,5 @@ t_direction *facing_direction(double ray_angle);
 double normalize_angle(double angle);
 
 void *load_xpm(t_data *data, char *path);
+
+t_cell  **create_map(t_data *data, char **char_map);
