@@ -23,6 +23,9 @@ $(NAME): $(OBJECT) $(LIBFT)
 
 bonus: $(NAME_BONUS)
 
+
+cv: map_convert.o
+	$(CC) $^ $(CMLX) -o $@
 clean:
 	rm -f $(OBJECT) $(OBJECT_BONUS)
 	$(MAKE) clean -C libft

@@ -33,11 +33,11 @@ void mini_map(t_data *data)
                  (y - CENTER_MAP_Y) * (y - CENTER_MAP_Y)) <= (MAP_RADIUS * MAP_RADIUS))
             {
 				x_map = ((data->player->x + ((x - CENTER_MAP_X) * MINIMAP_SCALE))) / TILE_SIZE;
-				y_map = ((data->player->y + ((y - CENTER_MAP_Y) * MINIMAP_SCALE))) / TILE_SIZE;
+                y_map = ((data->player->y + ((y - CENTER_MAP_Y) * MINIMAP_SCALE))) / TILE_SIZE;
                 color = WHITE;
                 if (y_map >= 0 && y_map < MAP_HEIGHT &&
                     x_map >= 0 && x_map < MAP_WIDTH)
-                    if (data->map[y_map][x_map] == '1')
+                    if (data->map.map[y_map][x_map].cell_type == WALL)
                         color = BLACK;
                 put_pixel(&data->new_image, x, y, color);
             }

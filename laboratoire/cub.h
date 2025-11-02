@@ -5,15 +5,17 @@
 #include <stdio.h>
 #include <stdlib.h> // malloc, free
 #include <unistd.h>
+#include <stdbool.h>
 
 // =================== DEFINES ===================
 #define PI 3.14159265358979323846
 #define TILE_SIZE 64
-#define MINIMAP_SCALE 2
+#define MINIMAP_SCALE 4
 #define WIN_WIDTH 2080   // number of columns
-#define WIN_HEIGHT 1440  // number of rows
-#define FOV 1.0471975512 // 60° field of view in radians
+#define WIN_HEIGHT 1440   // number of rows
+#define FOV (60 * (PI / 180)) // 60° field of view in radians
 #define NUM_COLUMNS 2080 // how many rays to cast (e.g. screen width)
+
 
 #define MAP_WIDTH 26
 #define MAP_HEIGHT 11
@@ -40,7 +42,7 @@
 #define VERTICAL_RAY_THRESHOLD 1e-6 // epsilon for vertical ray checks
 
 typedef struct s_coordinates
-{#include "./get_next_line/get_next_line.h"
+{
 	int				x;
 	int				y;
 }					t_cord;
@@ -52,6 +54,29 @@ typedef struct s_line
 	struct s_line	*next;
 }					t_line;
 
+#define HORIZONTAL 1
+#define VERTICAL 2
+
+typedef enum e_door_state
+{
+    OPENED,
+    CLOSED
+} t_door_state;
+
+typedef enum e_cell_type
+{
+    NONE,
+    SPACE,
+    WALL,
+    DOOR
+} t_cell_type;
+
+typedef struct s_direction
+{
+    double x;
+    double y;
+}   t_direction;
+
 typedef struct s_img
 {
 	void			*img;
@@ -61,14 +86,33 @@ typedef struct s_img
 	int				endian;
 }					t_img;
 
+typedef struct s_texture
+{
+    t_img no;
+    t_img so;
+    t_img we;
+    t_img ea;
+    t_img door;
+    t_img door_side;
+    t_img close_door_btn;
+    t_img open_door_btn;
+} t_texture;
+
 typedef struct s_ray
 {
-	int				start_x;
-	int				start_y;
-	double			ray_angle;
-	int				end_x;
-	int				end_y;
-}					t_ray;
+	int	start_x;
+	int start_y;
+	double ray_angle;
+	int end_x;
+	int end_y;
+    /*
+        TODO: add a variable to hold whether the ray is
+                intersection verticaly or horisontaly
+                will be used when applying texture to the walls
+    */
+   int intersection;
+   t_direction ray_direction;
+} t_ray;
 
 typedef struct s_oldmove
 {
@@ -80,25 +124,26 @@ typedef struct s_oldmove
 	int				turn_right;
 }					t_oldmove;
 
-typedef struct s_player
-{
-	double			x;
-	double			y;
-	int				radius;
-	int				back_forw;
-	int				left_right;
-	int				turn;
-	double			rotation_angle;
-	double			walking_speed;
-	double			rotation_speed;
-	t_oldmove		*old_move;
-}					t_player;
-
 typedef struct s_direction
 {
 	double			x;
 	double			y;
 }					t_direction;
+
+typedef struct s_player
+{
+    double  x;
+    double  y;
+    int     radius;
+    int     back_forw;
+    int     left_right;
+    int     turn;
+    double  rotation_angle;
+    double  walking_speed;
+    double  rotation_speed;
+    t_oldmove *old_move;
+    bool is_looking_at_door;
+}   t_player;
 
 typedef struct mlxcenter_x
 {
@@ -126,14 +171,50 @@ typedef struct s_map
 	int				map_start;
 }					t_map;
 
+// typedef struct s_door
+// {
+//     int x;
+//     int y;
+//     t_door_state state;
+// } t_door;
+
+// typedef struct s_entites
+// {
+//     t_door door;
+// } t_entites;
+
+
+typedef struct s_door
+{
+    bool is_valid;
+    bool is_open;
+} t_door;
+
+typedef struct s_cell
+{
+    t_cell_type cell_type;
+    void *options;
+} t_cell;
+
+typedef struct s_map
+{
+    t_cell **map;
+    int w_map;
+    int h_map;
+} t_map;
+
 typedef struct s_data
 {
-	t_mlx			*mlx;
-	t_img			new_image;
-	t_player		*player;
-	t_ray			**rays;
-	t_map			*map_info;
-}					t_data;
+    t_texture   textures;
+    t_img       wall;
+    t_mlx       *mlx;
+    t_img       new_image;
+    t_player    *player;
+	t_ray		**rays;
+    // char        **map;
+    t_map       map;
+    // t_entites entites;
+}   t_data;
 
 typedef struct s_element
 {
@@ -191,3 +272,23 @@ void				check_space_position(t_map *map_info, t_player *player,
 						char **lines, t_cord cor);
 t_player			*valid_map(t_map *map_info, char **map, int i, int j);
 t_data				*parsing(char *file_name);
+// typedef struct s_map
+// {
+//     t_cell **map;
+// } t_map;
+
+
+void insert_end_ray(t_ray *ray, t_direction *dir, int intersection);
+void short_ray(t_data * data, t_ray *ray, t_direction *horizontal_inters, t_direction *vertical_inters);
+void render_rays(t_data *data, double x, double y, double z, double w);
+void define_ray_position(t_data *data, double ray_angle, t_ray *ray);
+t_ray **creat_ray_casting(t_data *data);
+t_direction *find_vertical_intersiction(t_data *data, double ray_angle, int facing_up, int facing_right);
+t_direction *find_horizontal_intersiction(t_data *data, double ray_angle, int facing_up, int facing_right);
+
+t_direction *facing_direction(double ray_angle);
+double normalize_angle(double angle);
+
+void *load_xpm(t_data *data, char *path);
+
+t_cell  **create_map(t_data *data, char **char_map);
