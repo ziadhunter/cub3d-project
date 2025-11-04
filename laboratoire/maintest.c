@@ -205,10 +205,7 @@ t_direction *find_horizontal_intersiction(
     if (!dir)
         return (NULL);
     if (fabs(tan(ray_angle)) < 1e-6)
-    {
-        free(dir);
         return (NULL);
-    }
     y_intr = floor(data->player->y / TILE_SIZE) * TILE_SIZE;
     if (!facing_up)
         y_intr += TILE_SIZE;

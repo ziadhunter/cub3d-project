@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:24:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/01 13:33:07 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/11/04 13:42:42 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,15 @@ t_map	*initialize_map(void)
 	map->ea = NULL;
 	map->we = NULL;
 	map->map = NULL;
-	map->map_height = 0;
-	map->map_length = 0;
+	map->rows = 0;
+	map->columns = 0;
 	return (map);
 }
 
-t_player	*initialize(char c, t_player *player, t_oldmove *old)
+t_oldmove *initialize_old_move()
 {
+	t_oldmove *old;
+	
 	old = malloc(sizeof(t_oldmove));
 	old->back = 0;
 	old->forw = 0;
@@ -52,10 +54,19 @@ t_player	*initialize(char c, t_player *player, t_oldmove *old)
 	old->right = 0;
 	old->turn_left = 0;
 	old->turn_right = 0;
+	return (old);
+}
+
+t_player	*initialize_player(char c, int x, int y)
+{
+	t_player *player;
+	t_oldmove *old;
+	
+	old = initialize_old_move();
 	player = malloc(sizeof(t_player));
 	player->old_move = old;
-	player->x = 7 * 64;
-	player->y = 5 * 64;
+	player->x = (x * TILE_SIZE) + (TILE_SIZE / 2);
+	player->y = (y * TILE_SIZE) + (TILE_SIZE / 2);
 	player->radius = 9;
 	player->back_forw = 0;
 	player->left_right = 0;
@@ -66,7 +77,7 @@ t_player	*initialize(char c, t_player *player, t_oldmove *old)
 		player->rotation_angle = 3 * (PI / 2);
 	if (c == 'W')
 		player->rotation_angle = PI;
-	player->walking_speed = 2;
+	player->walking_speed = 0.5;
 	player->rotation_speed = (PI / 180) / 2;
 	return (player);
 }

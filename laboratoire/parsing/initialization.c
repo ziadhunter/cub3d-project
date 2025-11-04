@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:24:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/01 13:33:07 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/11/04 10:24:28 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_map	*initialize_map(void)
 	return (map);
 }
 
-t_player	*initialize(char c, t_player *player, t_oldmove *old)
+t_player	*initializechar c, t_player *player, t_oldmove *old)
 {
 	old = malloc(sizeof(t_oldmove));
 	old->back = 0;

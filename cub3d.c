@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:41:23 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/01 14:41:38 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/11/03 12:54:36 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@ int	main(int argc, char *argv[])
 		printf("south wall :%s\n", map->so);
 		printf("east wall :%s\n", map->ea);
 		printf("west wall :%s\n", map->we);
+		printf("rows --> %d\n columns --> %d\n", map->rows, map->columns);
 		while (map->map[j])
 		{
 			printf("%s\n", map->map[j]);
 			j++;
 		}
+		start_the_game(data);
 		free_data(data);
 	}
 }

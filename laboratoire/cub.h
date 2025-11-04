@@ -25,7 +25,7 @@
 #define BLUE 0x0000FF
 
 // Mini map macros
-#define X_START_POINT (TILE_SIZE)
+#define X_START_POINT TILE_SIZE
 #define Y_START_POINT ((WIN_HEIGHT) / 3 * 2)
 #define MAP_SIZE (((WIN_HEIGHT) / 3) - TILE_SIZE)
 #define MAP_RADIUS (MAP_SIZE / 2)
@@ -40,7 +40,7 @@
 #define VERTICAL_RAY_THRESHOLD 1e-6 // epsilon for vertical ray checks
 
 typedef struct s_coordinates
-{#include "./get_next_line/get_next_line.h"
+{
 	int				x;
 	int				y;
 }					t_cord;
@@ -144,7 +144,7 @@ typedef struct s_element
 
 void				render_mini_map(t_data *data);
 void				put_pixel(t_img *data, int x, int y, int color);
-t_ray				**creat_ray_casting(t_data *data);
+// t_ray				**creat_ray_casting(t_data *data);
 double				normalize_angle(double angle);
 
 /* PARSING FUNCTIONS */
@@ -191,3 +191,9 @@ void				check_space_position(t_map *map_info, t_player *player,
 						char **lines, t_cord cor);
 t_player			*valid_map(t_map *map_info, char **map, int i, int j);
 t_data				*parsing(char *file_name);
+/* FUNCTIONS */
+int	key_press(int key, t_data *data);
+int	key_press(int key, t_data *data);
+int	key_release(int key, t_data *data);
+
+
