@@ -19,8 +19,8 @@ t_player *initialize()
     player->back_forw = 0;
     player->left_right = 0;
     player->rotation_angle = PI / 2;
-    player->walking_speed = 5;
-    player->rotation_speed = (PI / 180) ;
+    player->walking_speed = 4;
+    player->rotation_speed = (PI / 180) / 2 ;
     player->turn = 0;
     player->is_looking_at_door = false;
     return(player);
@@ -365,6 +365,9 @@ void update_palyer_state(t_data *data, t_player *player)
 
     //update the direction of the player
     data->player->rotation_angle += (data->player->rotation_speed * data->player->turn);
+    data->player->rotation_angle = fmod(data->player->rotation_angle, 2 * PI);
+    if (data->player->rotation_angle < 0)
+        data->player->rotation_angle += 2 * PI;
 }
 
 void free_old_rays(t_ray **rays)
@@ -391,6 +394,7 @@ int the_animation(t_data *data)
 	data->rays = creat_ray_casting(data);
     projaction(data);
     render_mini_map(data);
+    door_check_using_rays(data);
     mlx_put_image_to_window(data->mlx->init, data->mlx->win, data->new_image.img, 0, 0);
     l++;
 	// free_old_rays(data->rays);
@@ -553,7 +557,7 @@ char *map[] = {
     "10100000010000000000000001",
     "10100000100000D00000000001",
     "10D00000000000000001D10001",
-    "101D1011000000000000100001",
+    "100D1011000000000000100001",
     "10100000000100000000000001",
     "10000000000100000001000001",
     "10000001000000000000000001",

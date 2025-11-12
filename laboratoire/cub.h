@@ -1,11 +1,13 @@
 #include <stdlib.h>     // malloc, free
 #include <stdio.h>
+#include <limits.h>
 #include <unistd.h>
 #include <math.h>       // sin, cos, tan, hypot, fabs, fmod, floor
 #include <stdbool.h>
 #include <mlx.h>        // MiniLibX functions (mlx_new_image, etc.)
 
 #define PI 3.14159265358979323846
+
 // =================== DEFINES ===================
 #define TILE_SIZE 64
 #define MINIMAP_SCALE 4
@@ -23,6 +25,8 @@
 #define BLACK 0x000000
 #define RED   0xFF0000
 #define BLUE  0x0000FF
+#define GREEN 0x59FB2B
+#define PURPLE 0xCD2BFB
 
 // Mini map macros
 #define X_START_POINT (TILE_SIZE)
@@ -203,3 +207,6 @@ double normalize_angle(double angle);
 void *load_xpm(t_data *data, char *path);
 
 t_cell  **create_map(t_data *data, char **char_map);
+
+void render_mini_map_rays(t_data *data, double x, double y, double z, double w);
+void door_check_using_rays(t_data *data);

@@ -37,8 +37,13 @@ void mini_map(t_data *data)
                 color = WHITE;
                 if (y_map >= 0 && y_map < MAP_HEIGHT &&
                     x_map >= 0 && x_map < MAP_WIDTH)
+                {
+
                     if (data->map.map[y_map][x_map].cell_type == WALL)
-                        color = BLACK;
+                        color = PURPLE;
+                    else if (data->map.map[y_map][x_map].cell_type == DOOR)
+                        color = GREEN;
+                }
                 put_pixel(&data->new_image, x, y, color);
             }
             x++;
@@ -117,6 +122,6 @@ void render_mini_map(t_data *data)
 {
     base_of_mini_map(data);
     mini_map(data);
-	render_rays_mini_map(data);
+	// render_rays_mini_map(data);
     render_player_mini_map(data);
 }
