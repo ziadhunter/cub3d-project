@@ -13,8 +13,7 @@ int is_wall(t_data *data, double x, double y)
 
 	if (data->map.map[(int)ry][(int)rx].cell_type == WALL)
 		return (1);
-	else if (data->map.map[(int)ry][(int)rx].cell_type == DOOR
-		 && ((t_door *)(data->map.map[(int)ry][(int)rx].options))->is_open == false)
+	else if (data->map.map[(int)ry][(int)rx].cell_type == DOOR)
 		return (1);
 	return (0);
 }
@@ -135,7 +134,7 @@ t_direction *find_h_inter(t_data *data, t_ray *ray, int ray_facing_up, int ray_f
     return (dir);
 }
 
-void check_door_intersection(t_data *data, t_ray *s_ray)
+double check_door_intersection(t_data *data, t_ray *s_ray)
 {
     t_direction *h_inter, *v_inter, *small_inter;
     int ray_facing_up;
@@ -151,44 +150,68 @@ void check_door_intersection(t_data *data, t_ray *s_ray)
     h_dist = hypot(s_ray->start_x - h_inter->x, s_ray->start_y - h_inter->y);
     v_dist = hypot(s_ray->start_x - v_inter->x, s_ray->start_y - v_inter->y);
 
+    // if (h_inter->x == -1 || v_inter->x == -1)
+    //     printf("h_inter: %f, v_inter: %f\n", h_inter->x, v_inter->x);
     if (h_inter->x == -1)
     {
         s_ray->end_x = v_inter->x;
         s_ray->end_y = v_inter->y;
+        return (v_dist);
     }
     else if (v_inter->x == -1)
     {
         s_ray->end_x = h_inter->x;
         s_ray->end_y = h_inter->y;
+        return (h_dist);
     }
     else if (h_dist < v_dist)
     {
         s_ray->end_x = h_inter->x;
         s_ray->end_y = h_inter->y;
+        return (h_dist);
     }
     else
     {
         s_ray->end_x = v_inter->x;
         s_ray->end_y = v_inter->y;
+        return (v_dist);
     }
 
+}
+
+bool check_door(int x, int y, double final_dist, t_data *data)
+{
+    t_cell *cell;
+
+    cell = &(data->map.map[y / TILE_SIZE][x / TILE_SIZE]);
+    if (cell->cell_type == DOOR
+            && ((((t_door *)(cell->options))->is_valid)
+            && final_dist < TILE_SIZE * 2))
+    {
+        data->player->door = cell->options;
+        return (true);
+    }
+    data->player->door = NULL;
+    return (false);
 }
 
 void door_check_using_rays(t_data *data)
 {
     t_ray mid_ray = {.start_x = data->player->x, .start_y = data->player->y, .ray_angle = data->player->rotation_angle};
-    double y_end, x_end;
+    double y_end, x_end, final_dist;
     double x = X_START_POINT + (MAP_SIZE / 2);
     double y = Y_START_POINT + (MAP_SIZE / 2);
 
     // mid_ray.end_x = cos(mid_ray.ray_angle) * DOOR_CHECK_RANGE + mid_ray.start_x;
     // mid_ray.end_y = sin(mid_ray.ray_angle) * DOOR_CHECK_RANGE + mid_ray.start_y;
 
-    check_door_intersection(data, &mid_ray);
+    final_dist = check_door_intersection(data, &mid_ray);
 
+    // printf("x: %d, y: %d\n", mid_ray.end_x, mid_ray.end_y);
+    // printf("final dist: %f\n", final_dist);
+    data->player->is_looking_at_door = check_door(mid_ray.end_x, mid_ray.end_y, final_dist, data);
     y_end = y + ((mid_ray.end_y - data->player->y) / MINIMAP_SCALE);
     x_end = x + ((mid_ray.end_x - data->player->x) / MINIMAP_SCALE);
-
 
     render_mini_map_rays(data, x, y, x_end, y_end);
 

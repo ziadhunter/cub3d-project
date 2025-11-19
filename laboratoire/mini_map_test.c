@@ -150,7 +150,7 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     int ix, iy, iyoff;
     int wall_top_pix, wall_btm_pix;
     int dist_from_top;
-    t_img wall;
+    t_img *wall;
     int door_type;
     t_door *door;
 
@@ -175,9 +175,9 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     {
         door = (t_door *)(data->map.map[(int)(ray->end_y / 64)][(int)(ray->end_x / 64)].options);
         if (door->is_valid)
-            wall = data->textures.door;
+            wall = &data->textures.door;
         else
-            wall = data->textures.door_side;
+            wall = &data->textures.door_side;
 
         if (ray->intersection == HORIZONTAL)
             ix = ray->end_x % TILE_SIZE;
@@ -191,22 +191,38 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
             ix = ray->end_x % TILE_SIZE;
             if (ray->ray_direction.x == 0)
             {
-                wall = data->textures.no;
+                if (data->map.map[(int)((ray->end_y - 2) / 64)][(int)(ray->end_x / 64)].cell_type == DOOR)
+                    wall = &data->textures.door_inside;
+                else
+                    wall = &data->textures.no;
                 ix = (TILE_SIZE - ix);
             }
             else
-                wall = data->textures.so;
+            {
+                if (data->map.map[(int)((ray->end_y + 2) / 64)][(int)(ray->end_x / 64)].cell_type == DOOR)
+                    wall = &data->textures.door_inside;
+                else
+                    wall = &data->textures.so;
+            }
         }
-        else if (ray->intersection == VERTICAL)
+        else
         {
             ix = ray->end_y % TILE_SIZE;
             if (ray->ray_direction.y == 0)
             {
-                wall = data->textures.we;
+                if (data->map.map[(int)(ray->end_y / 64)][(int)((ray->end_x + 2) / 64)].cell_type == DOOR)
+                    wall = &data->textures.door_inside;
+                else
+                    wall = &data->textures.we;
                 ix = (TILE_SIZE - ix);
             }
             else
-            wall = data->textures.ea;
+            {
+                if (data->map.map[(int)(ray->end_y / 64)][(int)((ray->end_x - 2) / 64)].cell_type == DOOR)
+                    wall = &data->textures.door_inside;
+                else
+                    wall = &data->textures.ea;
+            }
         }   
     }
 
@@ -214,8 +230,8 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
     {
             dist_from_top = i + (wall_hight / 2) - (WIN_HEIGHT / 2);
             iy = dist_from_top * ((float)TILE_SIZE / wall_hight);
-			color = *(unsigned int *)(wall.addr + (iy * wall.line_length + ix
-						* (wall.bpp / 8)));
+			color = *(unsigned int *)(wall->addr + (iy * wall->line_length + ix
+						* (wall->bpp / 8)));
             put_pixel(&data->new_image, x, i, color);
 
         i++;
@@ -233,7 +249,7 @@ void diplay_btn_msg(t_data *data)
     int x, y;
     int i, j;
     unsigned int color;
-    t_img door_btn = data->textures.open_door_btn;
+    t_img *door_btn;
 
     x = (WIN_WIDTH / 2) - (120 / 2);
     y = (WIN_HEIGHT / 4) - (39 / 2);
@@ -241,15 +257,20 @@ void diplay_btn_msg(t_data *data)
     // x = 0;
     // y = 0;
 
+    if (data->player->door->is_open)
+        door_btn = &(data->textures.close_door_btn);
+    else
+        door_btn = &(data->textures.open_door_btn);
+
     i = 0;
     j = 0;
-    while (j < 39)
+    while (j < door_btn->height)
     {
         i = 0;
-        while (i < 120)
+        while (i < door_btn->width)
         {
-            color = *(unsigned int *)(door_btn.addr + (j * door_btn.line_length + i
-						* (door_btn.bpp / 8)));
+            color = *(unsigned int *)(door_btn->addr + (j * door_btn->line_length + i
+						* (door_btn->bpp / 8)));
             if (color != 0xFF000000)
                 put_pixel(&data->new_image, x + i, y + j, color);
             i++;
@@ -397,10 +418,7 @@ int the_animation(t_data *data)
     door_check_using_rays(data);
     mlx_put_image_to_window(data->mlx->init, data->mlx->win, data->new_image.img, 0, 0);
     l++;
-	// free_old_rays(data->rays);
     return (0);
-    // render_static_map(data);
-    // render_player(data);
 }
 
 void free_all_data_and_exit(t_data *data, char *str)
@@ -438,6 +456,11 @@ int	key_press(int key, t_data *data)
     {
         data->player->old_move->forw = 1;
 		data->player->back_forw = 1;
+    }
+    else if (key == 'e')
+    {
+        if (data->player->door)
+            data->player->door->is_open = !data->player->door->is_open;
     }
 
 	if (key == LEFT)
@@ -512,19 +535,20 @@ int	key_release(int key, t_data *data)
 void load_textures(t_data *data)
 {
 
-    data->wall.img = load_xpm(data, "textures/wall.xpm");
+    data->wall.img = load_xpm(data, "textures/wall.xpm", &(data->wall));
     data->wall.addr = mlx_get_data_addr(data->wall.img, &data->wall.bpp,
         &data->wall.line_length, &data->wall.endian);
    
-    data->textures.no.img = load_xpm(data, "textures/no_wall.xpm");
-    data->textures.so.img = load_xpm(data, "textures/so_wall.xpm");
-    data->textures.we.img = load_xpm(data, "textures/we_wall.xpm");
-    data->textures.ea.img = load_xpm(data, "textures/ea_wall.xpm");
-    data->textures.door.img = load_xpm(data, "textures/door.xpm");
-    data->textures.door_side.img = load_xpm(data, "textures/door_side.xpm");
+    data->textures.no.img = load_xpm(data, "textures/no_wall.xpm", &(data->textures.no));
+    data->textures.so.img = load_xpm(data, "textures/so_wall.xpm", &(data->textures.so));
+    data->textures.we.img = load_xpm(data, "textures/we_wall.xpm", &(data->textures.we));
+    data->textures.ea.img = load_xpm(data, "textures/ea_wall.xpm", &(data->textures.ea));
+    data->textures.door.img = load_xpm(data, "textures/door.xpm", &(data->textures.door));
+    data->textures.door_side.img = load_xpm(data, "textures/door_side.xpm", &(data->textures.door_side));
+    data->textures.door_inside.img = load_xpm(data, "textures/door_inside.xpm", &(data->textures.door_inside));
 
-    data->textures.close_door_btn.img = load_xpm(data, "textures/close_door_btn.xpm");
-    data->textures.open_door_btn.img = load_xpm(data, "textures/open_door_btn.xpm");
+    data->textures.close_door_btn.img = load_xpm(data, "textures/close_door_btn.xpm", &(data->textures.close_door_btn));
+    data->textures.open_door_btn.img = load_xpm(data, "textures/open_door_btn.xpm", &(data->textures.open_door_btn));
 
     data->textures.no.addr = mlx_get_data_addr(data->textures.no.img, &data->textures.no.bpp,
             &data->textures.no.line_length, &data->textures.no.endian);
@@ -543,6 +567,8 @@ void load_textures(t_data *data)
             &data->textures.close_door_btn.line_length, &data->textures.close_door_btn.endian);
     data->textures.open_door_btn.addr = mlx_get_data_addr(data->textures.open_door_btn.img, &data->textures.open_door_btn.bpp,
             &data->textures.open_door_btn.line_length, &data->textures.open_door_btn.endian);
+    data->textures.door_inside.addr = mlx_get_data_addr(data->textures.door_inside.img, &data->textures.door_inside.bpp,
+            &data->textures.door_inside.line_length, &data->textures.door_inside.endian);
 }
 
 
@@ -557,7 +583,7 @@ char *map[] = {
     "10100000010000000000000001",
     "10100000100000D00000000001",
     "10D00000000000000001D10001",
-    "100D1011000000000000100001",
+    "101D1011000000000000100001",
     "10100000000100000000000001",
     "10000000000100000001000001",
     "10000001000000000000000001",

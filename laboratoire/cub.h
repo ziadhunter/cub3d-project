@@ -74,6 +74,8 @@ typedef struct s_img
     int     bpp;
     int     line_length;
     int     endian;
+    int     width;
+    int     height;
 }   t_img;
 
 typedef struct s_texture
@@ -86,6 +88,7 @@ typedef struct s_texture
     t_img door_side;
     t_img close_door_btn;
     t_img open_door_btn;
+    t_img door_inside;
 } t_texture;
 
 typedef struct s_ray
@@ -112,7 +115,13 @@ typedef struct s_oldmove
     int back;
     int turn_left;
     int turn_right;
-} t_oldmove; 
+} t_oldmove;
+
+typedef struct s_door
+{
+    bool is_valid;
+    bool is_open;
+} t_door;
  
 typedef struct s_player
 {
@@ -127,6 +136,7 @@ typedef struct s_player
     double  rotation_speed;
     t_oldmove *old_move;
     bool is_looking_at_door;
+    t_door *door;
 }   t_player;
 
 typedef struct mlxcenter_x
@@ -147,12 +157,6 @@ typedef struct mlxcenter_x
 //     t_door door;
 // } t_entites;
 
-
-typedef struct s_door
-{
-    bool is_valid;
-    bool is_open;
-} t_door;
 
 typedef struct s_cell
 {
@@ -204,7 +208,7 @@ t_direction *find_horizontal_intersiction(t_data *data, double ray_angle, int fa
 t_direction *facing_direction(double ray_angle);
 double normalize_angle(double angle);
 
-void *load_xpm(t_data *data, char *path);
+void *load_xpm(t_data *data, char *path, t_img *img);
 
 t_cell  **create_map(t_data *data, char **char_map);
 
