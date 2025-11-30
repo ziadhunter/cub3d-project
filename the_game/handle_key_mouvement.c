@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/04 10:40:19 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/11/30 17:11:11 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,34 @@ void free_all_data_and_exit(t_data *data, char *str)
     exit(0);
 }
 
+void speed_adjustement(int key, t_data *data)
+{
+    if (key == 49)
+        if (data->player->walking_speed > MIN_WALK_SPEED)
+            data->player->walking_speed -= 0.25;
+    if (key == 50)
+        if (data->player->walking_speed < MAX_WALK_SPEED)
+            data->player->walking_speed += 0.25;
+    if (key == 51)
+        if (data->player->rotation_speed > MIN_ROTATION_SPEED)
+            data->player->rotation_speed -= 0.0015;
+    if (key == 52)
+        if (data->player->rotation_speed < MAX_ROTATION_SPEED)
+            data->player->rotation_speed += 0.0015;
+    printf("mouvemeent speed = %f \n rotation speed = %f", data->player->walking_speed, data->player->rotation_speed);
+}
+
 int	key_press(int key, t_data *data)
 {
+    printf("KEY = %d\n", key);
 	if (key == ESC)
 		free_all_data_and_exit(data, "you exit the game!!\n");
 
+    if (key == 49 || key == 50 || key == 51 || key == 52)
+    {
+        speed_adjustement(key, data);
+    }
+        
 	if (key == 'a')
     {
         data->player->old_move->left = 1;

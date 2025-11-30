@@ -14,7 +14,10 @@
 #define WIN_HEIGHT 720  // number of rows
 #define FOV 1.0471975512 // 60° field of view in radians
 #define NUM_COLUMNS 1080 // how many rays to cast (e.g. screen width)
-
+#define MIN_WALK_SPEED 0.5
+#define MAX_WALK_SPEED 3
+#define MIN_ROTATION_SPEED	(PI / 180) / 3
+#define MAX_ROTATION_SPEED  (PI / 180)
 
 // Colors (RGBA or 0x00RRGGBB depending on MLX build)
 #define WHITE 0xFFFFFF
