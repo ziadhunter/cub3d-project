@@ -12,6 +12,22 @@ t_direction *facing_direction(double ray_angle)
 	return (dir);
 }
 
+int is_wall2(t_data *data, double x, double y)
+{
+	t_cell *cell;
+	double rx = x / TILE_SIZE;
+	double ry = y / TILE_SIZE;
+
+	// data->player->is_looking_at_door = false;
+	cell = &(data->map.map[(int)ry][(int)rx]);
+	// if (data->map.map[(int)ry][(int)rx].cell_type == WALL)
+	// 	return (WALL);
+	if (cell->cell_type == DOOR && (((t_door *)(cell->options))->is_valid == true)
+		&& ((t_door *)(cell->options))->door_state == CLOSED)
+		return (DOOR);
+	return (NONE);
+}
+
 int wall(t_data *data, double x, double y)
 {
 	t_cell *cell;
@@ -20,10 +36,11 @@ int wall(t_data *data, double x, double y)
 
 	cell = &(data->map.map[(int)ry][(int)rx]);
 	if (cell->cell_type == WALL)
-		return (1);
-	else if (cell->cell_type == DOOR
-		 && ((t_door *)(cell->options))->door_state == CLOSED)
-		return (1);
+		return (WALL);
+	else if (cell->cell_type == DOOR && (((t_door *)(cell->options))->is_valid == true)
+		&& ((t_door *)(cell->options))->door_state == CLOSED)
+		return (DOOR);
+
 	return (0);
 }
 
@@ -34,6 +51,7 @@ t_direction *find_horizontal_intersiction(
 	double y_step;
 	double x_intr;
 	double y_intr;
+	t_cell_type cell_type;
 	t_direction *dir;
 
 	dir = malloc(sizeof(t_direction));
@@ -60,10 +78,24 @@ t_direction *find_horizontal_intersiction(
 	while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
 		&& y_intr >= 0 && y_intr < MAP_HEIGHT * TILE_SIZE)
 	{
-		if (wall(data, x_intr, y_intr))
+		cell_type = wall(data, x_intr, y_intr);
+        if (cell_type == DOOR)
+            cell_type = is_wall2(
+                data,
+                x_intr + (x_step / 2) * (!facing_right * -1),
+                y_intr + (TILE_SIZE / 2) * (facing_up * -1));
+		if (cell_type != NONE)
 		{
-			dir->x = x_intr;
-			dir->y = y_intr;
+			if (cell_type == DOOR)
+			{
+				dir->x = x_intr + (x_step / 2) * (!facing_right * -1);
+				dir->y = y_intr + (TILE_SIZE / 2) * (facing_up * -1);
+			}
+			else
+			{
+				dir->x = x_intr;
+				dir->y = y_intr;
+			}
 			return dir;
 		}
 		x_intr += x_step;
@@ -79,6 +111,7 @@ t_direction *find_vertical_intersiction(
 	double y_step;
 	double x_intr;
 	double y_intr;
+	t_cell_type cell_type;
 	t_direction *dir;
 
 	if (fabs(cos(ray_angle)) < VERTICAL_RAY_THRESHOLD)
@@ -101,10 +134,24 @@ t_direction *find_vertical_intersiction(
 	while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
 		&& y_intr >= 0 && y_intr < MAP_HEIGHT * TILE_SIZE)
 	{
-		if (wall(data, x_intr, y_intr))
+		cell_type = wall(data, x_intr, y_intr);
+        if (cell_type == DOOR)
+            cell_type = is_wall2(
+                data,
+                x_intr + ((TILE_SIZE / 2) * (!facing_right * (-1))),
+                y_intr + ((y_step / 2) * (facing_up * (-1))));
+		if (cell_type != NONE)
 		{
-			dir->x = x_intr;
-			dir->y = y_intr;
+			if (cell_type == DOOR)
+			{
+				dir->y = y_intr + ((y_step / 2) * (facing_up * (-1)));
+				dir->x = x_intr + ((TILE_SIZE / 2) * (!facing_right * (-1)));
+			}
+			else
+			{
+				dir->y = y_intr;
+				dir->x = x_intr;
+			}
 			return dir;
 		}
 		x_intr += x_step;

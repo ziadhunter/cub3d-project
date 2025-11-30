@@ -24,7 +24,7 @@ fclean: clean
 re: fclean all
 
 run: all
-	clear
+	# clear
 	./$(NAME_BONUS)
 	make fclean
 
