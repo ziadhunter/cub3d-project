@@ -69,7 +69,7 @@ t_cell  **create_map(t_data *data, char **char_map)
                 map[i][j].cell_type = DOOR;
                 map[i][j].options = (t_door *) malloc (sizeof(t_door));
                 ((t_door *)(map[i][j].options))->is_valid = door_is_valid(data, char_map, j, i);
-                ((t_door *)(map[i][j].options))->is_open = false;
+                ((t_door *)(map[i][j].options))->door_state = CLOSED;
             }
             else if (char_map[i][j] == '1')
                 map[i][j].cell_type = WALL;

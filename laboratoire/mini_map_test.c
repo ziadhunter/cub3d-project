@@ -257,7 +257,7 @@ void diplay_btn_msg(t_data *data)
     // x = 0;
     // y = 0;
 
-    if (data->player->door->is_open)
+    if (data->player->door->door_state == OPENED)
         door_btn = &(data->textures.close_door_btn);
     else
         door_btn = &(data->textures.open_door_btn);
@@ -337,7 +337,7 @@ int is_position_wall(t_data *data, double x, double y)
     
     return (data->map.map[(int)map_y][(int)map_x].cell_type == WALL ||
             (data->map.map[(int)map_y][(int)map_x].cell_type == DOOR &&
-                ((t_door *)(data->map.map[(int)map_y][(int)map_x].options))->is_open == false));
+                ((t_door *)(data->map.map[(int)map_y][(int)map_x].options))->door_state == CLOSED));
 }
 
 
@@ -460,7 +460,7 @@ int	key_press(int key, t_data *data)
     else if (key == 'e')
     {
         if (data->player->door)
-            data->player->door->is_open = !data->player->door->is_open;
+            data->player->door->door_state = !data->player->door->door_state;
     }
 
 	if (key == LEFT)

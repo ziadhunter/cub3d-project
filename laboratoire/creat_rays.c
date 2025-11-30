@@ -18,16 +18,11 @@ int wall(t_data *data, double x, double y)
 	double rx = x / TILE_SIZE;
 	double ry = y / TILE_SIZE;
 
-	// data->player->is_looking_at_door = false;
-	// if (data->map.map[(int)ry][(int)rx].cell_type == DOOR && 
-	// 	fabs(data->player->x - x) < 64 &&
-	// 	fabs(data->player->y - y) < 64)
-	// 	data->player->is_looking_at_door = true;
 	cell = &(data->map.map[(int)ry][(int)rx]);
 	if (cell->cell_type == WALL)
 		return (1);
 	else if (cell->cell_type == DOOR
-		 && ((t_door *)(cell->options))->is_open == false)
+		 && ((t_door *)(cell->options))->door_state == CLOSED)
 		return (1);
 	return (0);
 }

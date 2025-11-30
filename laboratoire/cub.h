@@ -50,7 +50,8 @@
 typedef enum e_door_state
 {
     OPENED,
-    CLOSED
+    CLOSED,
+    OPENING
 } t_door_state;
 
 typedef enum e_cell_type
@@ -120,7 +121,7 @@ typedef struct s_oldmove
 typedef struct s_door
 {
     bool is_valid;
-    bool is_open;
+    t_door_state door_state;
 } t_door;
  
 typedef struct s_player
