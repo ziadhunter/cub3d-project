@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/30 17:11:11 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/11/30 19:23:07 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,10 @@ void speed_adjustement(int key, t_data *data)
     if (key == 52)
         if (data->player->rotation_speed < MAX_ROTATION_SPEED)
             data->player->rotation_speed += 0.0015;
-    printf("mouvemeent speed = %f \n rotation speed = %f", data->player->walking_speed, data->player->rotation_speed);
 }
 
 int	key_press(int key, t_data *data)
 {
-    printf("KEY = %d\n", key);
 	if (key == ESC)
 		free_all_data_and_exit(data, "you exit the game!!\n");
 
@@ -61,7 +59,6 @@ int	key_press(int key, t_data *data)
     {
         speed_adjustement(key, data);
     }
-        
 	if (key == 'a')
     {
         data->player->old_move->left = 1;
@@ -147,4 +144,13 @@ int	key_release(int key, t_data *data)
             data->player->turn = 0;
     }
 	return (0);
+}
+
+
+int mouse_mouve()
+
+int close_window(t_data *data)
+{
+    free_all_data_and_exit(data, "you exit the game!!\n");
+    return (0);
 }

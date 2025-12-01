@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/04 11:42:33 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/11/30 18:39:40 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,7 +324,8 @@ void start_the_game(t_data *data)
 
 	mlx_hook(data->mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(data->mlx->win, 3, 1L << 1, key_release, data);
-
+    mlx_hook(data->mlx->win, 6, 1L<<6, mouse_move, data);
+    mlx_hook(data->mlx->win, 17, 1L<<17, close_window, data);
 	mlx_loop_hook(data->mlx->init, the_animation, data);
 	mlx_loop(data->mlx->init);
 }

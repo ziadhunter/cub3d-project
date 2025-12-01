@@ -193,6 +193,7 @@ void				check_space_position(t_map *map_info, t_player *player,
 t_player			*valid_map(t_map *map_info, char **map, int i, int j);
 t_data				*parsing(char *file_name);
 /* FUNCTIONS */
+int close_window(t_data *data);
 void initialization(t_data *data);
 void render_mini_map(t_data *data);
 void start_the_game(t_data *data);
