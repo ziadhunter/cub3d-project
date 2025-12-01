@@ -38,9 +38,14 @@ int wall(t_data *data, double x, double y)
 	cell = &(data->map.map[(int)ry][(int)rx]);
 	if (cell->cell_type == WALL)
 		return (WALL);
-	else if (cell->cell_type == DOOR && (((t_door *)(cell->options))->is_valid == true)
-		&& ((t_door *)(cell->options))->door_state == CLOSED)
+	else if (cell->cell_type == DOOR)
+	{
+		if (((t_door *)(cell->options))->is_valid == false)
+			return (WALL);
+		if ((((t_door *)(cell->options))->is_valid == true)
+			&& ((t_door *)(cell->options))->door_state == CLOSED)
 		return (DOOR);
+	}
 
 	return (0);
 }
