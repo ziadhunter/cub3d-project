@@ -372,6 +372,17 @@ void update_palyer_state(t_data *data, t_player *player)
     double x = player->x;
     double y = player->y;
 
+    // double angle = player->rotation_angle;
+    // printf("Player looking: ");
+    // if (angle >= 7 * PI / 4 || angle < PI / 4)
+    //     printf("RIGHT\n");
+    // else if (angle >= PI / 4 && angle < 3 * PI / 4)
+    //     printf("DOWN\n");
+    // else if (angle >= 3 * PI / 4 && angle < 5 * PI / 4)
+    //     printf("LEFT\n");
+    // else if (angle >= 5 * PI / 4 && angle < 7 * PI / 4)
+    //     printf("UP\n");
+
     //update the x and y position of the player
     x += ((cos(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
     y += ((sin(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
@@ -583,7 +594,7 @@ char *map[] = {
     "10100000010000000000000001",
     "10100000100000D00000000001",
     "10D00000000000000001D10001",
-    "10111011000000000000100001",
+    "10100011000000000000100001",
     "10100000000100000000000001",
     "10000000000100000001000001",
     "10000001000000000000000001",

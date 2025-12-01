@@ -28,5 +28,10 @@ run: all
 	./$(NAME_BONUS)
 	make fclean
 
+gdb: all
+	# clear
+	valgrind ./$(NAME_BONUS)
+	make fclean
+
 .PHONY: clean fclean all re bonus
 	

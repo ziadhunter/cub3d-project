@@ -122,6 +122,6 @@ void render_mini_map(t_data *data)
 {
     base_of_mini_map(data);
     mini_map(data);
-	// render_rays_mini_map(data);
+	render_rays_mini_map(data);
     render_player_mini_map(data);
 }
