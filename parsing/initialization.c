@@ -6,18 +6,11 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:24:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/04 13:46:46 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/01 16:38:01 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
-
-int	is_space_or_wall(char c)
-{
-	if (c == ' ' || c == '1' || c == '\0')
-		return (1);
-	return (0);
-}
 
 int	is_space_or_nl(char c)
 {
@@ -43,10 +36,10 @@ t_map	*initialize_map(void)
 	return (map);
 }
 
-t_oldmove *initialize_old_move()
+t_oldmove	*initialize_old_move(void)
 {
-	t_oldmove *old;
-	
+	t_oldmove	*old;
+
 	old = malloc(sizeof(t_oldmove));
 	old->back = 0;
 	old->forw = 0;
@@ -59,9 +52,9 @@ t_oldmove *initialize_old_move()
 
 t_player	*initialize_player(char c, int x, int y)
 {
-	t_player *player;
-	t_oldmove *old;
-	
+	t_player	*player;
+	t_oldmove	*old;
+
 	old = initialize_old_move();
 	player = malloc(sizeof(t_player));
 	player->old_move = old;

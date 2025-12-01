@@ -12,26 +12,29 @@
 
 #include "../cub.h"
 
-void initialize_rays(t_data *data)
+void	initialize_rays(t_data *data)
 {
-    data->rays = malloc(sizeof(t_ray *) * NUM_COLUMNS);
+	data->rays = malloc(sizeof(t_ray *) * NUM_COLUMNS);
 	if (!data->rays)
-    	return;
+		return ;
 	for (int i = 0; i < NUM_COLUMNS; i++)
 	{
 		data->rays[i] = malloc(sizeof(t_ray));
 		if (!data->rays[i])
-			return; 
+			return ;
 	}
 }
 
-void initialization(t_data *data)
+void	initialization(t_data *data)
 {
-    data->mlx = malloc(sizeof(t_mlx));
+	data->mlx = malloc(sizeof(t_mlx));
 	data->mlx->init = mlx_init();
-	data->mlx->win = mlx_new_window(data->mlx->init, WIN_WIDTH, WIN_HEIGHT, "3D game");
-    data->new_image.img = mlx_new_image(data->mlx->init, WIN_WIDTH, WIN_HEIGHT);
-    data->new_image.addr = mlx_get_data_addr(data->new_image.img,
-            &data->new_image.bpp, &data->new_image.line_length, &data->new_image.endian);
+	data->mlx->win = mlx_new_window(data->mlx->init, WIN_WIDTH, WIN_HEIGHT,
+			"3D game");
+	data->new_image.img = mlx_new_image(data->mlx->init, WIN_WIDTH, WIN_HEIGHT);
+	data->new_image.addr = mlx_get_data_addr(data->new_image.img,
+												&data->new_image.bpp,
+												&data->new_image.line_length,
+												&data->new_image.endian);
 	initialize_rays(data);
 }

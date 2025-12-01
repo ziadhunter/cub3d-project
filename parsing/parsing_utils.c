@@ -6,11 +6,18 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:29:10 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/01 13:34:08 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/01 16:38:08 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
+
+int	is_space_or_wall(char c)
+{
+	if (c == ' ' || c == '1' || c == '\0')
+		return (1);
+	return (0);
+}
 
 void	check_extension(char *file_name, char *ext, t_map *map_info,
 		t_db_pointer *pointers)
