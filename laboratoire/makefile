@@ -29,9 +29,18 @@ run: all
 	make fclean
 
 gdb: all
-	# clear
+	clear
 	valgrind ./$(NAME_BONUS)
 	make fclean
+
+git: fclean
+	@echo "Enter commit message: "; \
+	read var; \
+	git add .; \
+	git commit -m "$$var"; \
+	git push
+
+
 
 .PHONY: clean fclean all re bonus
 	
