@@ -1,3 +1,6 @@
+#ifndef CUB_H
+#define CUB_H
+
 #include <stdlib.h>     // malloc, free
 #include <stdio.h>
 #include <limits.h>
@@ -5,6 +8,8 @@
 #include <math.h>       // sin, cos, tan, hypot, fabs, fmod, floor
 #include <stdbool.h>
 #include <mlx.h>        // MiniLibX functions (mlx_new_image, etc.)
+#include "door.h"
+#include "list.h"
 
 #define PI 3.14159265358979323846
 
@@ -46,13 +51,6 @@
 
 #define HORIZONTAL 1
 #define VERTICAL 2
-
-typedef enum e_door_state
-{
-    OPENED,
-    CLOSED,
-    OPENING
-} t_door_state;
 
 typedef enum e_cell_type
 {
@@ -118,11 +116,6 @@ typedef struct s_oldmove
     int turn_right;
 } t_oldmove;
 
-typedef struct s_door
-{
-    bool is_valid;
-    t_door_state door_state;
-} t_door;
  
 typedef struct s_player
 {
@@ -174,6 +167,7 @@ typedef struct s_map
 
 typedef struct s_data
 {
+    t_list *doors_list;
     t_texture   textures;
     t_img       wall;
     t_mlx       *mlx;
@@ -217,3 +211,8 @@ void render_mini_map_rays(t_data *data, double x, double y, double z, double w);
 void door_check_using_rays(t_data *data);
 
 int is_wall2(t_data *data, double x, double y);
+
+void update_door_state(t_data *data);
+void update_all_doors_state(t_list *head);
+
+#endif

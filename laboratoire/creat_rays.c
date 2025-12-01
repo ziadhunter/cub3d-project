@@ -148,7 +148,6 @@ t_direction *find_vertical_intersiction(
 
 	if (facing_up) vert = -1;
 	else vert = 1;
-	int sign_y = (tan(ray_angle) > 0 ? +1 : -1);
 
 	while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
 		&& y_intr >= 0 && y_intr < MAP_HEIGHT * TILE_SIZE)

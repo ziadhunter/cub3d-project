@@ -218,3 +218,21 @@ void door_check_using_rays(t_data *data)
 
     // render_mini_map_rays(data, mid_ray.start_x, mid_ray.start_y, mid_ray.end_x, mid_ray.end_y);
 }
+
+void update_door_state(t_data *data)
+{
+    // static char *arr[] = {
+    //     "OPENING", "OPENED",
+    //     "CLOSED", "CLOSING"
+    // };
+    t_door *door;
+    // printf("door: ");
+    door = data->player->door;
+    if (door == NULL)
+        return ;
+    // printf("%s\n", arr[door->door_state]);
+    if (door->door_state <= OPENED)
+        door->door_state = CLOSING;
+    else if (door->door_state >= CLOSED)
+        door->door_state = OPENING;
+}

@@ -1,7 +1,8 @@
 CC = cc -g3
 # CFLAGS = -Wall -Werror -Wextra -g3
 CMLX = -lmlx -lXext -lX11 -lm
-SRC_BONUS = mini_map_test.c creat_rays.c mini_map.c load_textures.c map_convert.c door_check.c
+SRC_BONUS = mini_map_test.c creat_rays.c mini_map.c load_textures.c map_convert.c door_check.c \
+	door_movement.c list.c
 #SRC_BONUS = maintest.c
 NAME_BONUS = cub3d
 OBJECT_BONUS = $(SRC_BONUS:%.c=%.o)

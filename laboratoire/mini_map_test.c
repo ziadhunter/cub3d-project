@@ -257,7 +257,7 @@ void diplay_btn_msg(t_data *data)
     // x = 0;
     // y = 0;
 
-    if (data->player->door->door_state == OPENED)
+    if (data->player->door->door_state <= OPENED)
         door_btn = &(data->textures.close_door_btn);
     else
         door_btn = &(data->textures.open_door_btn);
@@ -372,17 +372,6 @@ void update_palyer_state(t_data *data, t_player *player)
     double x = player->x;
     double y = player->y;
 
-    // double angle = player->rotation_angle;
-    // printf("Player looking: ");
-    // if (angle >= 7 * PI / 4 || angle < PI / 4)
-    //     printf("RIGHT\n");
-    // else if (angle >= PI / 4 && angle < 3 * PI / 4)
-    //     printf("DOWN\n");
-    // else if (angle >= 3 * PI / 4 && angle < 5 * PI / 4)
-    //     printf("LEFT\n");
-    // else if (angle >= 5 * PI / 4 && angle < 7 * PI / 4)
-    //     printf("UP\n");
-
     //update the x and y position of the player
     x += ((cos(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
     y += ((sin(player->rotation_angle) * player->walking_speed / 3) * player->back_forw);
@@ -422,6 +411,7 @@ int the_animation(t_data *data)
     i = 0;
     j = 0;
     // clear_window(data);
+    update_all_doors_state(data->doors_list);
     update_palyer_state(data, data->player);
 	data->rays = creat_ray_casting(data);
     projaction(data);
@@ -470,8 +460,9 @@ int	key_press(int key, t_data *data)
     }
     else if (key == 'e')
     {
-        if (data->player->door)
-            data->player->door->door_state = !data->player->door->door_state;
+        update_door_state(data);
+        // if (data->player->door)
+        //     data->player->door->door_state = !data->player->door->door_state;
     }
 
 	if (key == LEFT)
@@ -595,7 +586,7 @@ char *map[] = {
     "10100000100000D00000000001",
     "10D00000000000000001D10001",
     "10100011000000000000100001",
-    "10100000000100000000000001",
+    "1010000000010001D100000001",
     "10000000000100000001000001",
     "100001D1000000000000000001",
     "100000000000000000000000D1",
