@@ -210,7 +210,7 @@ t_cell  **create_map(t_data *data, char **char_map);
 void render_mini_map_rays(t_data *data, double x, double y, double z, double w);
 void door_check_using_rays(t_data *data);
 
-int is_wall2(t_data *data, double x, double y);
+int is_wall2(t_data *data, double x, double y, int inter);
 
 void update_door_state(t_data *data);
 void update_all_doors_state(t_list *head);

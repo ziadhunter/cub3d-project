@@ -182,12 +182,14 @@ double check_door_intersection(t_data *data, t_ray *s_ray)
 bool check_door(int x, int y, double final_dist, t_data *data)
 {
     t_cell *cell;
+    t_door *door;
 
     cell = &(data->map.map[y / TILE_SIZE][x / TILE_SIZE]);
     if (cell->cell_type == DOOR
             && ((((t_door *)(cell->options))->is_valid)
             && final_dist < TILE_SIZE * 2))
     {
+        door = cell->options;
         data->player->door = cell->options;
         return (true);
     }
@@ -202,35 +204,20 @@ void door_check_using_rays(t_data *data)
     double x = X_START_POINT + (MAP_SIZE / 2);
     double y = Y_START_POINT + (MAP_SIZE / 2);
 
-    // mid_ray.end_x = cos(mid_ray.ray_angle) * DOOR_CHECK_RANGE + mid_ray.start_x;
-    // mid_ray.end_y = sin(mid_ray.ray_angle) * DOOR_CHECK_RANGE + mid_ray.start_y;
-
     final_dist = check_door_intersection(data, &mid_ray);
 
-    // printf("x: %d, y: %d\n", mid_ray.end_x, mid_ray.end_y);
-    // printf("final dist: %f\n", final_dist);
     data->player->is_looking_at_door = check_door(mid_ray.end_x, mid_ray.end_y, final_dist, data);
     y_end = y + ((mid_ray.end_y - data->player->y) / MINIMAP_SCALE);
     x_end = x + ((mid_ray.end_x - data->player->x) / MINIMAP_SCALE);
-
     render_mini_map_rays(data, x, y, x_end, y_end);
-
-
-    // render_mini_map_rays(data, mid_ray.start_x, mid_ray.start_y, mid_ray.end_x, mid_ray.end_y);
 }
 
 void update_door_state(t_data *data)
 {
-    // static char *arr[] = {
-    //     "OPENING", "OPENED",
-    //     "CLOSED", "CLOSING"
-    // };
     t_door *door;
-    // printf("door: ");
     door = data->player->door;
     if (door == NULL)
         return ;
-    // printf("%s\n", arr[door->door_state]);
     if (door->door_state <= OPENED)
         door->door_state = CLOSING;
     else if (door->door_state >= CLOSED)

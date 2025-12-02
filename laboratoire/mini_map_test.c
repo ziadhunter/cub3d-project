@@ -144,6 +144,7 @@ int get_door_type(char **map, int end_x, int end_y)
 void render_wall(t_data *data, int x, int y, int wall_hight)
 {
     int i = 0;
+    int hors, vert;
     int tmp;
     unsigned int color;
     t_ray *ray = data->rays[x];
@@ -178,11 +179,14 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
             wall = &data->textures.door;
         else
             wall = &data->textures.door_side;
-
+        if (ray->ray_direction.x) hors = 1;
+        else hors = -1;
+        if (ray->ray_direction.y) vert = -1;
+        else vert = 1;
         if (ray->intersection == HORIZONTAL)
-            ix = ray->end_x % TILE_SIZE;
+            ix = ray->end_x % TILE_SIZE + (TILE_SIZE - door->door_position);
         else if (ray->intersection == VERTICAL)
-            ix = ray->end_y % TILE_SIZE;
+            ix = ray->end_y % TILE_SIZE + (TILE_SIZE - door->door_position);
     }
     else
     {
@@ -583,10 +587,10 @@ char *map[] = {
     "11111111111111111111111111",
     "10000000000000000000000001",
     "10100000010000000000000001",
-    "10100000100000D00000000001",
-    "10D00000000000000001D10001",
-    "10100011000000000000100001",
-    "1010000000010001D100000001",
+    "10100000100000100000000001",
+    "10D00000000000D00001D10001",
+    "10100011000000100000100001",
+    "1010000000010011D100000001",
     "10000000000100000001000001",
     "100001D1000000000000000001",
     "100000000000000000000000D1",

@@ -12,26 +12,36 @@ t_direction *facing_direction(double ray_angle)
 	return (dir);
 }
 
-int is_wall2(t_data *data, double x, double y)
+int is_wall2(t_data *data, double x, double y, int inter)
 {
 	t_cell *cell;
-	double rx = x / TILE_SIZE;
-	double ry = y / TILE_SIZE;
+	t_door *door;
+	int rx = (int)(x / TILE_SIZE);
+	int ry = (int)(y / TILE_SIZE);
+	int hx = (int)floor(x) % TILE_SIZE, hy = (int)floor(y) % TILE_SIZE;
 
-	// data->player->is_looking_at_door = false;
+
 	if (!(x >= 0 && x < MAP_WIDTH * TILE_SIZE
 		&& y >= 0 && y < MAP_HEIGHT * TILE_SIZE))
 		return (NONE);
-	cell = &(data->map.map[(int)ry][(int)rx]);
-	if (cell->cell_type == DOOR && (((t_door *)(cell->options))->is_valid == true)
-		&& ((t_door *)(cell->options))->door_state == CLOSED)
-		return (DOOR);
+	cell = &(data->map.map[ry][rx]);
+	if (cell->cell_type == DOOR)
+	{
+		door = (t_door *)(cell->options);
+		if (door->is_valid == false)
+			return (NONE);
+		if (inter == HORIZONTAL && hx < door->door_position) // TODO: send the hx from the function before for less ifs 
+			return (DOOR);
+		if (inter == VERTICAL && hy < door->door_position) // TODO: ^^^ send hx or hy depending on the prevsiouse function hors_inter > hx | vert_inter > hy
+			return (DOOR);
+	}
 	return (NONE);
 }
 
 int wall(t_data *data, double x, double y)
 {
 	t_cell *cell;
+	t_door *door;
 	double rx = x / TILE_SIZE;
 	double ry = y / TILE_SIZE;
 
@@ -40,14 +50,13 @@ int wall(t_data *data, double x, double y)
 		return (WALL);
 	else if (cell->cell_type == DOOR)
 	{
-		if (((t_door *)(cell->options))->is_valid == false)
+		door = cell->options;
+		if (door->is_valid == false)
 			return (WALL);
-		if ((((t_door *)(cell->options))->is_valid == true)
-			&& ((t_door *)(cell->options))->door_state == CLOSED)
 		return (DOOR);
 	}
 
-	return (0);
+	return (NONE);
 }
 
 t_direction *find_horizontal_intersiction(
@@ -96,7 +105,8 @@ t_direction *find_horizontal_intersiction(
             cell_type = is_wall2(
                 data,
                 x_intr + (x_step / 2),
-                y_intr + (TILE_SIZE / 2) * vert);
+                y_intr + (TILE_SIZE / 2) * vert,
+				HORIZONTAL);
 		if (cell_type != NONE)
 		{
 			dir->x = x_intr;
@@ -146,7 +156,7 @@ t_direction *find_vertical_intersiction(
 	if (facing_right) hors = 1;
 	else hors = -1;
 
-	if (facing_up) vert = -1;
+	if (facing_up) vert = -1; // NOTICE: no need
 	else vert = 1;
 
 	while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
@@ -157,7 +167,8 @@ t_direction *find_vertical_intersiction(
             cell_type = is_wall2(
                 data,
                 x_intr + ((TILE_SIZE / 2) * hors),
-                y_intr + ((y_step / 2)));
+                y_intr + ((y_step / 2)),
+				VERTICAL);
 		if (cell_type != NONE)
 		{
 			dir->y = y_intr;
