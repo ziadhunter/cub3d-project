@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 12:01:00 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/03 15:08:43 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/03 16:30:51 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,110 +35,93 @@ void	short_ray(t_data *data, t_ray *ray, t_direction *horizontal_inters,
 		insert_end_ray(ray, vertical_inters);
 }
 
-t_direction	*find_horizontal_intersiction(
-	t_data *data, double ray_angle, int facing_up, int facing_right)
+void	find_horizontal_intersiction(
+	t_data *data, double ray_angle, t_facing facing, t_direction *horz_inter)
 {
-	double		x_step;
-	double		y_step;
-	double		x_intr;
-	double		y_intr;
-	t_direction	*dir;
+	double	x_step;
+	double	y_step;
+	double	x_intr;
+	double	y_intr;
 
 	if (fabs(tan(ray_angle)) < 1e-6)
-		return (NULL);
-	dir = malloc(sizeof(t_direction));
-	if (!dir)
-		return (NULL);
-	dir->x = 0;
-	dir->y = 0;
+		return ;
 	y_intr = floor(data->player->y / TILE_SIZE) * TILE_SIZE;
-	if (!facing_up)
+	if (!facing.facing_up)
 		y_intr += TILE_SIZE;
 	x_intr = ((y_intr - data->player->y) / tan(ray_angle)) + data->player->x;
 	y_step = TILE_SIZE;
-	if (facing_up)
+	if (facing.facing_up)
 		y_step *= -1;
 	x_step = TILE_SIZE / tan(ray_angle);
-	if ((x_step > 0 && !facing_right) || (x_step < 0 && facing_right))
+	if ((x_step > 0 && !facing.facing_right) || (x_step < 0
+			&& facing.facing_right))
 		x_step *= -1;
-	if (facing_up)
+	if (facing.facing_up)
 		y_intr--;
 	while (x_intr >= 0 && x_intr < data->map_info->columns * TILE_SIZE
 		&& y_intr >= 0 && y_intr < data->map_info->rows * TILE_SIZE)
 	{
 		if (wall(data, x_intr, y_intr))
 		{
-			dir->x = x_intr;
-			dir->y = y_intr;
-			return (dir);
+			horz_inter->x = x_intr;
+			horz_inter->y = y_intr;
+			return ;
 		}
 		x_intr += x_step;
 		y_intr += y_step;
 	}
-	return (dir);
 }
 
-t_direction	*find_vertical_intersiction(
-	t_data *data, double ray_angle, int facing_up, int facing_right)
+void	find_vertical_intersiction(
+	t_data *data, double ray_angle, t_facing facing, t_direction *vert_inter)
 {
-	double		x_step;
-	double		y_step;
-	double		x_intr;
-	double		y_intr;
-	t_direction	*dir;
+	double	x_step;
+	double	y_step;
+	double	x_intr;
+	double	y_intr;
 
 	if (fabs(cos(ray_angle)) < VERTICAL_RAY_THRESHOLD)
-		return (NULL);
-	dir = malloc(sizeof(t_direction));
-	if (!dir)
-		return (NULL);
-	dir->x = 0;
-	dir->y = 0;
+		return ;
 	x_intr = floor(data->player->x / TILE_SIZE) * TILE_SIZE;
-	if (facing_right)
+	if (facing.facing_right)
 		x_intr += TILE_SIZE;
 	y_intr = data->player->y + (x_intr - data->player->x) * tan(ray_angle);
 	x_step = TILE_SIZE;
-	if (!facing_right)
+	if (!facing.facing_right)
 		x_step *= -1;
 	y_step = TILE_SIZE * tan(ray_angle);
-	if ((y_step > 0 && facing_up) || (y_step < 0 && !facing_up))
+	if ((y_step > 0 && facing.facing_up) || (y_step < 0 && !facing.facing_up))
 		y_step *= -1;
-	if (!facing_right)
+	if (!facing.facing_right)
 		x_intr--;
 	while (x_intr >= 0 && x_intr < data->map_info->columns * TILE_SIZE
 		&& y_intr >= 0 && y_intr < data->map_info->rows * TILE_SIZE)
 	{
 		if (wall(data, x_intr, y_intr))
 		{
-			dir->x = x_intr;
-			dir->y = y_intr;
-			return (dir);
+			vert_inter->x = x_intr;
+			vert_inter->y = y_intr;
+			return ;
 		}
 		x_intr += x_step;
 		y_intr += y_step;
 	}
-	return (dir);
 }
 
 void	define_ray_position(t_data *data, double ray_angle, t_ray *ray)
 {
-	t_direction	dir;
-	t_direction	*horizontal_inters;
-	t_direction	*vertical_inters;
+	t_facing	dir;
+	t_direction	horizontal_inters;
+	t_direction	vertical_inters;
 
+	horizontal_inters.x = 0;
+	horizontal_inters.y = 0;
+	vertical_inters.x = 0;
+	vertical_inters.y = 0;
 	facing_direction(ray_angle, &dir);
-	horizontal_inters = find_horizontal_intersiction(data, ray_angle, dir.x,
-			dir.y);
-	vertical_inters = find_vertical_intersiction(data, ray_angle, dir.x,
-			dir.y);
-	short_ray(data, ray, horizontal_inters, vertical_inters);
-	// render_rays(data, (t_cord){data->player->x, data->player->y}, ray->end_x,
-	// 	ray->end_y);
-	if (horizontal_inters)
-		free(horizontal_inters);
-	if (vertical_inters)
-		free(vertical_inters);
+	find_horizontal_intersiction(data, ray_angle, dir, &horizontal_inters);
+	find_vertical_intersiction(data, ray_angle, dir, &vertical_inters);
+	short_ray(data, ray, &horizontal_inters, &vertical_inters);
 }
 
 void	creat_ray_casting(t_data *data)

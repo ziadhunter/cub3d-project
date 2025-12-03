@@ -6,20 +6,20 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:38:43 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/03 15:01:02 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/03 16:29:46 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
 
-void facing_direction(double ray_angle, t_direction *dir)
+void	facing_direction(double ray_angle, t_facing *facing)
 {
-	dir->x = 1;
+	facing->facing_up = 1;
 	if (ray_angle > 0 && ray_angle < PI)
-		dir->x = 0;
-	dir->y = 0;
+		facing->facing_up = 0;
+	facing->facing_right = 0;
 	if (ray_angle < 0.5 * PI || ray_angle > 1.5 * PI)
-		dir->y = 1;
+		facing->facing_right = 1;
 }
 
 int	wall(t_data *data, double x, double y)

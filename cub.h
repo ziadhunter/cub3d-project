@@ -46,6 +46,12 @@ typedef struct s_coordinates
 	double				y;
 }					t_cord;
 
+typedef struct s_facing_direction
+{
+	int		facing_up;
+	int		facing_right;
+}					t_facing;
+
 typedef struct s_line
 {
 	char			*str;
@@ -64,11 +70,11 @@ typedef struct s_img
 
 typedef struct s_ray
 {
-	int				start_x;
-	int				start_y;
-	double			ray_angle;
-	int				end_x;
-	int				end_y;
+	double				start_x;
+	double				start_y;
+	double				ray_angle;
+	double				end_x;
+	double				end_y;
 }					t_ray;
 
 typedef struct s_oldmove
@@ -204,16 +210,16 @@ int		key_press(int key, t_data *data);
 
 /*RAY-CASTING*/
 // void	render_rays(t_data *data, double x, double y, double z, double w);
-void	facing_direction(double ray_angle, t_direction * dir);
+void	facing_direction(double ray_angle, t_facing *dir);
 int	wall(t_data *data, double x, double y);
 void	insert_end_ray(t_ray *ray, t_direction *dir);
 double	normalize_angle(double angle);
 void	short_ray(t_data *data, t_ray *ray, t_direction *horizontal_inters,
 		t_direction *vertical_inters);
-t_direction	*find_horizontal_intersiction(
-	t_data *data, double ray_angle, int facing_up, int facing_right);
-t_direction	*find_vertical_intersiction(
-	t_data *data, double ray_angle, int facing_up, int facing_right);
+void find_horizontal_intersiction(
+	t_data *data, double ray_angle, t_facing facing, t_direction *horz_inter);
+void find_vertical_intersiction(
+	t_data *data, double ray_angle, t_facing facing, t_direction *vert_inter);
 void	define_ray_position(t_data *data, double ray_angle, t_ray *ray);
 void	creat_ray_casting(t_data *data);
 
