@@ -6,22 +6,20 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:38:43 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/01 17:41:30 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/03 15:01:02 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
 
-t_direction	*facing_direction(double ray_angle)
+void facing_direction(double ray_angle, t_direction *dir)
 {
-	t_direction	*dir;
-
-	dir = malloc(sizeof(t_direction));
-	if (!dir)
-		return (NULL);
-	dir->x = (ray_angle > 0 && ray_angle < PI) ? 0 : 1;
-	dir->y = (ray_angle < 0.5 * PI || ray_angle > 1.5 * PI) ? 1 : 0;
-	return (dir);
+	dir->x = 1;
+	if (ray_angle > 0 && ray_angle < PI)
+		dir->x = 0;
+	dir->y = 0;
+	if (ray_angle < 0.5 * PI || ray_angle > 1.5 * PI)
+		dir->y = 1;
 }
 
 int	wall(t_data *data, double x, double y)
@@ -48,4 +46,31 @@ double	normalize_angle(double angle)
 	if (angle < 0)
 		angle += 2 * PI;
 	return (angle);
+}
+
+void	render_rays(t_data *data, t_cord cord, double z, double w)
+{
+	double	xi;
+	double	yi;
+	int		step;
+	int		i;
+
+	if (fabs(z - cord.x) > fabs(w - cord.y))
+		step = fabs(z - cord.x);
+	else
+		step = fabs(w - cord.y);
+	xi = (z - cord.x) / step;
+	yi = (w - cord.y) / step;
+	i = 0;
+	while (i < step)
+	{
+		put_pixel(&data->new_image, cord.x, cord.y, BLUE);
+		put_pixel(&data->new_image, cord.x + 1, cord.y, BLUE);
+		put_pixel(&data->new_image, cord.x, cord.y + 1, BLUE);
+		put_pixel(&data->new_image, cord.x, cord.y - 1, BLUE);
+		put_pixel(&data->new_image, cord.x - 1, cord.y, BLUE);
+		cord.x += xi;
+		cord.y += yi;
+		i++;
+	}
 }

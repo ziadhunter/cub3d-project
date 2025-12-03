@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:15:59 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/01 18:45:00 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/02 18:03:33 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	mouvement_adjustment(int key, t_data *data)
 	}
 }
 
-void	rotaion_adjustment(int key, t_data *data)
+void	rotation_adjustment(int key, t_data *data)
 {
 	if (key == LEFT)
 	{

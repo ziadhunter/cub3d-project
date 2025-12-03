@@ -37,7 +37,7 @@ void mini_map(t_data *data)
                 color = WHITE;
                 if (y_map >= 0 && y_map < MAP_HEIGHT &&
                     x_map >= 0 && x_map < MAP_WIDTH)
-                    if (data->map[y_map][x_map] == '1')
+                    if (data->map_info->map[y_map][x_map] == '1')
                         color = BLACK;
                 put_pixel(&data->new_image, x, y, color);
             }

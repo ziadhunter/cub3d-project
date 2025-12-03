@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/01 17:46:43 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/02 14:50:43 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void	update_palyer_state(t_data *data, t_player *player)
 
 	x = player->x;
 	y = player->y;
-	//update the x and y position of the player
-	//ma39altch 3la hadchi tat3awed tfahmo!!!!!!!!!!!!!
 	x += ((cos(player->rotation_angle) * player->walking_speed / 3)
 			* player->back_forw);
 	y += ((sin(player->rotation_angle) * player->walking_speed / 3)
@@ -65,13 +63,11 @@ void	update_palyer_state(t_data *data, t_player *player)
 			* player->left_right);
 	y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3)
 			* player->left_right);
-	//check if the new position isn't a wall
 	if (is_wall(data, &x, &y))
 	{
 		player->x = x;
 		player->y = y;
 	}
-	//update the direction of the player
 	data->player->rotation_angle += (data->player->rotation_speed
 			* data->player->turn);
 }
@@ -90,7 +86,7 @@ int	the_animation(t_data *data)
 	projaction(data);
 	render_mini_map(data);
 	mlx_put_image_to_window(data->mlx->init, data->mlx->win,
-			data->new_image.img, 0, 0);
+		data->new_image.img, 0, 0);
 	l++;
 	return (0);
 }

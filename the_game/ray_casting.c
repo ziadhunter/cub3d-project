@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   creat_ray_casting.c                                :+:      :+:    :+:   */
+/*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 12:01:00 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/01 17:37:43 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/03 15:08:43 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	short_ray(t_data *data, t_ray *ray, t_direction *horizontal_inters,
 	if (horizontal_inters && vertical_inters)
 	{
 		dist_h = hypot(horizontal_inters->x - data->player->x,
-						horizontal_inters->y - data->player->y);
+				horizontal_inters->y - data->player->y);
 		dist_v = hypot(vertical_inters->x - data->player->x,
-						vertical_inters->y - data->player->y);
+				vertical_inters->y - data->player->y);
 		if (dist_h < dist_v)
 			insert_end_ray(ray, horizontal_inters);
 		else
@@ -123,20 +123,18 @@ t_direction	*find_vertical_intersiction(
 
 void	define_ray_position(t_data *data, double ray_angle, t_ray *ray)
 {
-	t_direction	*dir;
+	t_direction	dir;
 	t_direction	*horizontal_inters;
 	t_direction	*vertical_inters;
 
-	dir = facing_direction(ray_angle);
-	horizontal_inters = find_horizontal_intersiction(data, ray_angle, dir->x,
-			dir->y);
-	vertical_inters = find_vertical_intersiction(data, ray_angle, dir->x,
-			dir->y);
+	facing_direction(ray_angle, &dir);
+	horizontal_inters = find_horizontal_intersiction(data, ray_angle, dir.x,
+			dir.y);
+	vertical_inters = find_vertical_intersiction(data, ray_angle, dir.x,
+			dir.y);
 	short_ray(data, ray, horizontal_inters, vertical_inters);
-	// render_rays(data, data->player->x, data->player->y, ray->end_x,
-			ray->end_y);
-	if (dir)
-		free(dir);
+	// render_rays(data, (t_cord){data->player->x, data->player->y}, ray->end_x,
+	// 	ray->end_y);
 	if (horizontal_inters)
 		free(horizontal_inters);
 	if (vertical_inters)
@@ -145,8 +143,8 @@ void	define_ray_position(t_data *data, double ray_angle, t_ray *ray)
 
 void	creat_ray_casting(t_data *data)
 {
-	double ray_angle;
-	int column;
+	double	ray_angle;
+	int		column;
 
 	column = 0;
 	ray_angle = data->player->rotation_angle - (FOV / 2);
