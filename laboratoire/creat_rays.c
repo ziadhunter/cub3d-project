@@ -18,7 +18,7 @@ int is_wall2(t_data *data, double x, double y, double offset)
 	t_door *door;
 	int rx = (int)(x / TILE_SIZE);
 	int ry = (int)(y / TILE_SIZE);
-	int offset_i = (int)floor(offset) % TILE_SIZE;
+	// int offset_i = (int)floor(offset) % TILE_SIZE;
 
 	if (!(x >= 0 && x < MAP_WIDTH * TILE_SIZE
 		&& y >= 0 && y < MAP_HEIGHT * TILE_SIZE))
@@ -29,7 +29,7 @@ int is_wall2(t_data *data, double x, double y, double offset)
 		door = (t_door *)(cell->options);
 		if (door->is_valid == false)
 			return (NONE);
-		if (offset_i < door->door_position) // TODO: send the hx from the function before for less ifs 
+		if (((int)(offset) % TILE_SIZE) < door->door_position) // TODO: send the hx from the function before for less ifs 
 			return (DOOR);
 	}
 	return (NONE);
@@ -98,7 +98,7 @@ t_direction *find_horizontal_intersiction(
                 data,
                 x_intr + (x_step / 2),
                 y_intr + (y_step / 2),
-				x_intr + (x_step / 2));
+				floor(x_intr + (x_step / 2)));
 		if (cell_type != NONE)
 		{
 			dir->x = x_intr;
@@ -154,7 +154,7 @@ t_direction *find_vertical_intersiction(
                 data,
                 x_intr + ((x_step / 2)),
                 y_intr + ((y_step / 2)),
-				y_intr + ((y_step / 2)));
+				floor(y_intr + ((y_step / 2))));
 		if (cell_type != NONE)
 		{
 			dir->y = y_intr;
