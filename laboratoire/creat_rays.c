@@ -92,11 +92,6 @@ t_direction *find_horizontal_intersiction(
 	if (facing_up)
 		y_intr--;
 
-	if (facing_right) hors = 1;
-	else hors = -1;
-
-	if (facing_up) vert = -1;
-	else vert = 1;
 	while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
 		&& y_intr >= 0 && y_intr < MAP_HEIGHT * TILE_SIZE)
 	{
@@ -152,12 +147,6 @@ t_direction *find_vertical_intersiction(
 		y_step *= -1;
 	if (!facing_right)
 		x_intr--;
-
-	if (facing_right) hors = 1;
-	else hors = -1;
-
-	if (facing_up) vert = -1; // NOTICE: no need
-	else vert = 1;
 
 	while (x_intr >= 0 && x_intr < MAP_WIDTH * TILE_SIZE
 		&& y_intr >= 0 && y_intr < MAP_HEIGHT * TILE_SIZE)

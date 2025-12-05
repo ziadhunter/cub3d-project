@@ -179,10 +179,6 @@ void render_wall(t_data *data, int x, int y, int wall_hight)
             wall = &data->textures.door;
         else
             wall = &data->textures.door_side;
-        if (ray->ray_direction.x) hors = 1;
-        else hors = -1;
-        if (ray->ray_direction.y) vert = -1;
-        else vert = 1;
         if (ray->intersection == HORIZONTAL)
             ix = ray->end_x % TILE_SIZE + (TILE_SIZE - door->door_position);
         else if (ray->intersection == VERTICAL)
@@ -341,7 +337,7 @@ int is_position_wall(t_data *data, double x, double y)
     
     return (data->map.map[(int)map_y][(int)map_x].cell_type == WALL ||
             (data->map.map[(int)map_y][(int)map_x].cell_type == DOOR &&
-                ((t_door *)(data->map.map[(int)map_y][(int)map_x].options))->door_state == CLOSED));
+                ((t_door *)(data->map.map[(int)map_y][(int)map_x].options))->door_state >= CLOSED));
 }
 
 
