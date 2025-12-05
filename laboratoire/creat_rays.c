@@ -12,14 +12,13 @@ t_direction *facing_direction(double ray_angle)
 	return (dir);
 }
 
-int is_wall2(t_data *data, double x, double y, int inter)
+int is_wall2(t_data *data, double x, double y, double offset)
 {
 	t_cell *cell;
 	t_door *door;
 	int rx = (int)(x / TILE_SIZE);
 	int ry = (int)(y / TILE_SIZE);
-	int hx = (int)floor(x) % TILE_SIZE, hy = (int)floor(y) % TILE_SIZE;
-
+	int offset_i = (int)floor(offset) % TILE_SIZE;
 
 	if (!(x >= 0 && x < MAP_WIDTH * TILE_SIZE
 		&& y >= 0 && y < MAP_HEIGHT * TILE_SIZE))
@@ -30,9 +29,7 @@ int is_wall2(t_data *data, double x, double y, int inter)
 		door = (t_door *)(cell->options);
 		if (door->is_valid == false)
 			return (NONE);
-		if (inter == HORIZONTAL && hx < door->door_position) // TODO: send the hx from the function before for less ifs 
-			return (DOOR);
-		if (inter == VERTICAL && hy < door->door_position) // TODO: ^^^ send hx or hy depending on the prevsiouse function hors_inter > hx | vert_inter > hy
+		if (offset_i < door->door_position) // TODO: send the hx from the function before for less ifs 
 			return (DOOR);
 	}
 	return (NONE);
@@ -101,7 +98,7 @@ t_direction *find_horizontal_intersiction(
                 data,
                 x_intr + (x_step / 2),
                 y_intr + (y_step / 2),
-				HORIZONTAL);
+				x_intr + (x_step / 2));
 		if (cell_type != NONE)
 		{
 			dir->x = x_intr;
@@ -157,7 +154,7 @@ t_direction *find_vertical_intersiction(
                 data,
                 x_intr + ((x_step / 2)),
                 y_intr + ((y_step / 2)),
-				VERTICAL);
+				y_intr + ((y_step / 2)));
 		if (cell_type != NONE)
 		{
 			dir->y = y_intr;
