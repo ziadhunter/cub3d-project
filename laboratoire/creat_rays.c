@@ -146,29 +146,6 @@ void short_ray(t_data * data, t_ray *ray, t_direction *horizontal_inters, t_dire
 		insert_end_ray(ray, vertical_inters, VERTICAL);
 }
 
-// void render_rays(t_data *data, double x, double y, double z, double w)
-// {
-//     double xi;
-//     double yi;
-//     int step;
-
-//     if (fabs(z - x) > fabs(w - y))
-//         step = fabs(z - x);
-//     else
-//         step = fabs(w - y);
-//     xi = (z - x) / step;
-//     yi = (w - y) / step;
-//     for (int i = 0; i < step; i++)
-//     {
-//         put_pixel(&data->new_image, x, y, BLUE);
-//         put_pixel(&data->new_image, x + 1, y, BLUE);
-//         put_pixel(&data->new_image, x, y + 1, BLUE);
-//         put_pixel(&data->new_image, x, y - 1, BLUE);
-//         put_pixel(&data->new_image, x -1, y, BLUE);       
-//         x += xi;
-//         y += yi;
-//     }
-// }
 void define_ray_position(t_data *data, double ray_angle, t_ray *ray)
 {
 	t_direction *dir;

@@ -205,10 +205,7 @@ t_direction *find_horizontal_intersiction(
     if (!dir)
         return (NULL);
     if (fabs(tan(ray_angle)) < 1e-6)
-    {
-        free(dir);
         return (NULL);
-    }
     y_intr = floor(data->player->y / TILE_SIZE) * TILE_SIZE;
     if (!facing_up)
         y_intr += TILE_SIZE;
@@ -357,7 +354,7 @@ void  define_ray_position(t_data *data, double ray_angle, t_ray *ray)
     horizontal_inters = find_horizontal_intersiction(data, ray_angle, dir->x, dir->y);
     vertical_inters = find_vertical_intersiction(data, ray_angle, dir->x, dir->y);
 	short_ray(data, ray, horizontal_inters, vertical_inters);
-    render_rays(data, data->player->x, data->player->y, ray->end_x, ray->end_y);
+    // render_rays(data, data->player->x, data->player->y, ray->end_x, ray->end_y);
     free(dir);
     free(horizontal_inters);
     free(vertical_inters);

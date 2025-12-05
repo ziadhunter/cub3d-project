@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:27:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/01 13:33:02 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/11/03 12:15:04 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ char	**rebuild_map_with_same_size(t_map *map, char **lines, int start)
 			max_lenght = current_lenght;
 		i++;
 	}
-	map->map_height = i - start;
-	map->map_length = max_lenght;
+	map->rows = i - start;
+	map->columns = max_lenght;
 	new_lines = set_new_lines(i - start, max_lenght, lines);
 	if (!new_lines)
 		return (NULL);

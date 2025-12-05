@@ -1,0 +1,7 @@
+valgrind --suppressions=supp.supp --leak-check=full --track-fds=yes --track-origins=yes
+{
+    ignore_libreadline_leaks
+    Memcheck:Leak
+    ...
+    obj:/libreadline.so.
+}

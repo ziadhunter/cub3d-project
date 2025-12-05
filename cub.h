@@ -10,13 +10,14 @@
 #define PI 3.14159265358979323846
 #define TILE_SIZE 64
 #define MINIMAP_SCALE 2
-#define WIN_WIDTH 2080   // number of columns
-#define WIN_HEIGHT 1440  // number of rows
+#define WIN_WIDTH 1080   // number of columns
+#define WIN_HEIGHT 720  // number of rows
 #define FOV 1.0471975512 // 60° field of view in radians
-#define NUM_COLUMNS 2080 // how many rays to cast (e.g. screen width)
-
-#define MAP_WIDTH 26
-#define MAP_HEIGHT 11
+#define NUM_COLUMNS 1080 // how many rays to cast (e.g. screen width)
+#define MIN_WALK_SPEED 0.5
+#define MAX_WALK_SPEED 3
+#define MIN_ROTATION_SPEED	(PI / 180) / 3
+#define MAX_ROTATION_SPEED  (PI / 180)
 
 // Colors (RGBA or 0x00RRGGBB depending on MLX build)
 #define WHITE 0xFFFFFF
@@ -41,9 +42,15 @@
 
 typedef struct s_coordinates
 {
-	int				x;
-	int				y;
+	double				x;
+	double				y;
 }					t_cord;
+
+typedef struct s_facing_direction
+{
+	int		facing_up;
+	int		facing_right;
+}					t_facing;
 
 typedef struct s_line
 {
@@ -63,11 +70,11 @@ typedef struct s_img
 
 typedef struct s_ray
 {
-	int				start_x;
-	int				start_y;
-	double			ray_angle;
-	int				end_x;
-	int				end_y;
+	double				start_x;
+	double				start_y;
+	double				ray_angle;
+	double				end_x;
+	double				end_y;
 }					t_ray;
 
 typedef struct s_oldmove
@@ -121,8 +128,8 @@ typedef struct s_map
 	char			*ea;
 	int				*f;
 	int				*c;
-	int				map_length;
-	int				map_height;
+	int				columns;
+	int				rows;
 	int				map_start;
 }					t_map;
 
@@ -142,10 +149,7 @@ typedef struct s_element
 	void			(*handle)(t_map *map, char **str, char **lines, int i);
 }					t_element;
 
-void				render_mini_map(t_data *data);
-void				put_pixel(t_img *data, int x, int y, int color);
-t_ray				**creat_ray_casting(t_data *data);
-double				normalize_angle(double angle);
+
 
 /* PARSING FUNCTIONS */
 void				add_ceiling(t_map *map, char **str, char **lines, int i);
@@ -167,7 +171,7 @@ void				error_exit(t_map *map, char **value,
 int					is_space_or_wall(char c);
 int					is_space_or_nl(char c);
 t_map				*initialize_map(void);
-t_player			*initialize(char c, t_player *player, t_oldmove *old);
+t_player			*initialize_player(char c, int x, int y);
 void				initialize_element(t_element (*element)[6]);
 void				find_empty_line(t_map *map_info, char **lines, char *line,
 						int fd);
@@ -191,3 +195,57 @@ void				check_space_position(t_map *map_info, t_player *player,
 						char **lines, t_cord cor);
 t_player			*valid_map(t_map *map_info, char **map, int i, int j);
 t_data				*parsing(char *file_name);
+
+/*KEY HANDLE*/
+void	speed_adjustment(int key, t_data *data);
+void	mouvement_adjustment(int key, t_data *data);
+void	rotation_adjustment(int key, t_data *data);
+void	rotation_release(int key, t_data *data);
+void	mouvement_release(int key, t_data *data);
+int		close_window(t_data *data);
+int		mouse_move(int x, int y, t_data *data);
+int		key_release(int key, t_data *data);
+int		key_press(int key, t_data *data);
+
+
+/*RAY-CASTING*/
+// void	render_rays(t_data *data, double x, double y, double z, double w);
+void	facing_direction(double ray_angle, t_facing *dir);
+int	wall(t_data *data, double x, double y);
+void	insert_end_ray(t_ray *ray, t_direction *dir);
+double	normalize_angle(double angle);
+void	short_ray(t_data *data, t_ray *ray, t_direction *horizontal_inters,
+		t_direction *vertical_inters);
+void find_horizontal_intersiction(
+	t_data *data, double ray_angle, t_facing facing, t_direction *horz_inter);
+void find_vertical_intersiction(
+	t_data *data, double ray_angle, t_facing facing, t_direction *vert_inter);
+void	define_ray_position(t_data *data, double ray_angle, t_ray *ray);
+void	creat_ray_casting(t_data *data);
+
+/*PROJACTION*/
+void	render_wall(t_data *data, int x, int y, int wall_hight);
+void	projaction(t_data *data);
+
+/*MINI MAP*/
+void	base_of_mini_map(t_data *data);
+void	mini_map(t_data *data, int x, int y, int color);
+void	render_player_mini_map(t_data *data);
+void	render_mini_map_rays(t_data *data, t_cord cord, double z, double w);
+void	render_rays_mini_map(t_data *data, int i);
+void	render_mini_map(t_data *data);
+
+
+/* FUNCTIONS */
+void	free_rays(t_ray **rays);
+void	free_all_data_and_exit(t_data *data, char *str);
+int		is_wall(t_data *data, double *x, double *y);
+void	put_pixel(t_img *data, int x, int y, int color);
+void	update_palyer_state(t_data *data, t_player *player);
+int		the_animation(t_data *data);
+void	initialize_rays(t_data *data);
+void	initialization(t_data *data);
+void	start_the_game(t_data *data);
+
+
+

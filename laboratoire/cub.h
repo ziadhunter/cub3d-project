@@ -27,7 +27,7 @@
 #define BLUE 0x0000FF
 
 // Mini map macros
-#define X_START_POINT (TILE_SIZE)
+#define X_START_POINT TILE_SIZE
 #define Y_START_POINT ((WIN_HEIGHT) / 3 * 2)
 #define MAP_SIZE (((WIN_HEIGHT) / 3) - TILE_SIZE)
 #define MAP_RADIUS (MAP_SIZE / 2)
@@ -225,7 +225,7 @@ typedef struct s_element
 
 void				render_mini_map(t_data *data);
 void				put_pixel(t_img *data, int x, int y, int color);
-t_ray				**creat_ray_casting(t_data *data);
+// t_ray				**creat_ray_casting(t_data *data);
 double				normalize_angle(double angle);
 
 /* PARSING FUNCTIONS */

@@ -10,13 +10,25 @@ SRC = cub3d.c \
 	parsing/parsing_the_map.c \
 	parsing/parsing_utils.c \
 	parsing/parsing.c \
+	the_game/the_game.c \
+	the_game/mini_map.c the_game/mini_map_utils.c \
+	the_game/initialization.c the_game/free_and_exit.c\
+	the_game/key_mouvement.c the_game/key_mouvement_utils.c\
+	the_game/ray_casting.c \
+	the_game/ray_casting_utils.c \
+	the_game/projaction.c \
 	get_next_line/get_next_line.c \
 	get_next_line/get_next_line_utils.c
 
+
+LIBFT = libft/libft.a
 NAME = cub3d
 OBJECT = $(SRC:%.c=%.o)
 
 all: $(NAME)
+
+$(LIBFT) :
+	make -C libft
 
 $(NAME): $(OBJECT) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJECT) libft/libft.a $(CMLX) -o $(NAME)
