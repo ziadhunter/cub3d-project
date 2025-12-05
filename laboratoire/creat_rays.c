@@ -105,7 +105,7 @@ t_direction *find_horizontal_intersiction(
             cell_type = is_wall2(
                 data,
                 x_intr + (x_step / 2),
-                y_intr + (TILE_SIZE / 2) * vert,
+                y_intr + (y_step / 2),
 				HORIZONTAL);
 		if (cell_type != NONE)
 		{
@@ -114,7 +114,7 @@ t_direction *find_horizontal_intersiction(
 			if (cell_type == DOOR)
 			{
 				dir->x += (x_step / 2);
-				dir->y += (TILE_SIZE / 2) * vert;
+				dir->y += (y_step / 2);
 			}
 			return dir;
 		}
@@ -166,7 +166,7 @@ t_direction *find_vertical_intersiction(
         if (cell_type == DOOR)
             cell_type = is_wall2(
                 data,
-                x_intr + ((TILE_SIZE / 2) * hors),
+                x_intr + ((x_step / 2)),
                 y_intr + ((y_step / 2)),
 				VERTICAL);
 		if (cell_type != NONE)
@@ -176,7 +176,7 @@ t_direction *find_vertical_intersiction(
 			if (cell_type == DOOR)
 			{
 				dir->y += (y_step / 2);
-				dir->x += (TILE_SIZE / 2) * hors;
+				dir->x += (x_step / 2);
 			}
 			return dir;
 		}
