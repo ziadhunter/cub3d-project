@@ -12,7 +12,7 @@
 
 #include <cub3d.h>
 
-void	add_ceiling(t_map *map, char **str, char **lines, int i)
+void	add_ceiling(t_map_data *map, char **str, char **lines, int i)
 {
 	char	**values;
 
@@ -40,7 +40,7 @@ void	add_ceiling(t_map *map, char **str, char **lines, int i)
 	free_double_pointer(values);
 }
 
-void	add_we(t_map *map, char **str, char **lines, int i)
+void	add_we(t_map_data *map, char **str, char **lines, int i)
 {
 	int	fdd;
 
@@ -66,7 +66,7 @@ void	add_we(t_map *map, char **str, char **lines, int i)
 			"Error\nmissing WE file texture\n");
 }
 
-void	add_ea(t_map *map, char **str, char **lines, int i)
+void	add_ea(t_map_data *map, char **str, char **lines, int i)
 {
 	int	fdd;
 
@@ -92,7 +92,7 @@ void	add_ea(t_map *map, char **str, char **lines, int i)
 			"Error\nmissing EA file texture\n");
 }
 
-void	add_so(t_map *map, char **str, char **lines, int i)
+void	add_so(t_map_data *map, char **str, char **lines, int i)
 {
 	int	fdd;
 
@@ -118,7 +118,7 @@ void	add_so(t_map *map, char **str, char **lines, int i)
 			"Error\nmissing SO file texture\n");
 }
 
-void	add_no(t_map *map, char **str, char **lines, int i)
+void	add_no(t_map_data *map, char **str, char **lines, int i)
 {
 	int	fdd;
 

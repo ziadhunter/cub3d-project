@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include <cub3d.h>
 
 int	main(int argc, char *argv[])
 {
 	int		i;
 	int		j;
 	t_data	*data;
-	t_map	*map;
+	t_map_data	*map;
 
 	i = 0;
 	j = 0;

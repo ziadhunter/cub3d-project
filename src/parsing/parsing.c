@@ -6,12 +6,11 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:51:17 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/01 14:41:44 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/11/04 11:23:38 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-#include <parsing.h>
 
 void	invalid_position(t_map_data *map_info, t_player *player, char **lines,
 		t_cord cor)
@@ -21,12 +20,12 @@ void	invalid_position(t_map_data *map_info, t_player *player, char **lines,
 
 	i = cor.x;
 	j = cor.y;
-	if (i <= 0 || j <= 0 || i + 1 >= map_info->map_length || j
-		+ 1 >= map_info->map_height)
+	if (i <= 0 || j <= 0 || i + 1 >= map_info->columns || j
+		+ 1 >= map_info->rows)
 	{
 		if (player)
 		{
-			free(player->old_move);
+			// free(player->old_move);
 			free(player);
 		}
 		error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)1\n");
@@ -36,7 +35,7 @@ void	invalid_position(t_map_data *map_info, t_player *player, char **lines,
 	{
 		if (player)
 		{
-			free(player->old_move);
+			// free(player->old_move);
 			free(player);
 		}
 		error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)\n");
@@ -55,11 +54,12 @@ void	check_element_position(t_map_data *map_info, t_player **player, char **line
 	if (lines[j][i] == 'N' || lines[j][i] == 'S' || lines[j][i] == 'W'
 		|| lines[j][i] == 'E')
 	{
+		lines[j][i] = '0';
 		if (!(*player))
-			*player = initialize(lines[j][i], NULL, NULL);
+			*player = initialize_player(lines[j][i], i, j);
 		else
 		{
-			free((*player)->old_move);
+			// free((*player)->old_move);
 			free(*player);
 			error_exit(map_info, lines, NULL,
 				"Error\ninvalid map(two or more players)");
@@ -75,8 +75,8 @@ void	check_space_position(t_map_data *map_info, t_player *player, char **lines,
 
 	i = cor.x;
 	j = cor.y;
-	if (i <= 0 || j <= 0 || i >= map_info->map_length || j
-		+ 1 >= map_info->map_height)
+	if (i <= 0 || j <= 0 || i >= map_info->columns || j
+		+ 1 >= map_info->rows)
 		return ;
 	if (!is_space_or_wall(lines[j + 1][i]) ||
 		!is_space_or_wall(lines[j - 1][i]) ||
@@ -85,7 +85,7 @@ void	check_space_position(t_map_data *map_info, t_player *player, char **lines,
 	{
 		if (player != NULL)
 		{
-			// free(player->old_move); // TODO: use the new move
+			// free(player->old_move);
 			free(player);
 		}
 		error_exit(map_info, lines, NULL, "Error\ninvalid map");
