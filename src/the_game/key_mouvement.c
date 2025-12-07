@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_mouvement.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/02 13:54:39 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/07 21:41:07 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	mouse_move(int x, int y, t_data *data)
 	static int	old_x;
 	static int	old_y;
 	int			delta_x;
-	int			delta_y;
+	// int			delta_y;
 
 	old_x = -1;
 	old_y = -1;
@@ -55,7 +55,7 @@ int	mouse_move(int x, int y, t_data *data)
 		return (0);
 	}
 	delta_x = x - old_x;
-	delta_y = y - old_y;
+	// delta_y = y - old_y;
 	if (delta_x != 0)
 	{
 		data->player->rotation_angle += delta_x * 0.002;

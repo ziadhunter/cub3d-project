@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_game.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/02 14:50:43 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/07 21:40:33 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ void	update_palyer_state(t_data *data, t_player *player)
 int	the_animation(t_data *data)
 {
 	static unsigned int	l;
-	int					i;
-	int					j;
+	// int					i;
+	// int					j;
 
 	l = 0;
-	i = 0;
-	j = 0;
+	// i = 0;
+	// j = 0;
 	update_palyer_state(data, data->player);
 	creat_ray_casting(data);
 	projaction(data);
