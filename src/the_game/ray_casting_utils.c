@@ -3,24 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:38:43 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/03 16:29:46 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/07 23:58:35 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 #include <rendring.h>
 
-void	facing_direction(double ray_angle, t_facing *facing)
+void	facing_direction(double ray_angle, t_ray *ray)
 {
-	facing->facing_up = 1;
+	ray->ray_direction.y = 1;
+	ray->ray_direction.x = -1;
 	if (ray_angle > 0 && ray_angle < PI)
-		facing->facing_up = 0;
-	facing->facing_right = 0;
+		ray->ray_direction.y = -1;
 	if (ray_angle < 0.5 * PI || ray_angle > 1.5 * PI)
-		facing->facing_right = 1;
+		ray->ray_direction.x = 1;
+}
+
+
+int is_door(t_data *data, double x, double y, double offset)
+{
+	t_cell *cell;
+	t_door *door;
+	int rx = (int)(x / TILE_SIZE);
+	int ry = (int)(y / TILE_SIZE);
+	// int offset_i = (int)floor(offset) % TILE_SIZE;
+
+	if (!(x >= 0 && x < data->map_info->map_width
+		&& y >= 0 && y < data->map_info->map_height))
+		return (NONE);
+	cell = &(data->map[ry][rx]);
+	if (cell->cell_type == DOOR)
+	{
+		door = (t_door *)(cell->options);
+		if (door->is_valid == false)
+			return (NONE);
+		if (((int)(offset) % TILE_SIZE) < door->door_position) // TODO: send the hx from the function before for less ifs 
+			return (DOOR);
+	}
+	return (NONE);
 }
 
 int	wall(t_data *data, double x, double y)
@@ -35,10 +59,11 @@ int	wall(t_data *data, double x, double y)
 	return (0);
 }
 
-void	insert_end_ray(t_ray *ray, t_direction *dir)
+void	insert_end_ray(t_ray *ray, t_direction *dir, int intersection)
 {
 	ray->end_x = dir->x;
 	ray->end_y = dir->y;
+	ray->intersection = intersection;
 }
 
 double	normalize_angle(double angle)

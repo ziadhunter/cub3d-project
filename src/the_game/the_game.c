@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/07 23:06:04 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/08 00:01:34 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ void	start_the_game(t_data *data)
 	mlx_hook(data->mlx->win, 17, 1L << 17, close_window, data);
 	mlx_loop_hook(data->mlx->init, the_animation, data);
 	mlx_loop(data->mlx->init);
-	mlx_do_key_autorepeaton(data->mlx->init);
+	// mlx_do_key_autorepeaton(data->mlx->init);
 }

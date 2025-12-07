@@ -2,15 +2,15 @@
 
 static int is_position_wall(t_data *data, double x, double y)
 {
-	double map_x = x / TILE_SIZE;
-	double map_y = y / TILE_SIZE;
+	int map_x = (int)(x / TILE_SIZE);
+	int map_y = (int)(y / TILE_SIZE);
 	
-	if (map_x < 0 || map_y < 0 || map_x >= data->map_info->map_width || map_y >= data->map_info->map_height)
+	if (map_x <= 0 || map_y <= 0 || map_x >= data->map_info->columns || map_y >= data->map_info->rows)
 		return (1);
 	
-	return (data->map[(int)map_y][(int)map_x].cell_type == WALL ||
-			(data->map[(int)map_y][(int)map_x].cell_type == DOOR &&
-				((t_door *)(data->map[(int)map_y][(int)map_x].options))->door_state >= CLOSED));
+	return (data->map[map_y][map_x].cell_type == WALL ||
+			(data->map[map_y][map_x].cell_type == DOOR &&
+				((t_door *)(data->map[map_y][map_x].options))->door_state >= CLOSED));
 }
 
 static int check_collision(t_data *data, double x, double y)
