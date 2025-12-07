@@ -24,6 +24,8 @@ typedef struct s_map_data
 	int				columns;
 	int				rows;
 	int				map_start;
+	int				map_width;
+	int				map_height;
 }					t_map_data;
 
 typedef struct s_element

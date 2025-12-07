@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:49:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/02 17:22:54 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/07 23:09:13 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,6 @@ void	initialization(t_data *data)
 			&data->new_image.bpp,
 			&data->new_image.line_length,
 			&data->new_image.endian);
+	data->map_info->map_height = data->map_info->rows * TILE_SIZE;
+	data->map_info->map_width = data->map_info->columns * TILE_SIZE;
 }

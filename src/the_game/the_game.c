@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/07 21:40:33 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/07 23:06:04 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 
 int	is_wall(t_data *data, double *x, double *y)
 {
-	double	px;
-	double	py;
-	double	rx;
-	double	ry;
+	int	px;
+	int	py;
+	int	rx;
+	int	ry;
 
-	px = data->player->x / TILE_SIZE;
-	py = data->player->y / TILE_SIZE;
-	rx = *x / TILE_SIZE;
-	ry = *y / TILE_SIZE;
-	if (data->map_info->map[(int)ry][(int)rx] != '1')
+	px = (int)(data->player->x / TILE_SIZE);
+	py = (int)(data->player->y / TILE_SIZE);
+	rx = (int)(*x / TILE_SIZE);
+	ry = (int)(*y / TILE_SIZE);
+	if (data->map[ry][rx].cell_type != WALL)
 		return (1);
-	else if (data->map_info->map[(int)ry][(int)px] != '1')
+	else if (data->map[ry][px].cell_type != WALL)
 	{
 		*x = data->player->x;
 		return (1);
 	}
-	else if (data->map_info->map[(int)py][(int)rx] != '1')
+	else if (data->map[py][rx].cell_type != WALL)
 	{
 		*y = data->player->y;
 		return (1);
@@ -47,31 +47,6 @@ void	put_pixel(t_img *data, int x, int y, int color)
 		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
 	*(unsigned int *)dst = color;
-}
-
-void	update_palyer_state(t_data *data, t_player *player)
-{
-	double	x;
-	double	y;
-
-	x = player->x;
-	y = player->y;
-	x += ((cos(player->rotation_angle) * player->walking_speed / 3)
-			* player->walk_direction.now);
-	y += ((sin(player->rotation_angle) * player->walking_speed / 3)
-			* player->walk_direction.now);
-	x += ((cos(player->rotation_angle + PI / 2) * player->walking_speed / 3)
-			* player->side_direction.now);
-	y += ((sin(player->rotation_angle + PI / 2) * player->walking_speed / 3)
-			* player->side_direction.now);
-
-	if (is_wall(data, &x, &y))
-	{
-		player->x = x;
-		player->y = y;
-	}
-	data->player->rotation_angle += (data->player->rotation_speed
-			* data->player->rotation_direction.now);
 }
 
 int	the_animation(t_data *data)
@@ -96,6 +71,8 @@ int	the_animation(t_data *data)
 void	start_the_game(t_data *data)
 {
 	initialization(data);
+	load_game_data(data);
+	data->map = create_map(data, data->map_info->map);
 	mlx_do_key_autorepeatoff(data->mlx->init);
 	mlx_hook(data->mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(data->mlx->win, 3, 1L << 1, key_release, data);

@@ -84,9 +84,9 @@ typedef struct s_texture
     t_img so;
     t_img we;
     t_img ea;
-    t_img door;
     t_img close_door_btn;
     t_img open_door_btn;
+    t_img door;
     t_img door_inside;
 } t_texture;
 
@@ -147,16 +147,16 @@ typedef struct s_cell
     void *options;
 } t_cell;
 
-typedef struct s_map
-{
-    t_cell **map;
-    int w_map;
-    int h_map;
-} t_map;
+// typedef struct s_map
+// {
+//     t_cell **map;
+//     int w_map;
+//     int h_map;
+// } t_map;
 
 typedef struct s_data
 {
-    t_list      *doors_list;
+    t_dlist      *doors_list;
     t_texture   textures;
     t_img       wall;
     t_mlx       *mlx;
@@ -164,8 +164,12 @@ typedef struct s_data
     t_player    *player;
 	t_ray		**rays;
     t_map_data       *map_info;
+    t_cell          **map;
 }   t_data;
 
+void load_game_data(t_data *data);
 void	start_the_game(t_data *data);
+t_cell  **create_map(t_data *data, char **char_map);
+void	update_palyer_state(t_data *data, t_player *player);
 
 #endif

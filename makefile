@@ -12,6 +12,10 @@ SRC = cub3d.c \
 	src/parsing/parsing_the_map.c \
 	src/parsing/parsing_utils.c \
 	src/parsing/parsing.c \
+	src/the_game/load_game.c \
+	src/the_game/map_convert.c \
+	src/the_game/player_movement.c \
+	src/the_game/dlist.c \
 	src/the_game/the_game.c \
 	src/the_game/mini_map.c src/the_game/mini_map_utils.c \
 	src/the_game/initialization.c src/the_game/free_and_exit.c\
@@ -49,5 +53,22 @@ fclean: clean
 	$(MAKE) fclean -C src/libft
 
 re: fclean all
+
+run: re
+	clear
+	./$(NAME) maps/good/cheese_maze.cub
+	make fclean
+
+gdb: all
+	clear
+	valgrind --leak-check=full -s ./$(NAME) maps/good/cheese_maze.cub
+	make fclean
+
+git: fclean
+	@echo "Enter commit message: "; \
+	read var; \
+	git add .; \
+	git commit -m "$$var"; \
+	git push
 
 .PHONY: clean fclean all re bonus
