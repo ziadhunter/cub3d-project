@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:41:23 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/07 21:42:12 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/07 21:44:26 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int	main(int argc, char *argv[])
 {
-	int		i;
+	// int		i;
 	int		j;
 	t_data	*data;
 	t_map_data	*map;
 
-	i = 0;
+	// i = 0;
 	j = 0;
 	if (argc == 2)
 	{
