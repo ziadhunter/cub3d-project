@@ -118,6 +118,9 @@ typedef struct s_ray
 	int end_y;
     int intersection;
     t_direction ray_direction;
+    t_img *hit_cell;
+    int x_offset;
+    int y_offset;
 } t_ray;
 
 typedef struct s_move

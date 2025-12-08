@@ -3,38 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   projaction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:46:07 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/02 14:37:05 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/08 01:31:39 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 #include <rendring.h>
 
-void	render_wall(t_data *data, int x, int y, int wall_hight)
+int get_color(t_img *wall, int x, int y)
+{
+	return (*(unsigned int *)(wall->addr + (y * wall->line_length + x
+						* (wall->bpp / 8))));
+}
+
+int distance_from_top(int i, int wall_hight)
+{
+	return (i + (wall_hight / 2) - (WIN_HEIGHT / 2));
+}
+
+void	render_column(t_data *data, int x, int y, int wall_hight)
 {
 	int	i;
 	int	tmp;
+	t_ray *ray;
 
 	i = 0;
 	tmp = y + wall_hight;
+	if (tmp > WIN_HEIGHT)
+		tmp = WIN_HEIGHT;
+	ray = data->rays[x];
 	while (i < y)
-	{
-		put_pixel(&data->new_image, x, i, WHITE);
-		i++;
-	}
+		put_pixel(&data->new_image, x, i++, WHITE);
+	get_info_about_target_cell(data, ray);
 	while (i < tmp)
 	{
-		put_pixel(&data->new_image, x, i, BLUE);
+			ray->y_offset = distance_from_top(i, wall_hight) * ((float)TILE_SIZE / wall_hight);
+			put_pixel(&data->new_image, x, i, get_color(ray->hit_cell, ray->x_offset, ray->y_offset));
 		i++;
 	}
 	while (i < WIN_HEIGHT)
-	{
-		put_pixel(&data->new_image, x, i, BLACK);
-		i++;
-	}
+		put_pixel(&data->new_image, x, i++, BLACK);
 }
 
 void	projaction(t_data *data)
@@ -55,10 +66,11 @@ void	projaction(t_data *data)
 		ray_distance = cos(ray->ray_angle - data->player->rotation_angle)
 			* ray_distance;
 		wall_hight = (TILE_SIZE / ray_distance) * distance_projaction_plane;
-		if (wall_hight > WIN_HEIGHT)
-			wall_hight = WIN_HEIGHT;
-		render_wall(data, i, (WIN_HEIGHT / 2) - ((int)wall_hight / 2),
+		render_column(data, i, (WIN_HEIGHT / 2) - ((int)wall_hight / 2),
 			(int)wall_hight);
 		i++;
 	}
+	// UNCOMMENT: after implementing open/close button
+	// if (player->is_looking_at_door == true)
+	//     diplay_btn_msg(data);
 }

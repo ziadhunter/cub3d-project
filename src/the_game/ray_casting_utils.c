@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:38:43 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/07 23:58:35 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/08 01:55:03 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 void	facing_direction(double ray_angle, t_ray *ray)
 {
 	ray->ray_direction.y = 1;
-	ray->ray_direction.x = -1;
+	ray->ray_direction.x = 1;
 	if (ray_angle > 0 && ray_angle < PI)
 		ray->ray_direction.y = -1;
-	if (ray_angle < 0.5 * PI || ray_angle > 1.5 * PI)
-		ray->ray_direction.x = 1;
+	if (ray_angle > 0.5 * PI && ray_angle < 1.5 * PI)
+		ray->ray_direction.x = -1;
 }
 
 
@@ -30,7 +30,6 @@ int is_door(t_data *data, double x, double y, double offset)
 	t_door *door;
 	int rx = (int)(x / TILE_SIZE);
 	int ry = (int)(y / TILE_SIZE);
-	// int offset_i = (int)floor(offset) % TILE_SIZE;
 
 	if (!(x >= 0 && x < data->map_info->map_width
 		&& y >= 0 && y < data->map_info->map_height))
@@ -41,7 +40,7 @@ int is_door(t_data *data, double x, double y, double offset)
 		door = (t_door *)(cell->options);
 		if (door->is_valid == false)
 			return (NONE);
-		if (((int)(offset) % TILE_SIZE) < door->door_position) // TODO: send the hx from the function before for less ifs 
+		if (((int)(offset) % TILE_SIZE) < door->door_position) 
 			return (DOOR);
 	}
 	return (NONE);
@@ -49,14 +48,23 @@ int is_door(t_data *data, double x, double y, double offset)
 
 int	wall(t_data *data, double x, double y)
 {
-	double	rx;
-	double	ry;
+	t_cell *cell;
+	t_door *door;
+	double rx = x / TILE_SIZE;
+	double ry = y / TILE_SIZE;
 
-	rx = x / TILE_SIZE;
-	ry = y / TILE_SIZE;
-	if (data->map_info->map[(int)ry][(int)rx] != '0')
-		return (1);
-	return (0);
+	cell = &(data->map[(int)ry][(int)rx]);
+	if (cell->cell_type == WALL)
+		return (WALL);
+	else if (cell->cell_type == DOOR)
+	{
+		door = cell->options;
+		if (door->is_valid == false)
+			return (WALL);
+		return (DOOR);
+	}
+
+	return (NONE);
 }
 
 void	insert_end_ray(t_ray *ray, t_direction *dir, int intersection)

@@ -14,6 +14,7 @@ SRC = cub3d.c \
 	src/parsing/parsing.c \
 	src/the_game/load_game.c \
 	src/the_game/map_convert.c \
+	src/the_game/projection_utils.c \
 	src/the_game/player_movement.c \
 	src/the_game/dlist.c \
 	src/the_game/the_game.c \

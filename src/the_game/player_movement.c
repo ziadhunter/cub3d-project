@@ -57,4 +57,5 @@ void	update_palyer_state(t_data *data, t_player *player)
 
 	data->player->rotation_angle += (data->player->rotation_speed
 			* data->player->rotation_direction.now);
+	data->player->rotation_angle = normalize_angle(data->player->rotation_angle);
 }

@@ -29,5 +29,6 @@ void find_vertical_intersiction(
 	t_data *data, double ray_angle, t_ray *ray, t_direction *vert_inter);
 void	define_ray_position(t_data *data, double ray_angle, t_ray *ray);
 void	creat_ray_casting(t_data *data);
+void get_info_about_target_cell(t_data *data, t_ray *ray);
 
 #endif

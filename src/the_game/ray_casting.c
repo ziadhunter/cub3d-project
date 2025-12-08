@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 12:01:00 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/07 23:59:42 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/08 01:48:54 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	find_horizontal_intersiction(
 {
 	t_ray_info ray_info;
 
-	if (fabs(tan(ray_angle)) < 1e-6)
+	if (fabs(tan(ray_angle)) < VERTICAL_RAY_THRESHOLD)
 		return ;
 	ray_info.y_intr = floor(data->player->y / TILE_SIZE) * TILE_SIZE;
 	if (ray->ray_direction.y < 0)
