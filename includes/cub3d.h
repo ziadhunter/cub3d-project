@@ -129,6 +129,29 @@ typedef struct s_move
 	int before;
 } t_move;
 
+typedef struct s_gun
+{
+    // i -> index of current image
+    // n -> n number of total images in an xpm file
+    t_img gun_move;
+    t_img gun_fire;
+    t_img gun_reload;
+    t_img knif;
+    t_img knif_attack;
+    t_img knif_reload;
+    int     knif_i;
+    int     knif_n;
+    int     gm_i;
+    int     gm_n;
+    int     gf_i;
+    int     gf_n;
+    int     gr_i;
+    int     gr_n;
+    int     chambre_size;
+    int     bullets_in_chamber;
+    t_img   *current_gun;
+} t_gun;
+
 typedef struct s_player
 {
 	double			x;
@@ -142,6 +165,7 @@ typedef struct s_player
 	double			rotation_speed;
     bool            is_looking_at_door;
     t_door          *door;
+    t_gun           guns;
 }					t_player;
 
 typedef struct s_cell
