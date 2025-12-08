@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 12:01:00 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/08 01:48:54 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/08 16:29:45 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ void	define_ray_position(t_data *data, double ray_angle, t_ray *ray)
 	t_direction	horizontal_inters;
 	t_direction	vertical_inters;
 
-	horizontal_inters.x = 0;
-	horizontal_inters.y = 0;
-	vertical_inters.x = 0;
-	vertical_inters.y = 0;
+	horizontal_inters.x = 1000000000.0;
+    horizontal_inters.y = 1000000000.0;
+    vertical_inters.x = 1000000000.0;
+    vertical_inters.y = 1000000000.0;
 	facing_direction(ray_angle, ray);
 	find_horizontal_intersiction(data, ray_angle, ray, &horizontal_inters);
 	find_vertical_intersiction(data, ray_angle, ray, &vertical_inters);
