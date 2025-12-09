@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_game.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/08 00:01:34 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/09 16:42:37 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,11 @@ int	the_animation(t_data *data)
 	update_palyer_state(data, data->player);
 	creat_ray_casting(data);
 	projaction(data);
-	render_mini_map(data);
+	render_mini_map(data);	
+	if (data->player->gun_or_knife == 1)
+		render_gun(data);
+	else
+		render_knife(data);
 	mlx_put_image_to_window(data->mlx->init, data->mlx->win,
 		data->new_image.img, 0, 0);
 	l++;

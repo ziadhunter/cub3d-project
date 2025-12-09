@@ -136,21 +136,29 @@ typedef struct s_gun
     t_img gun_move;
     t_img gun_fire;
     t_img gun_reload;
-    t_img knif;
-    t_img knif_attack;
-    t_img knif_reload;
-    int     knif_i;
-    int     knif_n;
+    t_img gun_show;
+    char    gun_state;
     int     gm_i;
     int     gm_n;
     int     gf_i;
     int     gf_n;
     int     gr_i;
     int     gr_n;
+    int     gun_shot;
     int     chambre_size;
     int     bullets_in_chamber;
-    t_img   *current_gun;
 } t_gun;
+
+typedef struct s_knife
+{
+    t_img   knife_move;
+    t_img   knife_strike;
+    int     knife_state;
+    int     knif_m_i;
+    int     knif_m_n;
+    int     knif_s_i;
+    int     knif_s_n;
+} t_knife;
 
 typedef struct s_player
 {
@@ -165,7 +173,9 @@ typedef struct s_player
 	double			rotation_speed;
     bool            is_looking_at_door;
     t_door          *door;
-    t_gun           guns;
+    int             gun_or_knife;
+    t_gun           *gun;
+    t_knife         *knife;
 }					t_player;
 
 typedef struct s_cell
