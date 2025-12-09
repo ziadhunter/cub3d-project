@@ -155,9 +155,9 @@ void door_check_using_rays(t_data *data)
 
     // data->player->is_looking_at_door = false;
     final_dist = check_door_intersection(data, &mid_ray);
-    printf("%f\n", final_dist);
-    // data->player->is_looking_at_door = check_door(mid_ray.end_x, mid_ray.end_y, final_dist, data);
-    data->player->is_looking_at_door = false;
+    // printf("%f\n", final_dist);
+    data->player->is_looking_at_door = check_door(mid_ray.end_x, mid_ray.end_y, final_dist, data);
+    // data->player->is_looking_at_door = false;
     y_end = y + ((mid_ray.end_y - data->player->y) / MINIMAP_SCALE);
     x_end = x + ((mid_ray.end_x - data->player->x) / MINIMAP_SCALE);
     render_mini_map_rays(data, (t_cord){x, y}, x_end, y_end);

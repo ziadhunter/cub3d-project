@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:46:07 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/09 04:13:56 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/09 20:01:47 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,6 @@ void	projaction(t_data *data)
 		i++;
 	}
 	// UNCOMMENT: after implementing open/close button
-	// if (data->player->is_looking_at_door == true)
-	//     diplay_btn_msg(data);
+	if (data->player->is_looking_at_door == true)
+	    diplay_btn_msg(data);
 }
