@@ -13,7 +13,6 @@
 /* Cub3d header files */
 #include <parsing.h>
 #include <door.h>
-#include <list.h>
 #include <keys.h>
 #include <ray_cast.h>
 
@@ -148,13 +147,6 @@ typedef struct s_cell
     t_cell_type cell_type;
     void *options;
 } t_cell;
-
-// typedef struct s_map
-// {
-//     t_cell **map;
-//     int w_map;
-//     int h_map;
-// } t_map;
 
 typedef struct s_data
 {
