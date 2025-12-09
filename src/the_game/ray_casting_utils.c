@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:38:43 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/08 01:55:03 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/09 04:17:46 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int is_door(t_data *data, double x, double y, double offset)
 	int rx = (int)(x / TILE_SIZE);
 	int ry = (int)(y / TILE_SIZE);
 
-	if (!(x >= 0 && x < data->map_info->map_width
-		&& y >= 0 && y < data->map_info->map_height))
+	if (!(rx >= 0 && rx < data->map_info->columns
+		&& ry >= 0 && ry < data->map_info->rows))
 		return (NONE);
 	cell = &(data->map[ry][rx]);
 	if (cell->cell_type == DOOR)
