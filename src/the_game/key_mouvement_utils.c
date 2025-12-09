@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_mouvement_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:15:59 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/03 16:39:13 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/09 02:32:30 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,24 +80,28 @@ void	rotation_release(int keycode, t_data *data)
 
 void	mouvement_release(int keycode, t_data *data)
 {
-	if (keycode == UP_BUTTON && data->player->walk_direction.now == 1)
+	if (keycode == UP_BUTTON)
 	{
-		data->player->walk_direction.now = data->player->walk_direction.before;
+		if (data->player->walk_direction.now == 1)
+			data->player->walk_direction.now = data->player->walk_direction.before;
 		data->player->walk_direction.before = 0;
 	}
-	else if (keycode == DOWN_BUTTON && data->player->walk_direction.now == -1)
+	else if (keycode == DOWN_BUTTON)
 	{
-		data->player->walk_direction.now = data->player->walk_direction.before;
+		if (data->player->walk_direction.now == -1)
+			data->player->walk_direction.now = data->player->walk_direction.before;
 		data->player->walk_direction.before = 0;
 	}
-	else if (keycode == RIGHT_BUTTON && data->player->side_direction.now == 1)
+	else if (keycode == RIGHT_BUTTON)
 	{
-		data->player->side_direction.now = data->player->side_direction.before;
+		if (data->player->side_direction.now == 1)
+			data->player->side_direction.now = data->player->side_direction.before;
 		data->player->side_direction.before = 0;
 	}
-	else if (keycode == LEFT_BUTTON && data->player->side_direction.now == -1)
+	else if (keycode == LEFT_BUTTON)
 	{
-		data->player->side_direction.now = data->player->side_direction.before;
+		if (data->player->side_direction.now == -1)
+			data->player->side_direction.now = data->player->side_direction.before;
 		data->player->side_direction.before = 0;
 	}
 }
