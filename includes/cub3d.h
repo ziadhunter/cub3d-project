@@ -55,7 +55,6 @@
 typedef enum e_cell_type
 {
     NONE,
-    SPACE,
     WALL,
     DOOR
 } t_cell_type;

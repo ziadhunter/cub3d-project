@@ -47,8 +47,8 @@ t_cell  **create_map(t_data *data, char **char_map)
             }
             else if (char_map[i][j] == '1')
                 map[i][j].cell_type = WALL;
-            else if (char_map[i][j] == ' ')
-                map[i][j].cell_type = SPACE;
+            else
+                map[i][j].cell_type = NONE;
             j++;
         }
         i++;
