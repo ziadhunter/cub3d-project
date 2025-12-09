@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:51:17 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/04 11:23:38 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/09 04:37:14 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	check_element_position(t_map_data *map_info, t_player **player, char **line
 	if (lines[j][i] == 'N' || lines[j][i] == 'S' || lines[j][i] == 'W'
 		|| lines[j][i] == 'E')
 	{
-		lines[j][i] = '0';
+		// lines[j][i] = '0';
 		if (!(*player))
 			*player = initialize_player(lines[j][i], i, j);
 		else

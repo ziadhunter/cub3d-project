@@ -42,7 +42,7 @@ void get_info_about_target_cell(t_data *data, t_ray *ray)
         ray->x_offset = ray->end_y % TILE_SIZE;
         if (ray->ray_direction.x > 0)
         {
-            if (data->map[(int)(ray->end_y / TILE_SIZE)][(int)((ray->end_x + 2) / TILE_SIZE)].cell_type == DOOR)
+            if (data->map[(int)(ray->end_y / TILE_SIZE)][(int)((ray->end_x - 2) / TILE_SIZE)].cell_type == DOOR)
                 ray->hit_cell = &data->textures.door_inside;
             else
                 ray->hit_cell = &data->textures.no;
@@ -50,7 +50,7 @@ void get_info_about_target_cell(t_data *data, t_ray *ray)
         }
         else
         {
-            if (data->map[(int)(ray->end_y / TILE_SIZE)][(int)((ray->end_x - 2) / TILE_SIZE)].cell_type == DOOR)
+            if (data->map[(int)(ray->end_y / TILE_SIZE)][(int)((ray->end_x + 2) / TILE_SIZE)].cell_type == DOOR)
                 ray->hit_cell = &data->textures.door_inside;
             else
                 ray->hit_cell = &data->textures.so;
