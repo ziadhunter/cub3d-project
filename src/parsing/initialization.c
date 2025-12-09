@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:24:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/01 16:38:01 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/09 20:00:25 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ t_player	*initialize_player(char c, int x, int y)
 		player->rotation_angle = 3 * (PI / 2);
 	if (c == 'W')
 		player->rotation_angle = PI;
-	player->walking_speed = 0.5;
-	player->rotation_speed = (PI / 180) / 2;
+	player->walking_speed = 5;
+	player->rotation_speed = (PI / 180);
 
 	player->walk_direction.now = 0;
 	player->walk_direction.before = 0;

@@ -5,7 +5,7 @@
 int is_dwall(t_data *data, t_ray_info *ray_info, t_direction *intr)
 {
 	int rx = (int)(ray_info->x_intr / TILE_SIZE);
-	int ry = (int)(ray_info->y_step / TILE_SIZE);
+	int ry = (int)(ray_info->y_intr / TILE_SIZE);
 
 	if (data->map[ry][rx].cell_type == WALL || data->map[ry][rx].cell_type == DOOR)
     {
@@ -38,7 +38,7 @@ double find_vx_intersection(t_data *data)
 
 void find_v_inter(t_data *data, t_ray *ray, t_direction *v_intr)
 {
-    t_ray_info ray_info;
+	t_ray_info ray_info;
 
 	if (fabs(cos(ray->ray_angle)) < VERTICAL_RAY_THRESHOLD)
 		return ;
@@ -61,7 +61,8 @@ void find_v_inter(t_data *data, t_ray *ray, t_direction *v_intr)
     if ((ray->ray_direction.y > 0 && ray_info.y_step > 0) || (ray->ray_direction.x < 0 && ray_info.y_step < 0))
         ray_info.y_step *= -1;
 
-    while ((ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width) && (ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->map_height * TILE_SIZE))
+    while ((ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width)
+        && (ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->map_height))
     {
         if (is_dwall(data, &ray_info, v_intr))
             break;
@@ -72,7 +73,7 @@ void find_v_inter(t_data *data, t_ray *ray, t_direction *v_intr)
 
 void find_h_inter(t_data *data, t_ray *ray, t_direction *h_intr)
 {
-    t_ray_info ray_info;
+	t_ray_info ray_info;
 
 	if (fabs(tan(ray->ray_angle)) < VERTICAL_RAY_THRESHOLD)
 		return ;
@@ -88,7 +89,8 @@ void find_h_inter(t_data *data, t_ray *ray, t_direction *h_intr)
         ray_info.x_step *= -1;
     if (ray->ray_direction.y > 0)
         ray_info.y_intr--;
-    while ((ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width) && (ray_info.y_intr >= 0 && data->map_info->map_height))
+    while ((ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width)
+        && (ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->map_height))
     {
         if (is_dwall(data, &ray_info, h_intr))
             break;
@@ -102,10 +104,10 @@ double check_door_intersection(t_data *data, t_ray *s_ray)
     t_direction h_inter, v_inter;
     double h_dist, v_dist;
 
-    h_inter.x = -1;
-    h_inter.y = -1;
-    v_inter.x = -1;
-    v_inter.y = -1;
+    h_inter.x = 10000000000.0;
+    h_inter.y = 10000000000.0;
+    v_inter.x = 10000000000.0;
+    v_inter.y = 10000000000.0;
     facing_direction(s_ray->ray_angle, s_ray);
     find_h_inter(data, s_ray, &h_inter);
     find_v_inter(data, s_ray, &v_inter);
@@ -142,19 +144,23 @@ bool check_door(int x, int y, double final_dist, t_data *data)
     return (false);
 }
 
+void	render_mini_map_rays(t_data *data, t_cord cord, double z, double w);
+
 void door_check_using_rays(t_data *data)
 {
     t_ray mid_ray = {.start_x = data->player->x, .start_y = data->player->y, .ray_angle = data->player->rotation_angle};
     double final_dist;
-    // double x = X_START_POINT + (MAP_SIZE / 2);
-    // double y = Y_START_POINT + (MAP_SIZE / 2);
+    double x = X_START_POINT + (MAP_SIZE / 2), x_end;
+    double y = Y_START_POINT + (MAP_SIZE / 2), y_end;
 
     // data->player->is_looking_at_door = false;
     final_dist = check_door_intersection(data, &mid_ray);
-    data->player->is_looking_at_door = check_door(mid_ray.end_x, mid_ray.end_y, final_dist, data);
-    // y_end = y + ((mid_ray.end_y - data->player->y) / MINIMAP_SCALE);
-    // x_end = x + ((mid_ray.end_x - data->player->x) / MINIMAP_SCALE);
-    // render_mini_map_rays(data, x, y, x_end, y_end);
+    printf("%f\n", final_dist);
+    // data->player->is_looking_at_door = check_door(mid_ray.end_x, mid_ray.end_y, final_dist, data);
+    data->player->is_looking_at_door = false;
+    y_end = y + ((mid_ray.end_y - data->player->y) / MINIMAP_SCALE);
+    x_end = x + ((mid_ray.end_x - data->player->x) / MINIMAP_SCALE);
+    render_mini_map_rays(data, (t_cord){x, y}, x_end, y_end);
 }
 
 void update_door_state(t_data *data)
