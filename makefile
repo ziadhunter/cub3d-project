@@ -1,8 +1,9 @@
-CC = cc
+CC = cc -g3
 CFLAGS = -Wall -Werror -Wextra
 CMLX = -lmlx -lXext -lX11 -lm
 
 INCLUDE = includes
+MAP_NAME = full_map
 
 SRC = cub3d.c \
 	src/parsing/extract_element_utils.c \
@@ -18,6 +19,7 @@ SRC = cub3d.c \
 	src/the_game/player_movement.c \
 	src/the_game/dlist.c \
 	src/the_game/the_game.c \
+	src/the_game/door_check.c \
 	src/the_game/mini_map.c src/the_game/mini_map_utils.c \
 	src/the_game/initialization.c src/the_game/free_and_exit.c\
 	src/the_game/key_mouvement.c src/the_game/key_mouvement_utils.c\
@@ -57,12 +59,12 @@ re: fclean all
 
 run: re
 	clear
-	./$(NAME) maps/good/cheese_maze.cub
+	./$(NAME) maps/good/$(MAP_NAME).cub
 	make fclean
 
 gdb: all
 	clear
-	valgrind --leak-check=full -s ./$(NAME) maps/good/cheese_maze.cub
+	valgrind --leak-check=full -s ./$(NAME) maps/good/$(MAP_NAME).cub
 	make fclean
 
 git: fclean
