@@ -27,7 +27,7 @@ t_cell  **create_map(t_data *data, char **char_map)
     int i, j;
 
     map = (t_cell **) malloc(data->map_info->rows * sizeof(t_cell *));
-    
+    data->doors_list = NULL;
     i = 0;
     while (i < data->map_info->rows)
     {
