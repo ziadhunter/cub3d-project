@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:46:07 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/08 01:31:39 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/09 04:13:56 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,34 @@ void	render_column(t_data *data, int x, int y, int wall_hight)
 		put_pixel(&data->new_image, x, i++, BLACK);
 }
 
+void diplay_btn_msg(t_data *data)
+{
+    int x, y;
+    int i, j;
+    unsigned int color;
+    t_img *door_btn;
+
+    x = (WIN_WIDTH / 2) - (120 / 2);
+    y = (WIN_HEIGHT / 4) - (39 / 2);
+    if (data->player->door->door_state <= OPENED)
+        door_btn = &(data->textures.close_door_btn);
+    else
+        door_btn = &(data->textures.open_door_btn);
+    j = 0;
+    while (j < door_btn->height)
+    {
+        i = 0;
+        while (i < door_btn->width)
+        {
+            color = get_color(door_btn, i, j);
+            if (color != 0xFF000000)
+                put_pixel(&data->new_image, x + i, y + j, color);
+            i++;
+        }
+        j++;
+    }
+}
+
 void	projaction(t_data *data)
 {
 	int		i;
@@ -71,6 +99,6 @@ void	projaction(t_data *data)
 		i++;
 	}
 	// UNCOMMENT: after implementing open/close button
-	// if (player->is_looking_at_door == true)
+	// if (data->player->is_looking_at_door == true)
 	//     diplay_btn_msg(data);
 }
