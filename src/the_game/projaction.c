@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:46:07 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/09 20:01:47 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/10 01:42:31 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int distance_from_top(int i, int wall_hight)
 
 void	render_column(t_data *data, int x, int y, int wall_hight)
 {
-	int	i;
+	int	i, color;
 	int	tmp;
 	t_ray *ray;
 
@@ -35,8 +35,11 @@ void	render_column(t_data *data, int x, int y, int wall_hight)
 	if (tmp > WIN_HEIGHT)
 		tmp = WIN_HEIGHT;
 	ray = data->rays[x];
+	color = WHITE;
+	if (ray->intersection == HORIZONTAL)
+		color = RED;
 	while (i < y)
-		put_pixel(&data->new_image, x, i++, WHITE);
+		put_pixel(&data->new_image, x, i++, color);
 	get_info_about_target_cell(data, ray);
 	while (i < tmp)
 	{
