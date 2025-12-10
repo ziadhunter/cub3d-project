@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:15:59 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/03 16:39:13 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/10 18:49:03 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,40 @@ void	mouvement_release(int keycode, t_data *data)
 	{
 		data->player->side_direction.now = data->player->side_direction.before;
 		data->player->side_direction.before = 0;
+	}
+}
+
+void switch_weapon(int key, t_data *data)
+{
+	if (key == HOLD_GUN )
+	{
+		if (data->player->gun_or_knife)
+			return;
+		else 
+		{
+			data->player->gun->gun_state = 'S';
+			data->player->gun_or_knife = 1;
+		}
+	}
+	else
+	{
+		if (!data->player->gun_or_knife)
+			return;
+		else 
+		{
+			data->player->knife->knife_state = 'S';
+			data->player->gun_or_knife = 0;
+		}
+	}
+}
+
+void reload_gun(int key, t_data *data)
+{
+	if (data->player->gun_or_knife)
+	{
+		if (data->player->gun->gun_state == 'N')
+		{
+			data->player->gun->gun_state = 'R';
+		}
 	}
 }

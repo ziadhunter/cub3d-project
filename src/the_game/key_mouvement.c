@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_mouvement.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/07 21:41:07 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:11:51 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,18 @@ int	key_press(int key, t_data *data)
 {
 	if (key == ESC)
 		free_all_data_and_exit(data, "you exit the game!!\n");
+	else if (key == HOLD_GUN || key == HOLD_KNIFE)
+		switch_weapon(key, data);
+	else if (key == RELOAD)
+		reload_gun(key, data);
 	else if (key == SPEED_DOWN || key == SPEED_UP || key == R_SPEED_DOWN || key == R_SPEED_UP)
 		speed_adjustment(key, data);
 	else if (key == LEFT_BUTTON || key == RIGHT_BUTTON || key == DOWN_BUTTON || key == UP_BUTTON)
 		mouvement_adjustment(key, data);
 	else if (key == LEFT_ARROW || key == RIGHT_ARROW)
 		rotation_adjustment(key, data);
+	else if (key == RELOAD)
+		reload_gun();
 	return (0);
 }
 

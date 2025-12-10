@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:24:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/09 16:27:13 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/10 16:36:06 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void initialize_gun_knife(t_player *player)
 	gun->gm_n = 6;
 	gun->gr_i = 0;
 	gun->gr_n = 6;
-	gun->gun_shot = 1;
+	gun->gs_i = 0;
+	gun->gs_n = 6;
 	knife->knife_state = 'N';
 	knife->knif_m_i = 0;
 	knife->knif_m_n = 6;
@@ -100,13 +101,13 @@ t_player	*initialize_player(char c, int x, int y)
 		player->rotation_angle = PI;
 	player->walking_speed = 0.5;
 	player->rotation_speed = (PI / 180) / 2;
-
 	player->walk_direction.now = 0;
 	player->walk_direction.before = 0;
 	player->side_direction.now = 0;
 	player->side_direction.before = 0;
 	player->rotation_direction.now = 0;
 	player->rotation_direction.before = 0;
+	player->gun_or_knife = 1;
 	initialize_gun_knife(player);
 	return (player);
 }

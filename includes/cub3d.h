@@ -144,7 +144,8 @@ typedef struct s_gun
     int     gf_n;
     int     gr_i;
     int     gr_n;
-    int     gun_shot;
+    int     gs_i;
+    int     gs_n;
     int     chambre_size;
     int     bullets_in_chamber;
 } t_gun;
@@ -152,10 +153,13 @@ typedef struct s_gun
 typedef struct s_knife
 {
     t_img   knife_move;
-    t_img   knife_strike;
+    t_img   knife_hit;
+    t_img   knife_show;
     int     knife_state;
     int     knif_m_i;
     int     knif_m_n;
+    int     knif_h_i;
+    int     knif_h_n;
     int     knif_s_i;
     int     knif_s_n;
 } t_knife;
