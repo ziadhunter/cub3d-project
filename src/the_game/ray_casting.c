@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 12:01:00 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/08 01:48:54 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/09 20:11:59 by radouane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	find_horizontal_intersiction(
 		ray_info.x_step *= -1;
 	if (ray->ray_direction.y > 0)
 		ray_info.y_intr--;
-	while (ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->columns * TILE_SIZE
-		&& ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->rows * TILE_SIZE)
+	while (ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width
+		&& ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->map_height)
 	{
 		if (targeted_cell_not_empty(data, ray_info, horz_inter))
 			return ;
@@ -120,10 +120,10 @@ void	define_ray_position(t_data *data, double ray_angle, t_ray *ray)
 	t_direction	horizontal_inters;
 	t_direction	vertical_inters;
 
-	horizontal_inters.x = 0;
-	horizontal_inters.y = 0;
-	vertical_inters.x = 0;
-	vertical_inters.y = 0;
+	horizontal_inters.x = 100000000000.0;
+	horizontal_inters.y = 100000000000.0;
+	vertical_inters.x = 100000000000.0;
+	vertical_inters.y = 100000000000.0;
 	facing_direction(ray_angle, ray);
 	find_horizontal_intersiction(data, ray_angle, ray, &horizontal_inters);
 	find_vertical_intersiction(data, ray_angle, ray, &vertical_inters);

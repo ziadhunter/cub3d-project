@@ -1,5 +1,14 @@
 #include <cub3d.h>
 
+
+// static int pos_mod(int a, int b)
+// {
+//     int r = a % b;
+//     if (r < 0)
+//         r += b;
+//     return (r);
+// }
+
 void get_info_about_target_cell(t_data *data, t_ray *ray)
 {
     t_door *door;
@@ -46,7 +55,6 @@ void get_info_about_target_cell(t_data *data, t_ray *ray)
                 ray->hit_cell = &data->textures.door_inside;
             else
                 ray->hit_cell = &data->textures.no;
-            ray->x_offset = (TILE_SIZE - ray->x_offset);
         }
         else
         {
@@ -54,6 +62,7 @@ void get_info_about_target_cell(t_data *data, t_ray *ray)
                 ray->hit_cell = &data->textures.door_inside;
             else
                 ray->hit_cell = &data->textures.so;
+            ray->x_offset = (TILE_SIZE - ray->x_offset);
         }
     }   
 
