@@ -1,13 +1,13 @@
 #include <cub3d.h>
 
 
-// static int pos_mod(int a, int b)
-// {
-//     int r = a % b;
-//     if (r < 0)
-//         r += b;
-//     return (r);
-// }
+static int pos_mod(int a, int b)
+{
+    int r = a % b;
+    if (r < 0)
+        r += b;
+    return (r);
+}
 
 void get_info_about_target_cell(t_data *data, t_ray *ray)
 {
@@ -20,22 +20,22 @@ void get_info_about_target_cell(t_data *data, t_ray *ray)
         {
             ray->hit_cell = &data->textures.door;
             if (ray->intersection == HORIZONTAL)
-                ray->x_offset = ray->end_x % TILE_SIZE + (TILE_SIZE - door->door_position);
+                ray->x_offset = pos_mod((int)ray->end_x, TILE_SIZE) + (TILE_SIZE - door->door_position);
             else if (ray->intersection == VERTICAL)
-                ray->x_offset = ray->end_y % TILE_SIZE + (TILE_SIZE - door->door_position);
+                ray->x_offset = pos_mod((int)ray->end_y, TILE_SIZE) + (TILE_SIZE - door->door_position);
             return ;
         }
     }
 
     if (ray->intersection == HORIZONTAL)
     {
-        ray->x_offset = ray->end_x % TILE_SIZE;
+        ray->x_offset = pos_mod((int)ray->end_x, TILE_SIZE);
         if (ray->ray_direction.y < 0)
         {
             if (data->map[(int)((ray->end_y - 2) / TILE_SIZE)][(int)(ray->end_x / TILE_SIZE)].cell_type == DOOR)
                 ray->hit_cell = &data->textures.door_inside;
             else
-                ray->hit_cell = &data->textures.ea;
+                ray->hit_cell = &data->textures.no;
             ray->x_offset = (TILE_SIZE - ray->x_offset);
         }
         else
@@ -43,25 +43,25 @@ void get_info_about_target_cell(t_data *data, t_ray *ray)
             if (data->map[(int)((ray->end_y + 2) / TILE_SIZE)][(int)(ray->end_x / TILE_SIZE)].cell_type == DOOR)
                 ray->hit_cell = &data->textures.door_inside;
             else
-                ray->hit_cell = &data->textures.we;
+                ray->hit_cell = &data->textures.so;
         }
     }
     else
     {
-        ray->x_offset = ray->end_y % TILE_SIZE;
+        ray->x_offset = pos_mod((int)ray->end_y, TILE_SIZE);
         if (ray->ray_direction.x > 0)
         {
             if (data->map[(int)(ray->end_y / TILE_SIZE)][(int)((ray->end_x - 2) / TILE_SIZE)].cell_type == DOOR)
                 ray->hit_cell = &data->textures.door_inside;
             else
-                ray->hit_cell = &data->textures.no;
+                ray->hit_cell = &data->textures.ea;
         }
         else
         {
             if (data->map[(int)(ray->end_y / TILE_SIZE)][(int)((ray->end_x + 2) / TILE_SIZE)].cell_type == DOOR)
                 ray->hit_cell = &data->textures.door_inside;
             else
-                ray->hit_cell = &data->textures.so;
+                ray->hit_cell = &data->textures.we;
             ray->x_offset = (TILE_SIZE - ray->x_offset);
         }
     }   
