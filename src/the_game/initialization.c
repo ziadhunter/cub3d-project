@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:49:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/07 23:09:13 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/11 15:00:04 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	initialization(t_data *data)
 	data->mlx->init = mlx_init();
 	data->mlx->win = mlx_new_window(data->mlx->init, WIN_WIDTH, WIN_HEIGHT,
 			"3D game");
+	mlx_mouse_hide(data->mlx->init, data->mlx->win);
 	data->new_image.img = mlx_new_image(data->mlx->init, WIN_WIDTH, WIN_HEIGHT);
 	data->new_image.addr = mlx_get_data_addr(data->new_image.img,
 			&data->new_image.bpp,

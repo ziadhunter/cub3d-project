@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/10 17:56:48 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/11 15:09:31 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,12 @@ int	the_animation(t_data *data)
 	update_palyer_state(data, data->player);
 	creat_ray_casting(data);
 	projaction(data);
-	render_mini_map(data);	
-	if (data->player->gun_or_knife == 1)
-		render_gun(data);
-	else
-		render_knife(data);
+	render_mini_map(data);
+	draw_cross_hair(data);
+	// if (data->player->gun_or_knife == 1)
+	// 	render_gun(data);
+	// else
+	// 	render_knife(data);
 	mlx_put_image_to_window(data->mlx->init, data->mlx->win,
 		data->new_image.img, 0, 0);
 	l++;
@@ -77,9 +78,9 @@ void	start_the_game(t_data *data)
 	initialization(data);
 	load_game_data(data);
 	data->map = create_map(data, data->map_info->map);
+	//??chno kadir hadi akhay radouane?
 	mlx_do_key_autorepeatoff(data->mlx->init);
-	mlx_hook(data->mlx->win, 4, 1L<<2, mouse_press, data);
-	// mlx_hook(data->mlx->win, 5, 1L<<3, mouse_release, data);
+	// mlx_hook(data->mlx->win, 4, 1L<<2, mouse_press, data);
 	mlx_hook(data->mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(data->mlx->win, 3, 1L << 1, key_release, data);
 	mlx_hook(data->mlx->win, 6, 1L << 6, mouse_move, data);

@@ -6,11 +6,12 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 18:34:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/10 18:46:16 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/11 15:08:24 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
+
 
 void	render_knife_show(t_data *data)
 {

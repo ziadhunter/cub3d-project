@@ -25,7 +25,8 @@ SRC = cub3d.c \
 	src/the_game/ray_casting_utils.c \
 	src/the_game/projaction.c \
 	src/get_next_line/get_next_line.c \
-	src/get_next_line/get_next_line_utils.c
+	src/get_next_line/get_next_line_utils.c \
+	src/the_game/mouse_event.c
 
 
 LIBFT = src/libft/libft.a

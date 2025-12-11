@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:15:59 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/10 18:49:03 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/11 15:28:33 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	speed_adjustment(int keycode, t_data *data)
 {
+	if (keycode ==  SHIFT_SPEED)
+		data->player->walking_speed += 2;
 	if (keycode == SPEED_DOWN && data->player->walking_speed > MIN_WALK_SPEED)
 		data->player->walking_speed -= 0.25;
 	if (keycode == SPEED_UP && data->player->walking_speed < MAX_WALK_SPEED)
@@ -126,13 +128,13 @@ void switch_weapon(int key, t_data *data)
 	}
 }
 
-void reload_gun(int key, t_data *data)
-{
-	if (data->player->gun_or_knife)
-	{
-		if (data->player->gun->gun_state == 'N')
-		{
-			data->player->gun->gun_state = 'R';
-		}
-	}
-}
+// void reload_gun(int key, t_data *data)
+// {
+// 	if (data->player->gun_or_knife)
+// 	{
+// 		if (data->player->gun->gun_state == 'N')
+// 		{
+// 			data->player->gun->gun_state = 'R';
+// 		}
+// 	}
+// }
