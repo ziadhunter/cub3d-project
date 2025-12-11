@@ -76,6 +76,8 @@ void	find_horizontal_intersiction(
 	if ((ray_info.x_step > 0 && ray->ray_direction.x < 0) || (ray_info.x_step < 0
 			&& ray->ray_direction.x > 0))
 		ray_info.x_step *= -1;
+	// if (ray->ray_direction.y > 0)
+	// 	ray_info.y_intr -= 1;
 	while (ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width
 		&& ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->map_height)
 	{
@@ -112,6 +114,8 @@ void	find_vertical_intersiction(
 	ray_info.y_step = TILE_SIZE * ray_tan;
 	if ((ray_info.y_step > 0 && ray->ray_direction.y > 0) || (ray_info.y_step < 0 && ray->ray_direction.y < 0))
 		ray_info.y_step *= -1;
+	// if (ray->ray_direction.x < 0)
+	// 	ray_info.x_intr -= 1;
 	while (ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width
 		&& ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->map_height)
 	{

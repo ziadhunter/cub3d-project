@@ -12,22 +12,30 @@ static int pos_mod(int a, int b)
 void get_info_about_target_cell(t_data *data, t_ray *ray)
 {
     t_door *door;
+    t_direction ray_s;
 
-    if (data->map[(int)(ray->end_y / TILE_SIZE)][(int)(ray->end_x / TILE_SIZE)].cell_type == DOOR)
+    ray_s.x = 0;
+    ray_s.y = 0;
+    if (ray->ray_direction.x < 0)
+        ray_s.x++;
+    if (ray->ray_direction.y > 0)
+        ray_s.y++;
+
+    if (data->map[(int)((ray->end_y - ray_s.y) / TILE_SIZE)][(int)((ray->end_x - ray_s.x) / TILE_SIZE)].cell_type == DOOR)
     {
-        door = (t_door *)(data->map[(int)(ray->end_y / TILE_SIZE)][(int)(ray->end_x / TILE_SIZE)].options);
+        door = (t_door *)(data->map[(int)((ray->end_y - ray_s.y) / TILE_SIZE)][(int)((ray->end_x - ray_s.x) / TILE_SIZE)].options);
         if (door->is_valid)
-        {
             ray->hit_cell = &data->textures.door;
-            if (ray->intersection == HORIZONTAL)
-                ray->x_offset = pos_mod((int)ray->end_x, TILE_SIZE) + (TILE_SIZE - door->door_position);
-            else if (ray->intersection == VERTICAL)
-                ray->x_offset = pos_mod((int)ray->end_y, TILE_SIZE) + (TILE_SIZE - door->door_position);
-            return ;
-        }
+        else
+            ray->hit_cell = &data->textures.door_inside;
+        if (ray->intersection == HORIZONTAL)
+            ray->x_offset = pos_mod((int)ray->end_x, TILE_SIZE) + (TILE_SIZE - door->door_position);
+        else if (ray->intersection == VERTICAL)
+            ray->x_offset = pos_mod((int)ray->end_y, TILE_SIZE) + (TILE_SIZE - door->door_position);
+            
     }
 
-    if (ray->intersection == HORIZONTAL)
+    else if (ray->intersection == HORIZONTAL)
     {
         ray->x_offset = pos_mod((int)ray->end_x, TILE_SIZE);
         if (ray->ray_direction.y < 0)
