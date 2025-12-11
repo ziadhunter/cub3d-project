@@ -25,6 +25,7 @@ SRC = cub3d.c \
 	src/the_game/key_mouvement.c src/the_game/key_mouvement_utils.c\
 	src/the_game/ray_casting.c \
 	src/the_game/ray_casting_utils.c \
+	src/the_game/ray_casting_utils2.c \
 	src/the_game/projaction.c \
 	src/get_next_line/get_next_line.c \
 	src/get_next_line/get_next_line_utils.c

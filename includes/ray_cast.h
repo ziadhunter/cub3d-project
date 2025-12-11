@@ -31,4 +31,9 @@ void	define_ray_position(t_data *data, double ray_angle, t_ray *ray);
 void	creat_ray_casting(t_data *data);
 void get_info_about_target_cell(t_data *data, t_ray *ray);
 
+bool ray_facing_up(t_ray *ray);
+bool ray_facing_down(t_ray *ray);
+bool ray_facing_left(t_ray *ray);
+bool ray_facing_right(t_ray *ray);
+
 #endif
