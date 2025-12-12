@@ -86,6 +86,8 @@ typedef struct s_texture
     t_img open_door_btn;
     t_img door;
     t_img door_inside;
+    int     floor_color;
+    int     ceil_color;
 } t_texture;
 
 /* Game logic*/

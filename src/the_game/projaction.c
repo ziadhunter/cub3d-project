@@ -36,7 +36,7 @@ void	render_column(t_data *data, int x, int y, int wall_hight)
 		tmp = WIN_HEIGHT;
 	ray = data->rays[x];
 	while (i < y)
-		put_pixel(&data->new_image, x, i++, *data->map_info->c);
+		put_pixel(&data->new_image, x, i++, data->textures.ceil_color);
 	get_info_about_target_cell(data, ray);
 	while (i < tmp)
 	{
@@ -45,7 +45,7 @@ void	render_column(t_data *data, int x, int y, int wall_hight)
 		i++;
 	}
 	while (i < WIN_HEIGHT)
-		put_pixel(&data->new_image, x, i++, *data->map_info->f);
+		put_pixel(&data->new_image, x, i++, data->textures.floor_color);
 }
 
 void diplay_btn_msg(t_data *data)

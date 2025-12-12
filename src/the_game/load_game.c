@@ -28,7 +28,14 @@ void load_textures(t_data *data)
     load_xpm(data, "textures/open_door_btn.xpm", &(data->textures.open_door_btn));
 }
 
+void load_colors(t_data *data)
+{
+    data->textures.floor_color = (data->map_info->f[0] << 16) | (data->map_info->f[1] << 8) | data->map_info->f[2];
+    data->textures.ceil_color = (data->map_info->c[0] << 16) | (data->map_info->c[1] << 8) | data->map_info->c[2];
+}
+
 void load_game_data(t_data *data)
 {
     load_textures(data);
+    load_colors(data);
 }
