@@ -63,6 +63,7 @@ int	the_animation(t_data *data)
 	projaction(data);
 	render_mini_map(data);
 	door_check_using_rays(data);
+	update_all_doors_state(data->doors_list);
 	mlx_put_image_to_window(data->mlx->init, data->mlx->win,
 		data->new_image.img, 0, 0);
 	l++;

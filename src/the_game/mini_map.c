@@ -88,6 +88,6 @@ void	render_mini_map(t_data *data)
 {
 	base_of_mini_map(data);
 	mini_map(data, X_START_POINT, Y_START_POINT, WHITE);
-	render_rays_mini_map(data, 0);
+	// render_rays_mini_map(data, 0);
 	render_player_mini_map(data);
 }

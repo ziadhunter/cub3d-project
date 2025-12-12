@@ -8,9 +8,15 @@ static int is_position_wall(t_data *data, double x, double y)
 	if (map_x <= 0 || map_y <= 0 || map_x >= data->map_info->columns || map_y >= data->map_info->rows)
 		return (1);
 	
-	return (data->map[map_y][map_x].cell_type == WALL ||
-			(data->map[map_y][map_x].cell_type == DOOR &&
-				((t_door *)(data->map[map_y][map_x].options))->door_state >= CLOSED));
+	if (data->map[map_y][map_x].cell_type == WALL)
+		return (true);
+	if (data->map[map_y][map_x].cell_type == DOOR)
+	{
+		if (((t_door *)(data->map[map_y][map_x].options))->is_valid == false)
+			return (true);
+		return (((t_door *)(data->map[map_y][map_x].options))->door_state >= CLOSED);
+	}
+	return (false);
 }
 
 static int check_collision(t_data *data, double x, double y)
@@ -18,7 +24,6 @@ static int check_collision(t_data *data, double x, double y)
 	double buffer = 10.0;
 	if (is_position_wall(data, x, y))
 		return (1);
-	// // Check 4 diagonal corners
 	if (is_position_wall(data, x - buffer, y - buffer) ||
 		is_position_wall(data, x + buffer, y - buffer) ||
 		is_position_wall(data, x - buffer, y + buffer) ||

@@ -26,7 +26,7 @@ int distance_from_top(int i, int wall_hight)
 
 void	render_column(t_data *data, int x, int y, int wall_hight)
 {
-	int	i, color;
+	int	i;
 	int	tmp;
 	t_ray *ray;
 
@@ -35,11 +35,8 @@ void	render_column(t_data *data, int x, int y, int wall_hight)
 	if (tmp > WIN_HEIGHT)
 		tmp = WIN_HEIGHT;
 	ray = data->rays[x];
-	color = WHITE;
-	if (ray->intersection == HORIZONTAL)
-		color = RED;
 	while (i < y)
-		put_pixel(&data->new_image, x, i++, color);
+		put_pixel(&data->new_image, x, i++, *data->map_info->c);
 	get_info_about_target_cell(data, ray);
 	while (i < tmp)
 	{
@@ -48,7 +45,7 @@ void	render_column(t_data *data, int x, int y, int wall_hight)
 		i++;
 	}
 	while (i < WIN_HEIGHT)
-		put_pixel(&data->new_image, x, i++, BLACK);
+		put_pixel(&data->new_image, x, i++, *data->map_info->f);
 }
 
 void diplay_btn_msg(t_data *data)

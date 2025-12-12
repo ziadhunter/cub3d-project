@@ -31,20 +31,9 @@ void	short_ray(t_data *data, t_ray *ray, t_direction *horizontal_inters,
 
 double get_offset(t_ray_info ray_info, int intersection_type)
 {
-	if (intersection_type == HORIZONTAL)
+	if (intersection_type == VERTICAL)
 		return (floor(ray_info.y_intr + ((ray_info.y_step / 2))));
 	return (floor(ray_info.x_intr + ((ray_info.x_step / 2))));
-}
-
-double get_dir_offset(t_ray_info *ray_info, int intersection_type)
-{
-	if (intersection_type == HORIZONTAL
-			&& ray_facing_up(ray_info->ray_direction))
-		return (1);
-	else if (intersection_type == VERTICAL
-			&& ray_facing_left(ray_info->ray_direction))
-		return (1);
-	return (0);
 }
 
 bool targeted_cell_not_empty(t_data *data,

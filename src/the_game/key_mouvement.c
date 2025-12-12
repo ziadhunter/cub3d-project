@@ -24,6 +24,8 @@ int	key_press(int key, t_data *data)
 		mouvement_adjustment(key, data);
 	else if (key == LEFT_ARROW || key == RIGHT_ARROW)
 		rotation_adjustment(key, data);
+	else if (key == 'e')
+		update_door_state(data);
 	else if (key == 'p')
 	{
 		printf("Player position: x = %f, y = %f\n", data->player->x, data->player->y);
