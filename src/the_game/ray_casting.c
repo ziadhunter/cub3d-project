@@ -29,19 +29,48 @@ void	short_ray(t_data *data, t_ray *ray, t_direction *horizontal_inters,
 		insert_end_ray(ray, vertical_inters, VERTICAL);
 }
 
+double get_offset(t_ray_info ray_info, int intersection_type)
+{
+	if (intersection_type == HORIZONTAL)
+		return (floor(ray_info.y_intr + ((ray_info.y_step / 2))));
+	return (floor(ray_info.x_intr + ((ray_info.x_step / 2))));
+}
+
+double get_dir_offset(t_ray_info *ray_info, int intersection_type)
+{
+	if (intersection_type == HORIZONTAL
+			&& ray_facing_up(ray_info->ray_direction))
+		return (1);
+	else if (intersection_type == VERTICAL
+			&& ray_facing_left(ray_info->ray_direction))
+		return (1);
+	return (0);
+}
 
 bool targeted_cell_not_empty(t_data *data,
-		t_ray_info ray_info, t_direction *inter)
+		t_ray_info ray_info, t_direction *inter, int intersection_type)
 {
 	t_cell_type cell_type;
+	t_ray_info check_info;
+	double offset;
 
-	cell_type = wall(data, ray_info.x_intr, ray_info.y_intr);
+	check_info = ray_info;
+	if (intersection_type == HORIZONTAL
+			&& ray_facing_up(check_info.ray_direction))
+		check_info.y_intr--;
+	else if (intersection_type == VERTICAL
+			&& ray_facing_left(check_info.ray_direction))
+		check_info.x_intr--;
+	cell_type = wall(data, check_info.x_intr, check_info.y_intr);
 	if (cell_type == DOOR)
+	{
+		offset = get_offset(check_info, intersection_type);
 		cell_type = is_door(
 			data,
-			ray_info.x_intr + ((ray_info.x_step / 2)),
-			ray_info.y_intr + ((ray_info.y_step / 2)),
-			floor(ray_info.y_intr + ((ray_info.y_step / 2))));
+			check_info.x_intr + ((check_info.x_step / 2)),
+			check_info.y_intr + ((check_info.y_step / 2)),
+			offset);
+	}
 	if (cell_type != NONE)
 	{
 		inter->y = ray_info.y_intr;
@@ -60,35 +89,28 @@ void	find_horizontal_intersiction(
 	t_data *data, double ray_angle, t_ray *ray, t_direction *horz_inter)
 {
 	t_ray_info ray_info;
-	t_ray_info check_info;
 	double		ray_tan;
 
+	ray_info.ray_direction = ray->ray_direction;
 	ray_tan = tan(ray_angle);
 	if (fabs(ray_tan) < VERTICAL_RAY_THRESHOLD)
 		ray_tan = VERTICAL_RAY_THRESHOLD;
 	ray_info.y_intr = floor(data->player->y / TILE_SIZE) * TILE_SIZE;
-	if (ray_facing_down(ray))
+	if (ray_facing_down(ray->ray_direction))
 		ray_info.y_intr += TILE_SIZE;
 	ray_info.x_intr = ((ray_info.y_intr - data->player->y) / ray_tan) + data->player->x;
 	ray_info.y_step = TILE_SIZE;
-	if (ray_facing_up(ray))
+	if (ray_facing_up(ray->ray_direction))
 		ray_info.y_step *= -1;
 	ray_info.x_step = TILE_SIZE / ray_tan;
-	if ((ray_info.x_step > 0 && ray_facing_left(ray)) || (ray_info.x_step < 0
-			&& ray_facing_right(ray) > 0))
+	if ((ray_info.x_step > 0 && ray_facing_left(ray->ray_direction)) || (ray_info.x_step < 0
+			&& ray_facing_right(ray->ray_direction) > 0))
 		ray_info.x_step *= -1;
 	while (ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width
 		&& ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->map_height)
 	{
-		check_info = ray_info;
-		if (ray_facing_up(ray) > 0)
-			check_info.y_intr -= 1;
-		if (targeted_cell_not_empty(data, check_info, horz_inter))
-		{
-			if (ray_facing_up(ray) > 0)
-				horz_inter->y += 1;
+		if (targeted_cell_not_empty(data, ray_info, horz_inter, HORIZONTAL))
 			return ;
-		}
 		ray_info.x_intr += ray_info.x_step;
 		ray_info.y_intr += ray_info.y_step;
 	}
@@ -98,35 +120,28 @@ void	find_vertical_intersiction(
 	t_data *data, double ray_angle, t_ray *ray, t_direction *vert_inter)
 {
 	t_ray_info ray_info;
-	t_ray_info check_info;
 	double		ray_tan;
 
+	ray_info.ray_direction = ray->ray_direction;
 	ray_tan = tan(ray_angle);
 	if (fabs(ray_tan) < VERTICAL_RAY_THRESHOLD)
 		ray_tan = VERTICAL_RAY_THRESHOLD;
 	ray_info.x_intr = floor(data->player->x / TILE_SIZE) * TILE_SIZE;
-	if (ray_facing_right(ray))
+	if (ray_facing_right(ray->ray_direction))
 		ray_info.x_intr += TILE_SIZE;
 	ray_info.y_intr = data->player->y + (ray_info.x_intr - data->player->x) * ray_tan;
 	ray_info.x_step = TILE_SIZE;
-	if (ray_facing_left(ray))
+	if (ray_facing_left(ray->ray_direction))
 		ray_info.x_step *= -1;
 	ray_info.y_step = TILE_SIZE * ray_tan;
-	if ((ray_info.y_step > 0 && ray_facing_up(ray))
-			|| (ray_info.y_step < 0 && ray_facing_down(ray)))
+	if ((ray_info.y_step > 0 && ray_facing_up(ray->ray_direction))
+			|| (ray_info.y_step < 0 && ray_facing_down(ray->ray_direction)))
 		ray_info.y_step *= -1;
 	while (ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width
 		&& ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->map_height)
 	{
-		check_info = ray_info;
-		if (ray_facing_left(ray))
-			check_info.x_intr -= 1;
-		if (targeted_cell_not_empty(data, check_info, vert_inter))
-		{
-			if (ray_facing_left(ray))
-				vert_inter->x += 1;
+		if (targeted_cell_not_empty(data, ray_info, vert_inter, VERTICAL))
 			return ;
-		}
 		ray_info.x_intr += ray_info.x_step;
 		ray_info.y_intr += ray_info.y_step;
 	}
@@ -134,7 +149,6 @@ void	find_vertical_intersiction(
 
 void	define_ray_position(t_data *data, double ray_angle, t_ray *ray)
 {
-	// t_facing	dir;
 	t_direction	horizontal_inters;
 	t_direction	vertical_inters;
 

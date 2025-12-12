@@ -101,12 +101,6 @@ typedef struct s_coordinates
 	double				y;
 }					t_cord;
 
-typedef struct s_direction
-{
-	double			x;
-	double			y;
-}					t_direction;
-
 typedef struct s_ray
 {
 	int	start_x;

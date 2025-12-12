@@ -1,5 +1,5 @@
-CC = cc -g3
-CFLAGS = -Wall -Werror -Wextra
+CC = cc
+CFLAGS = -Wall -Werror -Wextra -g
 CMLX = -lmlx -lXext -lX11 -lm
 
 INCLUDE = includes

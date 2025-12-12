@@ -5,7 +5,12 @@
 
 typedef struct s_facing_direction t_facing;
 typedef struct s_ray t_ray;
-typedef struct s_direction t_direction;
+
+typedef struct s_direction
+{
+	double			x;
+	double			y;
+}					t_direction;
 
 typedef struct s_ray_info
 {
@@ -13,6 +18,7 @@ typedef struct s_ray_info
 	double	y_step;
 	double	x_intr;
 	double	y_intr;
+	t_direction ray_direction;
 } t_ray_info;
 
 /*RAY-CASTING*/
@@ -31,9 +37,9 @@ void	define_ray_position(t_data *data, double ray_angle, t_ray *ray);
 void	creat_ray_casting(t_data *data);
 void get_info_about_target_cell(t_data *data, t_ray *ray);
 
-bool ray_facing_up(t_ray *ray);
-bool ray_facing_down(t_ray *ray);
-bool ray_facing_left(t_ray *ray);
-bool ray_facing_right(t_ray *ray);
+bool ray_facing_up(t_direction dir);
+bool ray_facing_down(t_direction dir);
+bool ray_facing_left(t_direction dir);
+bool ray_facing_right(t_direction dir);
 
 #endif

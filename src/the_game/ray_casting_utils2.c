@@ -1,22 +1,22 @@
 #include <cub3d.h>
 
 
-bool ray_facing_up(t_ray *ray)
+bool ray_facing_up(t_direction dir)
 {
-    return (ray->ray_direction.y > 0);
+    return (dir.y > 0);
 }
 
-bool ray_facing_down(t_ray *ray)
+bool ray_facing_down(t_direction dir)
 {
-    return (ray->ray_direction.y < 0);
+    return (dir.y < 0);
 }
 
-bool ray_facing_left(t_ray *ray)
+bool ray_facing_left(t_direction dir)
 {
-    return (ray->ray_direction.x < 0);
+    return (dir.x < 0);
 }
 
-bool ray_facing_right(t_ray *ray)
+bool ray_facing_right(t_direction dir)
 {
-    return (ray->ray_direction.x > 0);
+    return (dir.x > 0);
 }
