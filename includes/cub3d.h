@@ -172,8 +172,8 @@ typedef struct s_player
     bool            is_looking_at_door;
     t_door          *door;
     int             gun_or_knife;
-    t_gun           *gun;
-    t_knife         *knife;
+    t_gun           gun;
+    t_knife         knife;
 }					t_player;
 
 typedef struct s_cell

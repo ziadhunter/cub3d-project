@@ -61,7 +61,7 @@ int	key_release(int key, t_data *data)
 
 int	close_window(t_data *data)
 {
-	mlx_do_key_autorepeaton(data->mlx->init);
+	// mlx_do_key_autorepeaton(data->mlx->init);
 	free_all_data_and_exit(data, "you exit the game!!\n");
 	return (0);
 }

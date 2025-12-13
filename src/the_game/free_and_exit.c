@@ -24,7 +24,7 @@ void	free_rays(t_ray **rays)
 
 void	free_all_data_and_exit(t_data *data, char *str)
 {
-	mlx_do_key_autorepeaton(data->mlx->init);
+	// mlx_do_key_autorepeaton(data->mlx->init);
 	mlx_destroy_image(data->mlx->init, data->new_image.img);
 	free(data->mlx);
 	free(data->player);

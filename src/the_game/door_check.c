@@ -8,7 +8,6 @@ int is_dwall(t_data *data, t_ray_info ray_info, t_direction *intr,
 	t_ray_info check_info;
 	int rx;
 	int ry;
-	(void) intersection_type;
 
 	check_info = ray_info;
 	if (intersection_type == HORIZONTAL
