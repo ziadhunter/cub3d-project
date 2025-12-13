@@ -159,6 +159,7 @@ void door_check_using_rays(t_data *data)
     double y = Y_START_POINT + (MAP_SIZE / 2), y_end;
 
     // data->player->is_looking_at_door = false;
+    // BUG: the door is not detected when loking left or up
     final_dist = check_door_intersection(data, &mid_ray);
     // printf("%f\n", final_dist);
     data->player->is_looking_at_door = check_door(mid_ray, final_dist, data);

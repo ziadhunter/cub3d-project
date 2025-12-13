@@ -62,7 +62,6 @@ int	the_animation(t_data *data)
 	creat_ray_casting(data);
 	projaction(data);
 	render_mini_map(data);
-	// BUG: the door is not detected when loking left or up
 	door_check_using_rays(data);
 	update_all_doors_state(data->doors_list);
 	draw_cross_hair(data);
