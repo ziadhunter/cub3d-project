@@ -3,36 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/03 21:33:36 by zfarouk           #+#    #+#             */
-/*   Updated: 2024/11/03 21:39:15 by zfarouk          ###   ########.fr       */
+/*   Created: 2024/10/28 17:08:11 by rabounou          #+#    #+#             */
+/*   Updated: 2024/10/28 17:10:26 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <limits.h>
+#include <stdio.h>
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	if (n == -2147483648)
+	char			arr[12];
+	char			arr2[12];
+	unsigned int	nn;
+	int				i;
+	int				j;
+
+	i = 0;
+	j = 0;
+	if (n == 0)
+		arr[i++] = '0';
+	else if (n < 0)
+		arr2[j++] = '-';
+	nn = (n < 0) * -n + (n > 0) * n;
+	while (nn)
 	{
-		ft_putchar_fd('-', fd);
-		ft_putchar_fd('2', fd);
-		ft_putnbr_fd(147483648, fd);
-		return ;
+		arr[i++] = nn % 10 + '0';
+		nn /= 10;
 	}
-	if (n < 0)
-	{
-		ft_putchar_fd('-', fd);
-		n *= -1;
-	}
-	if (n / 10 == 0)
-	{
-		ft_putchar_fd((n + 48), fd);
-	}
-	else
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
-	}
+	while (i > 0)
+		arr2[j++] = arr[--i];
+	write(fd, arr2, j);
 }

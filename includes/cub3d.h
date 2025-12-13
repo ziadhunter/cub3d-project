@@ -1,7 +1,6 @@
 #ifndef CUB3D_H
 #define CUB3D_H
 
-#include <get_next_line.h>
 #include <libft.h>
 #include <mlx.h>
 #include <math.h>
@@ -15,6 +14,7 @@
 #include <door.h>
 #include <keys.h>
 #include <ray_cast.h>
+#include <gb_collector.h>
 
 
 // =================== DEFINES ===================
