@@ -28,7 +28,7 @@ void	speed_adjustment(int key, t_data *data);
 void	mouvement_adjustment(int key, t_data *data);
 void	rotation_adjustment(int key, t_data *data);
 void	rotation_release(int key, t_data *data);
-void	mouvement_release(int key, t_data *data);
+void	mouvement_release(int key, t_player *player);
 int		close_window(t_data *data);
 int		mouse_move(int x, int y, t_data *data);
 int		key_release(int key, t_data *data);

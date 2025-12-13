@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/13 21:36:34 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/13 23:13:48 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	key_release(int key, t_data *data)
 	if (key == LEFT_BUTTON || key == RIGHT_BUTTON || key == DOWN_BUTTON
 		|| key == UP_BUTTON)
 	{
-		mouvement_release(key, data);
+		mouvement_release(key, data->player);
 	}
 	if (key == LEFT_ARROW || key == RIGHT_ARROW)
 	{
