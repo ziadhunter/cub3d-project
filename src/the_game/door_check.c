@@ -16,8 +16,8 @@ int is_dwall(t_data *data, t_ray_info ray_info, t_direction *intr,
 	if (intersection_type == VERTICAL
 			&& ray_facing_left(check_info.ray_direction))
 		check_info.x_intr--;
-    rx = (int)(ray_info.x_intr / TILE_SIZE);
-    ry = (int)(ray_info.y_intr / TILE_SIZE);
+    rx = (int)(check_info.x_intr / TILE_SIZE);
+    ry = (int)(check_info.y_intr / TILE_SIZE);
 	if (data->map[ry][rx].cell_type == WALL || data->map[ry][rx].cell_type == DOOR)
     {
         intr->x = ray_info.x_intr;
@@ -56,20 +56,13 @@ void find_v_inter(t_data *data, t_ray *ray, t_direction *v_intr)
 
     ray_info.x_step = TILE_SIZE;
     ray_info.y_step = (TILE_SIZE * tan(ray->ray_angle));
-
     ray_info.x_intr = find_vx_intersection(data);
-
-    if (ray->ray_direction.x > 0)
+    if (ray_facing_right(ray->ray_direction))
         ray_info.x_intr += TILE_SIZE;
-
-        
     ray_info.y_intr = find_vy_intersection(data, ray, ray_info.x_intr);
-    if (ray->ray_direction.x < 0)
+    if (ray_facing_left(ray->ray_direction))
         ray_info.x_step *= -1;
-
-    if (ray->ray_direction.x < 0)
-        ray_info.x_intr--;
-    if ((ray->ray_direction.y > 0 && ray_info.y_step > 0) || (ray->ray_direction.x < 0 && ray_info.y_step < 0))
+    if ((ray_facing_up(ray->ray_direction) && ray_info.y_step > 0) || (ray_facing_left(ray->ray_direction) && ray_info.y_step < 0))
         ray_info.y_step *= -1;
     while ((ray_info.x_intr >= 0 && ray_info.x_intr < data->map_info->map_width)
         && (ray_info.y_intr >= 0 && ray_info.y_intr < data->map_info->map_height))
