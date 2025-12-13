@@ -59,7 +59,7 @@ void	render_mini_map_rays(t_data *data, t_cord cord, double z,
 		if ((cord.x - CENTER_MAP_X) * (cord.x - CENTER_MAP_X) + (cord.y
 				- CENTER_MAP_Y) * (cord.y - CENTER_MAP_Y) > pow(MAP_RADIUS, 2))
 			break ;
-		put_pixel(&data->new_image, cord.x, cord.y, BLUE);
+		put_pixel(&data->new_image, cord.x, cord.y, RED);
 		cord.x += xi;
 		cord.y += yi;
 		i++;
