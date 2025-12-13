@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 22:11:10 by rabounou          #+#    #+#             */
-/*   Updated: 2025/12/13 22:11:11 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/13 23:02:55 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ double	find_vx_intersection(t_data *data)
 	return (floor(data->player->x / TILE_SIZE) * TILE_SIZE);
 }
 
-int	is_dwall(t_data *data, t_ray_info ray_info, t_direction *intr,
+bool	is_dwall(t_data *data, t_ray_info ray_info, t_direction *intr,
 		int intersection_type)
 {
 	t_ray_info	check_info;

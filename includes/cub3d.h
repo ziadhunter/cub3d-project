@@ -103,6 +103,12 @@ typedef struct s_coordinates
 	double				y;
 }					t_cord;
 
+typedef struct s_icoordinates
+{
+	int				x;
+	int				y;
+}					t_icord;
+
 typedef struct s_ray
 {
 	int	start_x;
@@ -199,5 +205,7 @@ void load_game_data(t_data *data);
 void	start_the_game(t_data *data);
 t_cell  **create_map(t_data *data, char **char_map);
 void	update_palyer_state(t_data *data, t_player *player);
+void	load_weapons(t_data *data);
+void	load_xpm(t_data *data, char *path, t_img *img); /* xpm tool */
 
 #endif

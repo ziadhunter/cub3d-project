@@ -36,6 +36,8 @@ void find_vertical_intersiction(
 void	define_ray_position(t_data *data, double ray_angle, t_ray *ray);
 void	creat_ray_casting(t_data *data);
 void get_info_about_target_cell(t_data *data, t_ray *ray);
+bool	targeted_cell_not_empty(t_data *data, t_ray_info ray_info,
+		t_direction *inter, int intersection_type);
 
 bool ray_facing_up(t_direction dir);
 bool ray_facing_down(t_direction dir);

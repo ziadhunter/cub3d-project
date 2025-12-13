@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 21:59:22 by rabounou          #+#    #+#             */
-/*   Updated: 2025/12/13 22:05:11 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/13 23:01:31 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	get_info_about_door(t_data *data, t_ray *ray, t_direction ray_s)
 				- door->door_position);
 }
 
-void	get_info_about_hwall(t_data *data, t_ray *ray, t_direction ray_s)
+void	get_info_about_hwall(t_data *data, t_ray *ray)
 {
 	ray->x_offset = ray->end_x % TILE_SIZE;
 	if (ray->ray_direction.y < 0)
@@ -53,7 +53,7 @@ void	get_info_about_hwall(t_data *data, t_ray *ray, t_direction ray_s)
 	}
 }
 
-void	get_info_about_vwall(t_data *data, t_ray *ray, t_direction ray_s)
+void	get_info_about_vwall(t_data *data, t_ray *ray)
 {
 	ray->x_offset = ray->end_y % TILE_SIZE;
 	if (ray->ray_direction.x > 0)
@@ -89,7 +89,7 @@ void	get_info_about_target_cell(t_data *data, t_ray *ray)
 				- ray_s.x) / TILE_SIZE)].cell_type == DOOR)
 		get_info_about_door(data, ray, ray_s);
 	else if (ray->intersection == HORIZONTAL)
-		get_info_about_door(data, ray, ray_s);
+		get_info_about_hwall(data, ray);
 	else
-		get_info_about_vwall(data, ray, ray_s);
+		get_info_about_vwall(data, ray);
 }

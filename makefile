@@ -14,18 +14,22 @@ SRC = cub3d.c \
 	src/parsing/parsing_utils.c \
 	src/parsing/parsing.c \
 	src/the_game/load_game.c \
+	src/the_game/load_weapons_data.c \
 	src/the_game/map_convert.c \
 	src/the_game/projection_utils.c \
 	src/the_game/player_movement.c \
 	src/the_game/dlist.c \
 	src/the_game/the_game.c \
 	src/the_game/door_check.c \
+	src/the_game/door_check_utils.c \
+	src/the_game/door_movement.c \
 	src/the_game/mini_map.c src/the_game/mini_map_utils.c \
-	src/the_game/initialization.c src/the_game/free_and_exit.c\
-	src/the_game/key_mouvement.c src/the_game/key_mouvement_utils.c\
+	src/the_game/initialization.c src/the_game/free_and_exit.c \
+	src/the_game/key_mouvement.c src/the_game/key_mouvement_utils.c src/the_game/key_movement_utils2.c \
 	src/the_game/ray_casting.c \
 	src/the_game/ray_casting_utils.c \
 	src/the_game/ray_casting_utils2.c \
+	src/the_game/ray_casting_utils3.c \
 	src/the_game/projaction.c \
 	src/libft/get_next_line/get_next_line.c \
 	src/libft/get_next_line/get_next_line_utils.c \
