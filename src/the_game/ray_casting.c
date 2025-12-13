@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 12:01:00 by zfarouk           #+#    #+#             */
 /*   Updated: 2025/12/10 19:44:21 by radouane         ###   ########.fr       */

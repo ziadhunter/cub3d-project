@@ -6,17 +6,21 @@ typedef struct s_data t_data;
 /* Enums */
 typedef enum e_keys
 {
+	HOLD_GUN = 49,
+	HOLD_KNIFE = 50,
+	RELOAD = 114,
 	UP_BUTTON = 119,
 	DOWN_BUTTON = 115,
 	LEFT_BUTTON = 97,
 	RIGHT_BUTTON = 100,
 	LEFT_ARROW = 65361,
 	RIGHT_ARROW = 65363,
+	SHIFT_SPEED = 65505,
 	ESC = 65307,
-	SPEED_DOWN = 49,
-	SPEED_UP = 50,
-	R_SPEED_DOWN = 51,
-	R_SPEED_UP = 52
+	SPEED_DOWN = 51,
+	SPEED_UP = 52,
+	R_SPEED_DOWN = 53,
+	R_SPEED_UP = 54
 } t_keys;
 
 /*KEY HANDLE*/

@@ -26,8 +26,8 @@
 #define FOV 1.0471975512 // 60° field of view in radians
 #define NUM_COLUMNS 1080 // how many rays to cast (e.g. screen width)
 #define MIN_WALK_SPEED 0.5
-#define MAX_WALK_SPEED 3
-#define MIN_ROTATION_SPEED	(PI / 180) / 3
+#define MAX_WALK_SPEED 6
+#define MIN_ROTATION_SPEED	(PI / 180) / 5
 #define MAX_ROTATION_SPEED  (PI / 180)
 
 // Colors (RGBA or 0x00RRGGBB depending on MLX build)
@@ -123,6 +123,41 @@ typedef struct s_move
 	int before;
 } t_move;
 
+typedef struct s_gun
+{
+    // i -> index of current image
+    // n -> n number of total images in an xpm file
+    t_img gun_move;
+    t_img gun_fire;
+    t_img gun_reload;
+    t_img gun_show;
+    char    gun_state;
+    int     gm_i;
+    int     gm_n;
+    int     gf_i;
+    int     gf_n;
+    int     gr_i;
+    int     gr_n;
+    int     gs_i;
+    int     gs_n;
+    int     chambre_size;
+    int     bullets_in_chamber;
+} t_gun;
+
+typedef struct s_knife
+{
+    t_img   knife_move;
+    t_img   knife_hit;
+    t_img   knife_show;
+    int     knife_state;
+    int     knif_m_i;
+    int     knif_m_n;
+    int     knif_h_i;
+    int     knif_h_n;
+    int     knif_s_i;
+    int     knif_s_n;
+} t_knife;
+
 typedef struct s_player
 {
 	double			x;
@@ -136,6 +171,9 @@ typedef struct s_player
 	double			rotation_speed;
     bool            is_looking_at_door;
     t_door          *door;
+    int             gun_or_knife;
+    t_gun           *gun;
+    t_knife         *knife;
 }					t_player;
 
 typedef struct s_cell

@@ -50,6 +50,35 @@ t_map_data	*initialize_map(void)
 // 	return (old);
 // }
 
+// DONT FORGET TO FREE THIS PART WHEN U DONE WITH THE CODE 
+void initialize_gun_knife(t_player *player)
+{
+	t_gun *gun;
+	t_knife *knife;
+	
+	player->gun_or_knife = 1;
+	gun = malloc(sizeof(t_gun));
+	knife = malloc(sizeof(t_knife));
+	gun->chambre_size = 12;
+	gun->bullets_in_chamber = 12;
+	gun->gun_state = 'N';
+	gun->gf_i = 0;
+	gun->gf_n = 6;
+	gun->gm_i = 0;
+	gun->gm_n = 6;
+	gun->gr_i = 0;
+	gun->gr_n = 6;
+	gun->gs_i = 0;
+	gun->gs_n = 6;
+	knife->knife_state = 'N';
+	knife->knif_m_i = 0;
+	knife->knif_m_n = 6;
+	knife->knif_s_i = 0;
+	knife->knif_s_n = 6;
+	player->gun = gun;
+	player->knife = knife;
+}
+
 t_player	*initialize_player(char c, int x, int y)
 {
 	t_player	*player;
@@ -79,6 +108,8 @@ t_player	*initialize_player(char c, int x, int y)
 	player->side_direction.before = 0;
 	player->rotation_direction.now = 0;
 	player->rotation_direction.before = 0;
+	player->gun_or_knife = 1;
+	initialize_gun_knife(player);
 	return (player);
 }
 

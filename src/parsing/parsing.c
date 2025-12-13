@@ -6,7 +6,7 @@
 /*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:51:17 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/09 04:37:14 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/08 16:48:23 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	check_element_position(t_map_data *map_info, t_player **player, char **line
 {
 	int	i;
 	int	j;
+	char tmp;
 
 	i = cor.x;
 	j = cor.y;
@@ -54,9 +55,10 @@ void	check_element_position(t_map_data *map_info, t_player **player, char **line
 	if (lines[j][i] == 'N' || lines[j][i] == 'S' || lines[j][i] == 'W'
 		|| lines[j][i] == 'E')
 	{
-		// lines[j][i] = '0';
+		tmp = lines[j][i];
+		lines[j][i] = '0';
 		if (!(*player))
-			*player = initialize_player(lines[j][i], i, j);
+			*player = initialize_player(tmp, i, j);
 		else
 		{
 			// free((*player)->old_move);

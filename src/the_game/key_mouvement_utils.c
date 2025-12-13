@@ -14,6 +14,8 @@
 
 void	speed_adjustment(int keycode, t_data *data)
 {
+	if (keycode ==  SHIFT_SPEED)
+		data->player->walking_speed += 2;
 	if (keycode == SPEED_DOWN && data->player->walking_speed > MIN_WALK_SPEED)
 		data->player->walking_speed -= 0.25;
 	if (keycode == SPEED_UP && data->player->walking_speed < MAX_WALK_SPEED)
@@ -105,3 +107,38 @@ void	mouvement_release(int keycode, t_data *data)
 		data->player->side_direction.before = 0;
 	}
 }
+
+void switch_weapon(int key, t_data *data)
+{
+	if (key == HOLD_GUN )
+	{
+		if (data->player->gun_or_knife)
+			return;
+		else 
+		{
+			data->player->gun->gun_state = 'S';
+			data->player->gun_or_knife = 1;
+		}
+	}
+	else
+	{
+		if (!data->player->gun_or_knife)
+			return;
+		else 
+		{
+			data->player->knife->knife_state = 'S';
+			data->player->gun_or_knife = 0;
+		}
+	}
+}
+
+// void reload_gun(int key, t_data *data)
+// {
+// 	if (data->player->gun_or_knife)
+// 	{
+// 		if (data->player->gun->gun_state == 'N')
+// 		{
+// 			data->player->gun->gun_state = 'R';
+// 		}
+// 	}
+// }

@@ -3,6 +3,8 @@
 
 #include <cub3d.h>
 
+void draw_cross_hair(t_data *data);
+
 /*PROJACTION*/
 void	render_wall(t_data *data, int x, int y, int wall_hight);
 void	projaction(t_data *data);
