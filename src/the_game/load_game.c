@@ -28,6 +28,18 @@ void load_textures(t_data *data)
     load_xpm(data, "textures/open_door_btn.xpm", &(data->textures.open_door_btn));
 }
 
+void load_gun(t_data *data)
+{
+    load_xpm(data, "textures/wp/gun_reload.xpm", &(data->player->gun.gun_reload));
+    data->player->gun.gr_i = 0;
+    data->player->gun.gr_n = 21;
+}
+
+void load_weapons(t_data *data)
+{
+    load_gun(data);
+}
+
 void load_colors(t_data *data)
 {
     data->textures.floor_color = (data->map_info->f[0] << 16) | (data->map_info->f[1] << 8) | data->map_info->f[2];
@@ -37,5 +49,6 @@ void load_colors(t_data *data)
 void load_game_data(t_data *data)
 {
     load_textures(data);
+    load_weapons(data);
     load_colors(data);
 }

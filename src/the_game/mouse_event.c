@@ -39,13 +39,13 @@ int mouse_press(int key, int x, int y, t_data *data)
     (void)y;
     if (key == 1)
     {
-        if (data->player->gun_or_knife && data->player->gun->gun_state == 'N')
+        if (data->player->gun_or_knife && data->player->gun.gun_state == 'N')
         {
-            if (data->player->gun->bullets_in_chamber > 0) 
-            data->player->gun->gun_state = 'F';
+            if (data->player->gun.bullets_in_chamber > 0) 
+            data->player->gun.gun_state = 'F';
         }
-        else if (!data->player->gun_or_knife && data->player->knife->knife_state == 'N')
-            data->player->knife->knife_state = 'H';
+        else if (!data->player->gun_or_knife && data->player->knife.knife_state == 'N')
+            data->player->knife.knife_state = 'H';
     }
     return (0);
 }

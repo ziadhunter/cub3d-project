@@ -57,8 +57,8 @@ void initialize_gun_knife(t_player *player)
 	t_knife *knife;
 	
 	player->gun_or_knife = 1;
-	gun = malloc(sizeof(t_gun));
-	knife = malloc(sizeof(t_knife));
+	gun = &player->gun;
+	knife = &player->knife;
 	gun->chambre_size = 12;
 	gun->bullets_in_chamber = 12;
 	gun->gun_state = 'N';
@@ -75,8 +75,6 @@ void initialize_gun_knife(t_player *player)
 	knife->knif_m_n = 6;
 	knife->knif_s_i = 0;
 	knife->knif_s_n = 6;
-	player->gun = gun;
-	player->knife = knife;
 }
 
 t_player	*initialize_player(char c, int x, int y)

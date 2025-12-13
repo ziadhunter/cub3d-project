@@ -116,7 +116,7 @@ void switch_weapon(int key, t_data *data)
 			return;
 		else 
 		{
-			data->player->gun->gun_state = 'S';
+			data->player->gun.gun_state = 'S';
 			data->player->gun_or_knife = 1;
 		}
 	}
@@ -126,7 +126,7 @@ void switch_weapon(int key, t_data *data)
 			return;
 		else 
 		{
-			data->player->knife->knife_state = 'S';
+			data->player->knife.knife_state = 'S';
 			data->player->gun_or_knife = 0;
 		}
 	}
