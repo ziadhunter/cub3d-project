@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 17:38:43 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/09 04:17:46 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/13 21:55:00 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,17 @@ void	facing_direction(double ray_angle, t_ray *ray)
 		ray->ray_direction.x = -1;
 }
 
-
-int is_door(t_data *data, double x, double y, double offset)
+int	is_door(t_data *data, double x, double y, double offset)
 {
-	t_cell *cell;
-	t_door *door;
-	int rx = (int)(x / TILE_SIZE);
-	int ry = (int)(y / TILE_SIZE);
+	t_cell	*cell;
+	t_door	*door;
+	int		rx;
+	int		ry;
 
-	if (!(rx >= 0 && rx < data->map_info->columns
-		&& ry >= 0 && ry < data->map_info->rows))
+	rx = (int)(x / TILE_SIZE);
+	ry = (int)(y / TILE_SIZE);
+	if (!(rx >= 0 && rx < data->map_info->columns && ry >= 0
+			&& ry < data->map_info->rows))
 		return (NONE);
 	cell = &(data->map[ry][rx]);
 	if (cell->cell_type == DOOR)
@@ -40,7 +41,7 @@ int is_door(t_data *data, double x, double y, double offset)
 		door = (t_door *)(cell->options);
 		if (door->is_valid == false)
 			return (NONE);
-		if (((int)(offset) % TILE_SIZE) < door->door_position) 
+		if (((int)(offset) % TILE_SIZE) < door->door_position)
 			return (DOOR);
 	}
 	return (NONE);
@@ -48,11 +49,13 @@ int is_door(t_data *data, double x, double y, double offset)
 
 int	wall(t_data *data, double x, double y)
 {
-	t_cell *cell;
-	t_door *door;
-	double rx = x / TILE_SIZE;
-	double ry = y / TILE_SIZE;
+	t_cell	*cell;
+	t_door	*door;
+	double	rx;
+	double	ry;
 
+	rx = x / TILE_SIZE;
+	ry = y / TILE_SIZE;
 	cell = &(data->map[(int)ry][(int)rx]);
 	if (cell->cell_type == WALL)
 		return (WALL);
@@ -63,7 +66,6 @@ int	wall(t_data *data, double x, double y)
 			return (WALL);
 		return (DOOR);
 	}
-
 	return (NONE);
 }
 
@@ -72,14 +74,6 @@ void	insert_end_ray(t_ray *ray, t_direction *dir, int intersection)
 	ray->end_x = dir->x;
 	ray->end_y = dir->y;
 	ray->intersection = intersection;
-}
-
-double	normalize_angle(double angle)
-{
-	angle = fmod(angle, 2 * PI);
-	if (angle < 0)
-		angle += 2 * PI;
-	return (angle);
 }
 
 void	render_rays(t_data *data, t_cord cord, double z, double w)

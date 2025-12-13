@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 19:01:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/02 18:45:08 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/13 22:05:40 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ void	render_player_mini_map(t_data *data)
 	}
 }
 
-void	render_mini_map_rays(t_data *data, t_cord cord, double z,
-		double w)
+void	render_mini_map_rays(t_data *data, t_cord cord, double z, double w)
 {
 	double	xi;
 	double	yi;
@@ -88,6 +87,6 @@ void	render_mini_map(t_data *data)
 {
 	base_of_mini_map(data);
 	mini_map(data, X_START_POINT, Y_START_POINT, WHITE);
-	// render_rays_mini_map(data, 0);
+	render_rays_mini_map(data, 0);
 	render_player_mini_map(data);
 }

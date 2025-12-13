@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_and_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:13:38 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/02 13:47:01 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/13 22:39:19 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	free_rays(t_ray **rays)
 
 void	free_all_data_and_exit(t_data *data, char *str)
 {
-	// mlx_do_key_autorepeaton(data->mlx->init);
 	mlx_destroy_image(data->mlx->init, data->new_image.img);
 	free(data->mlx);
 	free(data->player);

@@ -1,57 +1,77 @@
-#include "cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_convert.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/13 22:48:50 by rabounou          #+#    #+#             */
+/*   Updated: 2025/12/13 22:57:59 by rabounou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int door_is_valid(t_data *data, char **map, int x, int y)
+#include <cub3d.h>
+
+static int	door_is_valid(t_data *data, char **map, int x, int y)
 {
-    int calc[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-    int type = 0;
-    int i = 0;
-    int targ_x, targ_y;
+	static int	calc[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+	int			targ_x;
+	int			targ_y;
+	int			type;
+	int			i;
 
-    while (i < 4)
-    {
-        targ_x = calc[i][0] + x;
-        targ_y = calc[i][1] + y;
-        if (targ_x > data->map_info->columns || targ_y > data->map_info->rows  || targ_x < 0 || targ_y < 0)
-            return (0);
-        type <<= 1;
-        type |= map[targ_y][targ_x] == '1';
-        i++;
-    }
-    // validate the door
-    return (type == 3 || type == 12);
+	type = 0;
+	i = 0;
+	while (i < 4)
+	{
+		targ_x = calc[i][0] + x;
+		targ_y = calc[i][1] + y;
+		if (targ_x > data->map_info->columns || targ_y > data->map_info->rows
+			|| targ_x < 0 || targ_y < 0)
+			return (0);
+		type <<= 1;
+		type |= map[targ_y][targ_x] == '1';
+		i++;
+	}
+	return (type == 3 || type == 12);
 }
 
-t_cell  **create_map(t_data *data, char **char_map)
+void	create_new_door(t_data *data, char **char_map, t_cell **map,
+	t_icord idx)
 {
-    t_cell **map;
-    int i, j;
+	map[idx.y][idx.x].cell_type = DOOR;
+	map[idx.y][idx.x].options = (t_door *)malloc(sizeof(t_door));
+	((t_door *)(map[idx.y][idx.x].options))->is_valid = door_is_valid(data,
+			char_map, idx.x, idx.y);
+	((t_door *)(map[idx.y][idx.x].options))->door_state = CLOSED;
+	((t_door *)(map[idx.y][idx.x].options))->door_position = TILE_SIZE;
+	append_door(&(data->doors_list), map[idx.y][idx.x].options);
+}
 
-    map = (t_cell **) malloc(data->map_info->rows * sizeof(t_cell *));
-    data->doors_list = NULL;
-    i = 0;
-    while (i < data->map_info->rows)
-    {
-        j = 0;
-        map[i] = (t_cell *) malloc(data->map_info->columns * sizeof(t_cell));
-        while (j < data->map_info->columns)
-        {
-            map[i][j].options = NULL;
-            if (char_map[i][j] == 'D')
-            {
-                map[i][j].cell_type = DOOR;
-                map[i][j].options = (t_door *) malloc (sizeof(t_door));
-                ((t_door *)(map[i][j].options))->is_valid = door_is_valid(data, char_map, j, i);
-                ((t_door *)(map[i][j].options))->door_state = CLOSED;
-                ((t_door *)(map[i][j].options))->door_position = TILE_SIZE;
-                append_door(&(data->doors_list), map[i][j].options);
-            }
-            else if (char_map[i][j] == '1')
-                map[i][j].cell_type = WALL;
-            else
-                map[i][j].cell_type = NONE;
-            j++;
-        }
-        i++;
-    }
-    return (map);
+t_cell	**create_map(t_data *data, char **char_map)
+{
+	t_cell	**map;
+	t_icord	idx;
+
+	map = (t_cell **)malloc(data->map_info->rows * sizeof(t_cell *));
+	data->doors_list = NULL;
+	idx.y = 0;
+	while (idx.y < data->map_info->rows)
+	{
+		idx.x = 0;
+		map[idx.y] = (t_cell *)malloc(data->map_info->columns * sizeof(t_cell));
+		while (idx.x < data->map_info->columns)
+		{
+			map[idx.y][idx.x].options = NULL;
+			if (char_map[idx.y][idx.x] == 'D')
+				create_new_door(data, char_map, map, idx);
+			else if (char_map[idx.y][idx.x] == '1')
+				map[idx.y][idx.x].cell_type = WALL;
+			else
+				map[idx.y][idx.x].cell_type = NONE;
+			idx.x++;
+		}
+		idx.y++;
+	}
+	return (map);
 }

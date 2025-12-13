@@ -1,41 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_casting_utils2.c                               :+:      :+:    :+:   */
+/*   load_weapons_data.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/13 21:55:07 by rabounou          #+#    #+#             */
-/*   Updated: 2025/12/13 21:55:08 by rabounou         ###   ########.fr       */
+/*   Created: 2025/12/13 22:06:03 by rabounou          #+#    #+#             */
+/*   Updated: 2025/12/13 22:06:04 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-bool	ray_facing_up(t_direction dir)
+void	load_gun(t_data *data)
 {
-	return (dir.y > 0);
+	load_xpm(data, "textures/wp/gun_reload.xpm",
+		&(data->player->gun.gun_reload));
+	data->player->gun.gr_i = 0;
+	data->player->gun.gr_n = 21;
 }
 
-bool	ray_facing_down(t_direction dir)
+void	load_weapons(t_data *data)
 {
-	return (dir.y < 0);
-}
-
-bool	ray_facing_left(t_direction dir)
-{
-	return (dir.x < 0);
-}
-
-bool	ray_facing_right(t_direction dir)
-{
-	return (dir.x > 0);
-}
-
-double	normalize_angle(double angle)
-{
-	angle = fmod(angle, 2 * PI);
-	if (angle < 0)
-		angle += 2 * PI;
-	return (angle);
+	load_gun(data);
 }

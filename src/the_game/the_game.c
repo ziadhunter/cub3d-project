@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_game.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/09 04:44:19 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/13 22:20:08 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,8 @@ void	put_pixel(t_img *data, int x, int y, int color)
 int	the_animation(t_data *data)
 {
 	static unsigned int	l;
-	// int					i;
-	// int					j;
 
 	l = 0;
-	// i = 0;
-	// j = 0;
 	update_palyer_state(data, data->player);
 	creat_ray_casting(data);
 	projaction(data);
@@ -80,8 +76,6 @@ void	start_the_game(t_data *data)
 	initialization(data);
 	load_game_data(data);
 	data->map = create_map(data, data->map_info->map);
-	//??chno kadir hadi akhay radouane?
-	// mlx_do_key_autorepeatoff(data->mlx->init);
 	// mlx_hook(data->mlx->win, 4, 1L<<2, mouse_press, data);
 	mlx_hook(data->mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(data->mlx->win, 3, 1L << 1, key_release, data);
@@ -89,5 +83,4 @@ void	start_the_game(t_data *data)
 	mlx_hook(data->mlx->win, 17, 1L << 17, close_window, data);
 	mlx_loop_hook(data->mlx->init, the_animation, data);
 	mlx_loop(data->mlx->init);
-	// mlx_do_key_autorepeaton(data->mlx->init);
 }

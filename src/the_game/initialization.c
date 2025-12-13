@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:49:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/09 20:02:37 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/13 21:27:43 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
+
+/* TODO: error handling missing */
 
 void	initialize_rays(t_data *data)
 {
@@ -18,7 +20,6 @@ void	initialize_rays(t_data *data)
 
 	i = 0;
 	data->rays = malloc(sizeof(t_ray *) * NUM_COLUMNS);
-	// wa7ed exiit hna
 	if (!data->rays)
 		return ;
 	while (i < NUM_COLUMNS)
@@ -32,7 +33,6 @@ void	initialize_rays(t_data *data)
 
 void	initialization(t_data *data)
 {
-	// handli error hnA
 	initialize_rays(data);
 	data->mlx = malloc(sizeof(t_mlx));
 	data->mlx->init = mlx_init();
