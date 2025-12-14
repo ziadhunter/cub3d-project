@@ -6,7 +6,11 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/12/14 20:54:18 by rabounou         ###   ########.fr       */
+=======
+/*   Updated: 2025/12/14 20:46:35 by zfarouk          ###   ########.fr       */
+>>>>>>> 022c46a63b474e5b4f4cd868a29fadb55f9eb85c
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +31,8 @@ int	key_press(int key, t_data *data)
 		rotation_adjustment(key, data);
 	else if (key == 'e')
 		update_door_state(data);
+	else if (key == MOUSSE_HIDE)
+		data->hide_mousse = !data->hide_mousse;	
 	return (0);
 }
 

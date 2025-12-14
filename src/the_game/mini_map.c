@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 19:01:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/13 22:05:40 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/14 20:26:07 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,28 @@ void	render_rays_mini_map(t_data *data, int i)
 	double	y;
 	double	y_end;
 	double	x_end;
+	t_direction facing;
 
+	
 	x = X_START_POINT + (MAP_SIZE / 2);
 	y = Y_START_POINT + (MAP_SIZE / 2);
 	while (i < NUM_COLUMNS)
 	{
-		y_end = y + ((data->rays[i]->end_y - data->player->y) / MINIMAP_SCALE);
-		x_end = x + ((data->rays[i]->end_x - data->player->x) / MINIMAP_SCALE);
+		// if (i % 50 != 0)
+		// {
+		// 	i++;
+		// 	continue;
+		// }
+		if (data->rays[i]->intersection == HORIZONTAL && data->rays[i]->ray_direction.y == -1)
+			facing.y = 1;
+		else
+			facing.y = 0;
+		if (data->rays[i]->intersection == VERTICAL && data->rays[i]->ray_direction.x == 1)
+			facing.x = 1;
+		else
+			facing.x = 0;
+		y_end = y + ((data->rays[i]->end_y - data->player->y) / MINIMAP_SCALE) + facing.y;
+		x_end = x + ((data->rays[i]->end_x - data->player->x) / MINIMAP_SCALE) + facing.x;
 		render_mini_map_rays(data, (t_cord){x, y}, x_end, y_end);
 		i++;
 	}

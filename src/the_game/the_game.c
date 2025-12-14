@@ -6,7 +6,11 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/12/14 20:54:26 by rabounou         ###   ########.fr       */
+=======
+/*   Updated: 2025/12/14 18:24:42 by zfarouk          ###   ########.fr       */
+>>>>>>> 022c46a63b474e5b4f4cd868a29fadb55f9eb85c
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +76,8 @@ void	start_the_game(t_data *data)
 {
 	initialization(data);
 	load_game_data(data);
-	// free_all_data_and_exit(data, "exit after init load_data\n", 0);
 	data->map = create_map(data, data->map_info->map);
-	// free_all_data_and_exit(data, "exit after init create_map\n", 0);
-	// mlx_hook(data->mlx->win, 4, 1L<<2, mouse_press, data);
+	mlx_hook(data->mlx->win, 4, 1L<<2, mouse_press, data);
 	mlx_hook(data->mlx->win, 2, 1L << 0, key_press, data);
 	mlx_hook(data->mlx->win, 3, 1L << 1, key_release, data);
 	mlx_hook(data->mlx->win, 6, 1L << 6, mouse_move, data);

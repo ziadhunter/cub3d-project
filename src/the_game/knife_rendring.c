@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 18:34:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 02:58:12 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/14 17:02:46 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,21 @@ void	put_image_to_window(t_img *dst, t_img *src, int x_src)
 	}
 }
 
-void	render_knife_hit(t_data *data)
+void	render_knife_attack(t_data *data)
 {
 	static int i = 0;
 	
-	put_image_to_window(&data->new_image, &data->player->knife.knife_show,
-		data->player->knife.knif_h_i * WIN_WIDTH);
+	put_image_to_window(&data->new_image, &data->player->knife.knife_attack,
+		data->player->knife.knif_a_i * WIN_WIDTH);
 	i++;
-	if (i == 7)
+	if (i == 6)
 	{
 		i = 0;
-		data->player->knife.knif_m_i++;
+		data->player->knife.knif_a_i++;
 	}
-	if (data->player->knife.knif_h_i == data->player->knife.knif_h_n - 1)
+	if (data->player->knife.knif_a_i == data->player->knife.knif_a_n - 1)
 	{
-		data->player->knife.knif_h_i = 0;
+		data->player->knife.knif_a_i = 0;
 		data->player->knife.knife_state = 'N';
 	}
 }
@@ -72,8 +72,7 @@ void	render_knife_move(t_data *data)
 {
 	static int i = 0;
 	static int add = 1;
-	
-	printf("i: %d\n", data->player->knife.knif_m_i);
+
 	put_image_to_window(&data->new_image, &data->player->knife.knife_move,
 		data->player->knife.knif_m_i * WIN_WIDTH);
 	i++;
@@ -97,7 +96,7 @@ void	render_knife_move(t_data *data)
 void	render_knife(t_data *data)
 {
 	if (data->player->knife.knife_state == 'H')
-		render_knife_hit(data);
+		render_knife_attack(data);
 	else
 		render_knife_move(data);
 }

@@ -6,34 +6,11 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 16:43:37 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 02:03:19 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/14 20:46:16 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-// void	draw_cross_hair(t_data *data)
-// {
-// 	int	cx;
-// 	int	cy;
-// 	int	size;
-// 	int	i;
-
-// 	cx = WIN_WIDTH / 2;
-// 	cy = WIN_HEIGHT / 2;
-// 	size = 10;
-// 	i = -size;
-// 	while (i <= size)
-// 	{
-// 		mlx_pixel_put(data->mlx->init, data->mlx->win, cx + i, cy, RED);
-// 		mlx_pixel_put(data->mlx->init, data->mlx->win, cx, cy + i, RED);
-// 		mlx_pixel_put(data->mlx->init, data->mlx->win, cx + i + 1, cy, RED);
-// 		mlx_pixel_put(data->mlx->init, data->mlx->win, cx + i - 1, cy, RED);
-// 		mlx_pixel_put(data->mlx->init, data->mlx->win, cx, cy + i + 1, RED);
-// 		mlx_pixel_put(data->mlx->init, data->mlx->win, cx, cy + i - 1, RED);
-// 		i++;
-// 	}
-// }
 
 int	mouse_press(int key, int x, int y, t_data *data)
 {
@@ -47,6 +24,8 @@ int	mouse_press(int key, int x, int y, t_data *data)
 
 int	mouse_move(int x, int y, t_data *data)
 {
+	if (data->hide_mousse)
+		return (0);
 	int	center_x;
 	int	center_y;
 	int	delta_x;
