@@ -17,6 +17,7 @@ void	render_wall(t_data *data, int x, int y, int wall_hight);
 void	projaction(t_data *data);
 
 /*MINI MAP*/
+int     get_color_mini(t_data *data, char **map, int x, int y);
 void	base_of_mini_map(t_data *data);
 void	mini_map(t_data *data, int x, int y, int color);
 void	render_player_mini_map(t_data *data);

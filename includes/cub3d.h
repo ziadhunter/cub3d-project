@@ -132,39 +132,15 @@ typedef struct s_move
 	int before;
 } t_move;
 
-// typedef struct s_gun
-// {
-//     // i -> index of current image
-//     // n -> n number of total images in an xpm file
-//     t_img gun_move;
-//     t_img gun_fire;
-//     t_img gun_reload;
-//     t_img gun_show;
-//     char    gun_state;
-//     int     gm_i;
-//     int     gm_n;
-//     int     gf_i;
-//     int     gf_n;
-//     int     gr_i;
-//     int     gr_n;
-//     int     gs_i;
-//     int     gs_n;
-//     int     chambre_size;
-//     int     bullets_in_chamber;
-// } t_gun;
-
 typedef struct s_knife
 {
     t_img   knife_move;
-    t_img   knife_hit;
-    t_img   knife_show;
+    t_img   knife_attack;
     int     knife_state;
     int     knif_m_i;
     int     knif_m_n;
-    int     knif_h_i;
-    int     knif_h_n;
-    int     knif_s_i;
-    int     knif_s_n;
+    int     knif_a_i;
+    int     knif_a_n;
 } t_knife;
 
 typedef struct s_player

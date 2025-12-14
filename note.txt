@@ -1,0 +1,2 @@
+i have to handle the door rendring in the mini map
+i have to ask radouane about how to know if a door is valid or not

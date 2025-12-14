@@ -37,6 +37,7 @@ double	find_vx_intersection(t_data *data);
 bool	is_dwall(t_data *data, t_ray_info ray_info, t_direction *intr,
 		int intersection_type);
 
+int  door_is_valid(t_data *data, char **map, int x, int y);
 void door_check_using_rays(t_data *data);
 void update_door_state(t_data *data);
 void update_all_doors_state(t_dlist *head);

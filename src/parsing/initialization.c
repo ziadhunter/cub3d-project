@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:24:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 01:54:33 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/14 16:54:44 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,6 @@ void initialize_knife(t_player *player)
 	
 	knife = &player->knife;
 	knife->knife_state = 'N';
-	knife->knif_m_i = 0;
-	knife->knif_m_n = 6;
-	knife->knif_s_i = 0;
-	knife->knif_s_n = 6;
 }
 
 t_player	*initialize_player(char c, int x, int y)

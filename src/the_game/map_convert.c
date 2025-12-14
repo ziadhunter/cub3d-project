@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   map_convert.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 22:48:50 by rabounou          #+#    #+#             */
-/*   Updated: 2025/12/13 22:57:59 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/14 18:11:50 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-static int	door_is_valid(t_data *data, char **map, int x, int y)
+int	door_is_valid(t_data *data, char **map, int x, int y)
 {
 	static int	calc[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 	int			targ_x;
