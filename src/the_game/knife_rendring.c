@@ -6,30 +6,62 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 18:34:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/11 15:08:24 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/14 02:58:12 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-void	render_knife_show(t_data *data)
+int	pick_pixel(t_img *data, int x, int y)
 {
-	put_image_to_new_window(&data->new_image, &data->player->knife.knife_show,
-		data->player->knife.knif_s_i * WIN_WIDTH);
-	data->player->knife.knif_s_i++;
-	if (data->player->knife.knif_s_i == data->player->knife.knif_s_n)
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
+	return (*(unsigned int *)dst);
+}
+
+void	pput_pixel(t_img *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	put_image_to_window(t_img *dst, t_img *src, int x_src)
+{
+	int				y;
+	int				x;
+	unsigned int	color;
+
+	y = 0;
+	while (y < WIN_HEIGHT)
 	{
-		data->player->knife.knif_s_i = 0;
-		data->player->knife.knife_state = 'N';
+		x = x_src;
+		while (x < WIN_WIDTH + x_src)
+		{
+			color = pick_pixel(src, x, y);
+			if (color != 0xFF000000 && color != 0x00FFFFFF) 
+				pput_pixel(dst, x,  y, color);
+			x++;
+		}
+		y++;
 	}
 }
 
 void	render_knife_hit(t_data *data)
 {
-	put_image_to_new_window(&data->new_image, &data->player->knife.knife_show,
+	static int i = 0;
+	
+	put_image_to_window(&data->new_image, &data->player->knife.knife_show,
 		data->player->knife.knif_h_i * WIN_WIDTH);
-	data->player->knife.knif_h_i++;
-	if (data->player->knife.knif_h_i == data->player->knife.knif_h_n)
+	i++;
+	if (i == 7)
+	{
+		i = 0;
+		data->player->knife.knif_m_i++;
+	}
+	if (data->player->knife.knif_h_i == data->player->knife.knif_h_n - 1)
 	{
 		data->player->knife.knif_h_i = 0;
 		data->player->knife.knife_state = 'N';
@@ -38,21 +70,33 @@ void	render_knife_hit(t_data *data)
 
 void	render_knife_move(t_data *data)
 {
-	put_image_to_new_window(&data->new_image, &data->player->knife.knife_show,
+	static int i = 0;
+	static int add = 1;
+	
+	printf("i: %d\n", data->player->knife.knif_m_i);
+	put_image_to_window(&data->new_image, &data->player->knife.knife_move,
 		data->player->knife.knif_m_i * WIN_WIDTH);
-	data->player->knife.knif_m_i++;
-	if (data->player->knife.knif_m_i == data->player->knife.knif_m_n)
+	i++;
+	if (i == 7)
 	{
-		data->player->knife.knif_m_i = 0;
+		i = 0;
+		data->player->knife.knif_m_i += add;
+	}
+	if (data->player->knife.knif_m_i == data->player->knife.knif_m_n - 1)
+	{
+		add = -1;
+		data->player->knife.knife_state = 'N';
+	}
+	else if (data->player->knife.knif_m_i == 1)
+	{
+		add = 1;
 		data->player->knife.knife_state = 'N';
 	}
 }
 
 void	render_knife(t_data *data)
 {
-	if (data->player->knife.knife_state == 'S')
-		render_knife_show(data);
-	else if (data->player->knife.knife_state == 'H')
+	if (data->player->knife.knife_state == 'H')
 		render_knife_hit(data);
 	else
 		render_knife_move(data);

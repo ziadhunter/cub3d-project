@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 20:49:50 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/14 20:54:26 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,11 @@ int	the_animation(t_data *data)
 	update_palyer_state(data, data->player);
 	creat_ray_casting(data);
 	projaction(data);
-	render_mini_map(data);
 	door_check_using_rays(data);
 	update_all_doors_state(data->doors_list);
-	draw_cross_hair(data);
-	// if (data->player->gun_or_knife == 1)
-	// 	render_gun(data);
-	// else
-	// 	render_knife(data);
+	// draw_cross_hair(data);
+	render_knife(data);
+	render_mini_map(data);
 	mlx_put_image_to_window(data->mlx->init, data->mlx->win,
 		data->new_image.img, 0, 0);
 	l++;

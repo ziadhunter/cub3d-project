@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:24:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/09 20:00:25 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/14 01:54:33 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,12 @@ t_map_data	*initialize_map(void)
 // 	return (old);
 // }
 
-// DONT FORGET TO FREE THIS PART WHEN U DONE WITH THE CODE 
-void initialize_gun_knife(t_player *player)
+
+void initialize_knife(t_player *player)
 {
-	t_gun *gun;
 	t_knife *knife;
 	
-	player->gun_or_knife = 1;
-	gun = &player->gun;
 	knife = &player->knife;
-	gun->chambre_size = 12;
-	gun->bullets_in_chamber = 12;
-	gun->gun_state = 'N';
-	gun->gf_i = 0;
-	gun->gf_n = 6;
-	gun->gm_i = 0;
-	gun->gm_n = 6;
-	gun->gr_i = 0;
-	gun->gr_n = 6;
-	gun->gs_i = 0;
-	gun->gs_n = 6;
 	knife->knife_state = 'N';
 	knife->knif_m_i = 0;
 	knife->knif_m_n = 6;
@@ -99,15 +85,13 @@ t_player	*initialize_player(char c, int x, int y)
 		player->rotation_angle = PI;
 	player->walking_speed = 5;
 	player->rotation_speed = (PI / 180);
-
 	player->walk_direction.now = 0;
 	player->walk_direction.before = 0;
 	player->side_direction.now = 0;
 	player->side_direction.before = 0;
 	player->rotation_direction.now = 0;
 	player->rotation_direction.before = 0;
-	player->gun_or_knife = 1;
-	initialize_gun_knife(player);
+	initialize_knife(player);
 	return (player);
 }
 

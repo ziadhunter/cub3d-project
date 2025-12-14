@@ -3,7 +3,14 @@
 
 #include <cub3d.h>
 
-void draw_cross_hair(t_data *data);
+/*knife*/
+int     pick_pixel(t_img *data, int x, int y);
+void	pput_pixel(t_img *data, int x, int y, int color);
+void	put_image_to_window(t_img *dst, t_img *src, int x_src);
+void	render_knife_hit(t_data *data);
+void	render_knife_move(t_data *data);
+void	render_knife(t_data *data); 
+
 
 /*PROJACTION*/
 void	render_wall(t_data *data, int x, int y, int wall_hight);
