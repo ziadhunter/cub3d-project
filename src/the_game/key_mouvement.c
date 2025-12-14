@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 01:57:34 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/14 20:46:35 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	key_press(int key, t_data *data)
 		rotation_adjustment(key, data);
 	else if (key == 'e')
 		update_door_state(data);
+	else if (key == MOUSSE_HIDE)
+		data->hide_mousse = !data->hide_mousse;	
 	return (0);
 }
 

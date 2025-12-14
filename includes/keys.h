@@ -17,7 +17,8 @@ typedef enum e_keys
 	SPEED_DOWN = 49,
 	SPEED_UP = 50,
 	R_SPEED_DOWN = 51,
-	R_SPEED_UP = 52
+	R_SPEED_UP = 52,
+	MOUSSE_HIDE = 120
 } t_keys;
 
 /*KEY HANDLE*/

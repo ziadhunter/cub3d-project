@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_the_map.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:27:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/07 21:40:16 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/14 20:35:21 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,6 @@ t_data	*parsing_the_map(t_map_data *map_info, char **lines, char *file_name)
 	data = malloc(sizeof(t_data));
 	data->map_info = map_info;
 	data->player = player;
+	data->x = false;
 	return (data);
 }

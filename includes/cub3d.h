@@ -176,6 +176,7 @@ typedef struct s_data
 	t_ray		**rays;
     t_map_data       *map_info;
     t_cell          **map;
+    bool        hide_mousse;
 }   t_data;
 
 
