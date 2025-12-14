@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_mouvement_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:15:59 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/13 23:14:58 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/14 02:20:17 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,38 +97,3 @@ void	mouvement_release(int keycode, t_player *player)
 		player->side_direction.before = 0;
 	}
 }
-
-void	switch_weapon(int key, t_data *data)
-{
-	if (key == HOLD_GUN)
-	{
-		if (data->player->gun_or_knife)
-			return ;
-		else
-		{
-			data->player->gun.gun_state = 'S';
-			data->player->gun_or_knife = 1;
-		}
-	}
-	else
-	{
-		if (!data->player->gun_or_knife)
-			return ;
-		else
-		{
-			data->player->knife.knife_state = 'S';
-			data->player->gun_or_knife = 0;
-		}
-	}
-}
-/*
-void reload_gun(int key, t_data *data)
-{
-	if (data->player->gun_or_knife)
-	{
-		if (data->player->gun->gun_state == 'N')
-		{
-			data->player->gun->gun_state = 'R';
-		}
-	}
-}*/

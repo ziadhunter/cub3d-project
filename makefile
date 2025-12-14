@@ -33,7 +33,8 @@ SRC = cub3d.c \
 	src/the_game/projaction.c \
 	src/libft/get_next_line/get_next_line.c \
 	src/libft/get_next_line/get_next_line_utils.c \
-	src/the_game/mouse_event.c
+	src/the_game/mouse_event.c \
+	src/the_game/knife_rendring.c
 
 
 LIBFT = src/libft/libft.a

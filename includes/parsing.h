@@ -61,6 +61,7 @@ void				error_exit(t_map_data *map, char **value,
 int					is_space_or_wall(char c);
 int					is_space_or_nl(char c);
 t_map_data				*initialize_map(void);
+void				initialize_knife(t_player *player);
 t_player			*initialize_player(char c, int x, int y);
 void				initialize_element(t_element (*element)[6]);
 void				find_empty_line(t_map_data *map_info, char **lines, char *line,
