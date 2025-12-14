@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:27:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 20:55:33 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/14 20:56:28 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,6 @@ t_data	*parsing_the_map(t_map_data *map_info, char **lines, char *file_name)
 	data = malloc(sizeof(t_data));
 	data->map_info = map_info;
 	data->player = player;
-	data->x = false;
+	data->hide_mousse = false;
 	return (data);
 }
