@@ -80,4 +80,9 @@ git: fclean
 	git commit -m "$$var"; \
 	git push
 
+valtest: re
+	clear
+	valgrind --suppressions=supp.supp --leak-check=full --track-fds=yes --track-origins=yes -s ./$(NAME) maps/good/$(MAP_NAME).cub
+	make fclean > /dev/null
+
 .PHONY: clean fclean all re bonus

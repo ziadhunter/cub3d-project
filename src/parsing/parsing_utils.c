@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:29:10 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/01 16:38:08 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/14 14:10:10 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,17 @@ char	**get_lines_of_file(int fd)
 {
 	char	*line;
 	char	*lines;
+	char	*tmp;
 	char	**splited_lines;
 
 	lines = ft_strdup("");
 	line = get_next_line(fd);
 	while (line)
 	{
+		tmp = lines;
 		lines = ft_strjoin(lines, line);
+		free(tmp);
+		free(line);
 		line = get_next_line(fd);
 	}
 	splited_lines = ft_split(lines, '\n');

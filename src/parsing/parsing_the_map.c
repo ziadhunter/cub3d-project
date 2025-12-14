@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_the_map.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:27:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/07 21:40:16 by radouane         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:14:18 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	check_empty_line(t_map_data *map_info, char **lines, char *file_name)
 		line = get_next_line(fd);
 	}
 	find_empty_line(map_info, lines, line, fd);
+	close(fd);
 }
 
 char	**set_new_lines(int len, int characters, char **lines)
