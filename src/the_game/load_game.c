@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 21:28:15 by rabounou          #+#    #+#             */
-/*   Updated: 2025/12/13 21:31:30 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/14 20:36:29 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ void	load_xpm(t_data *data, char *path, t_img *img)
 {
 	if (path == NULL)
 		return ;
+	
+	if (!file_isvalid(path))
+		free_all_data_and_exit(data, NULL, 1);
 	img->img = mlx_xpm_file_to_image(data->mlx->init, path, &(img->width),
 			&(img->height));
 	if (img->img == NULL)
@@ -53,6 +56,6 @@ void	load_colors(t_data *data)
 void	load_game_data(t_data *data)
 {
 	load_textures(data);
-	load_weapons(data);
+	// load_weapons(data);
 	load_colors(data);
 }

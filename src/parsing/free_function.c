@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_function.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:16:39 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/01 13:33:27 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/14 15:34:06 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void	free_data(t_data *data)
 void	error_exit(t_map_data *map, char **value, t_db_pointer *double_pointers,
 		char *str)
 {
-	printf("%s", str);
+	if (str)
+		printf("%s", str);
 	if (value)
 		free_double_pointer(value);
 	if (double_pointers)

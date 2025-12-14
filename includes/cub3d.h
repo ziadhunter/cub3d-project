@@ -1,7 +1,6 @@
 #ifndef CUB3D_H
 #define CUB3D_H
 
-#include <libft.h>
 #include <mlx.h>
 #include <math.h>
 #include <stdio.h>
@@ -10,6 +9,7 @@
 #include <stdbool.h>
 
 /* Cub3d header files */
+#include <libft.h>
 #include <parsing.h>
 #include <door.h>
 #include <keys.h>
@@ -207,5 +207,15 @@ t_cell  **create_map(t_data *data, char **char_map);
 void	update_palyer_state(t_data *data, t_player *player);
 void	load_weapons(t_data *data);
 void	load_xpm(t_data *data, char *path, t_img *img); /* xpm tool */
+
+/* File utils */
+bool    file_exists(const char *path);
+bool    file_readable(const char *path);
+bool	file_is_not_dir(char *path);
+bool	file_isvalid(char *path);
+
+void	free_rays(t_ray **rays);
+void	free_all_data_and_exit(t_data *data, char *str, int exit_status);
+
 
 #endif

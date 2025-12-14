@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: radouane <radouane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:51:17 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/08 16:48:23 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/14 16:47:08 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,14 @@ t_data	*parsing(char *file_name)
 	char	**lines;
 
 	check_extension(file_name, ".cub", NULL, NULL);
+	if (!file_isvalid(file_name))
+		error_exit(NULL, NULL, NULL, NULL);
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
-		error_exit(NULL, NULL, NULL, "Error\ncould not find the file\n");
+	{
+		perror("open");
+		error_exit(NULL, NULL, NULL, NULL);
+	}
 	lines = get_lines_of_file(fd);
 	close(fd);
 	map_info = extract_element(lines);

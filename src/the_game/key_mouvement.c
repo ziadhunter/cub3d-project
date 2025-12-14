@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/13 23:13:48 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/14 17:51:00 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	key_press(int key, t_data *data)
 {
 	if (key == ESC)
-		free_all_data_and_exit(data, "you exit the game!!\n");
+		free_all_data_and_exit(data, "you exit the game!!\n", EXIT_SUCCESS);
 	/*
 	else if (key == HOLD_GUN || key == HOLD_KNIFE)
 		switch_weapon(key, data);
@@ -52,6 +52,6 @@ int	key_release(int key, t_data *data)
 
 int	close_window(t_data *data)
 {
-	free_all_data_and_exit(data, "you exit the game!!\n");
+	free_all_data_and_exit(data, "you exit the game!!\n", EXIT_SUCCESS);
 	return (0);
 }
