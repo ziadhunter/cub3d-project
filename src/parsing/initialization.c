@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:24:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 16:54:44 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/15 12:09:23 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,15 @@ void initialize_knife(t_player *player)
 t_player	*initialize_player(char c, int x, int y)
 {
 	t_player	*player;
-	// t_oldmove	*old;
-
-	// old = initialize_old_move();
-	player = malloc(sizeof(t_player));
-	// player->old_move = old;
+	player = ft_calloc(1, sizeof(t_player));
+	if (player == NULL)
+	{
+		perror("ft_calloc");
+		return (NULL);
+	}
 	player->x = (x * TILE_SIZE) + (TILE_SIZE / 2);
 	player->y = (y * TILE_SIZE) + (TILE_SIZE / 2);
 	player->radius = 9;
-	// player->back_forw = 0;
-	// player->left_right = 0;
 	player->rotation_angle = 0;
 	if (c == 'S')
 		player->rotation_angle = PI / 2;

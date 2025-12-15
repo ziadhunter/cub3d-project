@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 21:28:15 by rabounou          #+#    #+#             */
-/*   Updated: 2025/12/14 21:30:02 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/15 12:02:29 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 void	load_xpm(t_data *data, char *path, t_img *img)
 {
 	if (path == NULL)
-		return ;
-	
+		free_all_data_and_exit(data, "xpm path can't be NULL\n", 1);
 	if (!file_isvalid(path))
 		free_all_data_and_exit(data, NULL, 1);
 	img->img = mlx_xpm_file_to_image(data->mlx->init, path, &(img->width),
@@ -30,7 +29,6 @@ void	load_xpm(t_data *data, char *path, t_img *img)
 			&img->endian);
 }
 
-/* TODO: check if file exist first */
 void	load_textures(t_data *data)
 {
 	load_xpm(data, data->map_info->no, &(data->textures.no));

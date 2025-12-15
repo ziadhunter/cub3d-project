@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:27:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 22:15:59 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 12:09:53 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,12 @@ t_data	*parsing_the_map(t_map_data *map_info, char **lines, char *file_name)
 	player = valid_map(map_info, lines, 0, 0);
 	if (!player)
 		error_exit(map_info, lines, NULL, "Error\nmissing a player\n");
-	data = malloc(sizeof(t_data));
+	data = ft_calloc(1, sizeof(t_data));
+	if (data == NULL)
+	{
+		perror("ft_calloc");
+		return (NULL);
+	}
 	data->map_info = map_info;
 	data->player = player;
 	data->hide_mousse = false;

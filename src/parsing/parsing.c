@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:51:17 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 16:47:08 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 12:08:18 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,14 @@ void	invalid_position(t_map_data *map_info, t_player *player, char **lines,
 		+ 1 >= map_info->rows)
 	{
 		if (player)
-		{
-			// free(player->old_move);
 			free(player);
-		}
 		error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)1\n");
 	}
 	if (is_space_or_nl(lines[j][i - 1]) || is_space_or_nl(lines[j - 1][i])
 		|| is_space_or_nl(lines[j + 1][i]) || is_space_or_nl(lines[j][i + 1]))
 	{
 		if (player)
-		{
-			// free(player->old_move);
 			free(player);
-		}
 		error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)\n");
 	}
 }
@@ -58,10 +52,14 @@ void	check_element_position(t_map_data *map_info, t_player **player, char **line
 		tmp = lines[j][i];
 		lines[j][i] = '0';
 		if (!(*player))
+		{
 			*player = initialize_player(tmp, i, j);
+			if (!(*player))
+				error_exit(map_info, lines, NULL,
+					NULL);
+		}
 		else
 		{
-			// free((*player)->old_move);
 			free(*player);
 			error_exit(map_info, lines, NULL,
 				"Error\ninvalid map(two or more players)");
@@ -86,10 +84,7 @@ void	check_space_position(t_map_data *map_info, t_player *player, char **lines,
 		!is_space_or_wall(lines[j][i - 1]))
 	{
 		if (player != NULL)
-		{
-			// free(player->old_move);
 			free(player);
-		}
 		error_exit(map_info, lines, NULL, "Error\ninvalid map");
 	}
 }
