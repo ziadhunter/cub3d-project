@@ -1,7 +1,8 @@
 # valgrind --suppressions=supp.supp --leak-check=full --track-fds=yes --track-origins=yes
 {
-    ignore_libreadline_leaks
-    Memcheck:Leak
-    ...
-    obj:/libreadline.so.
+   ignore_x11_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libX11.so.*
 }

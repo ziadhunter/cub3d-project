@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:19:34 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/01 13:33:22 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/15 18:15:13 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ t_map_data	*extract_element(char **lines)
 	if (!all_element_found(map))
 	{
 		free_double_pointer(lines);
-		error_exit(map, NULL, NULL, "Error\nmissing some element(s)!!");
+		error_exit(map, NULL, NULL, "Error\nmissing some element(s)!!\n");
 	}
 	map->map_start = i;
 	return (map);

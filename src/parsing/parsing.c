@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:51:17 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/15 12:08:18 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:16:54 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	invalid_position(t_map_data *map_info, t_player *player, char **lines,
 	{
 		if (player)
 			free(player);
-		error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)1\n");
+		error_exit(map_info, lines, NULL, "Error\ninvalid map (edge open)\n");
 	}
 	if (is_space_or_nl(lines[j][i - 1]) || is_space_or_nl(lines[j - 1][i])
 		|| is_space_or_nl(lines[j + 1][i]) || is_space_or_nl(lines[j][i + 1]))
@@ -100,8 +100,8 @@ t_player	*valid_map(t_map_data *map_info, char **map, int i, int j)
 		i = 0;
 		while (map[j][i])
 		{
-			if (map[j][i] == '0' || map[j][i] == 'N' ||
-				map[j][i] == 'S' || map[j][i] == 'E' || map[j][i] == 'W')
+			if (map[j][i] == '0' || map[j][i] == 'N' || map[j][i] == 'D'
+				|| map[j][i] == 'S' || map[j][i] == 'E' || map[j][i] == 'W')
 				check_element_position(map_info, &player, map, (t_cord){i, j});
 			if (map[j][i] == ' ')
 				check_space_position(map_info, player, map, (t_cord){i, j});

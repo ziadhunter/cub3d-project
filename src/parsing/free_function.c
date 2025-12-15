@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_function.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:16:39 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 15:34:06 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 18:26:49 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	free_map(t_map_data *map)
 void	free_data(t_data *data)
 {
 	free_map(data->map_info);
-	// free(data->player->old_move);
 	free(data->player);
 	free(data);
 }

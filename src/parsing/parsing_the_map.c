@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_the_map.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:27:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/15 12:09:53 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 18:38:23 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@ void	find_empty_line(t_map_data *map_info, char **lines, char *line, int fd)
 			{
 				if (line[0] != '\n')
 				{
+					while (line)
+					{
+						free(line);
+						line = get_next_line(fd);	
+					}
 					close(fd);
-					free(line);
 					error_exit(map_info, lines, NULL,
 						"Error\nempty line inside map\n");
 				}
@@ -117,7 +121,7 @@ t_data	*parsing_the_map(t_map_data *map_info, char **lines, char *file_name)
 	check_empty_line(map_info, lines, file_name);
 	player = valid_map(map_info, lines, 0, 0);
 	if (!player)
-		error_exit(map_info, lines, NULL, "Error\nmissing a player\n");
+		error_exit(map_info, NULL, NULL, "Error\nmissing a player\n");
 	data = ft_calloc(1, sizeof(t_data));
 	if (data == NULL)
 	{
