@@ -187,11 +187,12 @@ void	update_palyer_state(t_data *data, t_player *player);
 void	load_weapons(t_data *data);
 void	load_xpm(t_data *data, char *path, t_img *img); /* xpm tool */
 
-/* File utils */
+/* utils */
 bool    file_exists(const char *path);
 bool    file_readable(const char *path);
 bool	file_is_not_dir(char *path);
 bool	file_isvalid(char *path);
+double	safe_tan(double n);
 
 void	free_rays(t_ray **rays);
 void	free_all_data_and_exit(t_data *data, char *str, int exit_status);

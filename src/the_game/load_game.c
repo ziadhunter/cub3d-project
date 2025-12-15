@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 21:28:15 by rabounou          #+#    #+#             */
-/*   Updated: 2025/12/14 20:36:29 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/14 21:30:02 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ void	load_colors(t_data *data)
 void	load_game_data(t_data *data)
 {
 	load_textures(data);
-	// load_weapons(data);
+	load_weapons(data);
 	load_colors(data);
 }

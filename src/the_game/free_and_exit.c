@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:13:38 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 20:51:30 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 11:49:32 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void delete_texture(void *mlx_ptr, void *img)
 		mlx_destroy_image(mlx_ptr, img);
 }
 
-void destroy_textures(t_data *data, t_texture *textures)
+void destroy_textures(t_data *data, t_texture *textures, t_player *player)
 {
 	delete_texture(data->mlx->init, textures->door.img);
 	delete_texture(data->mlx->init, textures->close_door_btn.img);
@@ -38,6 +38,8 @@ void destroy_textures(t_data *data, t_texture *textures)
 	delete_texture(data->mlx->init, textures->we.img);
 	delete_texture(data->mlx->init, textures->so.img);
 	delete_texture(data->mlx->init, textures->no.img);
+	delete_texture(data->mlx->init, player->knife.knife_attack.img);
+	delete_texture(data->mlx->init, player->knife.knife_move.img);
 }
 
 void free_cells_map(t_data *data)
@@ -56,7 +58,7 @@ void free_cells_map(t_data *data)
 
 void	free_all_data_and_exit(t_data *data, char *str, int exit_status)
 {
-	destroy_textures(data, &data->textures);
+	destroy_textures(data, &data->textures, data->player);
 	mlx_destroy_image(data->mlx->init, data->new_image.img);
 	mlx_destroy_window(data->mlx->init, data->mlx->win);
 	mlx_destroy_display(data->mlx->init);

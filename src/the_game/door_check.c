@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 22:08:23 by rabounou          #+#    #+#             */
-/*   Updated: 2025/12/13 22:18:06 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 11:53:35 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@
 void	find_v_inter(t_data *data, t_ray *ray, t_direction *v_intr)
 {
 	t_ray_info	ray_info;
+	double		ray_tan;
 
-	if (fabs(cos(ray->ray_angle)) < VERTICAL_RAY_THRESHOLD)
-		return ;
+	ray_tan = safe_tan(ray->ray_angle);
+	ray_info.ray_direction = ray->ray_direction;
 	ray_info.x_step = TILE_SIZE;
-	ray_info.y_step = (TILE_SIZE * tan(ray->ray_angle));
+	ray_info.y_step = (TILE_SIZE * ray_tan);
 	ray_info.x_intr = find_vx_intersection(data);
 	if (ray_facing_right(ray->ray_direction))
 		ray_info.x_intr += TILE_SIZE;
@@ -45,12 +46,12 @@ void	find_v_inter(t_data *data, t_ray *ray, t_direction *v_intr)
 void	find_h_inter(t_data *data, t_ray *ray, t_direction *h_intr)
 {
 	t_ray_info	ray_info;
+	double		ray_tan;
 
-	if (fabs(tan(ray->ray_angle)) < VERTICAL_RAY_THRESHOLD)
-		return ;
+	ray_tan = safe_tan(ray->ray_angle);
 	ray_info.ray_direction = ray->ray_direction;
 	ray_info.y_step = TILE_SIZE;
-	ray_info.x_step = (TILE_SIZE / tan(ray->ray_angle));
+	ray_info.x_step = (TILE_SIZE / ray_tan);
 	ray_info.y_intr = find_hy_intersection(data);
 	if (ray->ray_direction.y < 0)
 		ray_info.y_intr += TILE_SIZE;

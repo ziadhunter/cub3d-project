@@ -6,7 +6,7 @@ INCLUDE = includes
 MAP_NAME = full_map
 
 SRC = cub3d.c \
-	src/utils/file.c \
+	src/utils/file.c src/utils/tan.c \
 	src/parsing/extract_element_utils.c \
 	src/parsing/extract_element.c \
 	src/parsing/free_function.c \

@@ -6,21 +6,11 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 12:01:00 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/13 22:46:39 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 11:51:46 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-double	safe_tan(double n)
-{
-	double	new_n;
-
-	new_n = tan(n);
-	if (fabs(new_n) < VERTICAL_RAY_THRESHOLD)
-		new_n = VERTICAL_RAY_THRESHOLD;
-	return (new_n);
-}
 
 void	find_horizontal_intersiction(t_data *data, double ray_angle, t_ray *ray,
 		t_direction *horz_inter)
