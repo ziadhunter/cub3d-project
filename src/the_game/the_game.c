@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_game.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 22:15:53 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:26:10 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	the_animation(t_data *data)
 {
 	static unsigned int	l;
 
-	l = 0;
+	printf("l = %d\n", l);
 	update_palyer_state(data, data->player);
 	creat_ray_casting(data);
 	projaction(data);

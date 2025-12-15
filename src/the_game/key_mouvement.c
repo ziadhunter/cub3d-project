@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_mouvement.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 22:16:01 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:27:30 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	key_release(int key, t_data *data)
 	{
 		rotation_release(key, data);
 	}
+	if (key == SHIFT_SPEED)
+		data->player->walking_speed -= 3;
 	return (0);
 }
 

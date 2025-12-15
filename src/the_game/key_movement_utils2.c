@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_movement_utils2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 23:07:28 by rabounou          #+#    #+#             */
-/*   Updated: 2025/12/13 23:07:56 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:27:38 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	speed_adjustment(int keycode, t_data *data)
 {
 	if (keycode == SHIFT_SPEED)
-		data->player->walking_speed += 2;
+		data->player->walking_speed += 3;
 	if (keycode == SPEED_DOWN && data->player->walking_speed > MIN_WALK_SPEED)
 		data->player->walking_speed -= 0.25;
 	if (keycode == SPEED_UP && data->player->walking_speed < MAX_WALK_SPEED)
