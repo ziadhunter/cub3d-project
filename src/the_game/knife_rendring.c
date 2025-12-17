@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 18:34:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 17:02:46 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/17 16:57:34 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@ int	pick_pixel(t_img *data, int x, int y)
 
 	dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
 	return (*(unsigned int *)dst);
-}
-
-void	pput_pixel(t_img *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
-	*(unsigned int *)dst = color;
 }
 
 void	put_image_to_window(t_img *dst, t_img *src, int x_src)
@@ -41,8 +33,8 @@ void	put_image_to_window(t_img *dst, t_img *src, int x_src)
 		while (x < WIN_WIDTH + x_src)
 		{
 			color = pick_pixel(src, x, y);
-			if (color != 0xFF000000 && color != 0x00FFFFFF) 
-				pput_pixel(dst, x,  y, color);
+			if (color != 0xFF000000 && color != 0x00FFFFFF)
+				pput_pixel(dst, x, y, color);
 			x++;
 		}
 		y++;
@@ -51,8 +43,8 @@ void	put_image_to_window(t_img *dst, t_img *src, int x_src)
 
 void	render_knife_attack(t_data *data)
 {
-	static int i = 0;
-	
+	static int	i;
+
 	put_image_to_window(&data->new_image, &data->player->knife.knife_attack,
 		data->player->knife.knif_a_i * WIN_WIDTH);
 	i++;
@@ -70,8 +62,8 @@ void	render_knife_attack(t_data *data)
 
 void	render_knife_move(t_data *data)
 {
-	static int i = 0;
-	static int add = 1;
+	static int	i;
+	static int	add = 1;
 
 	put_image_to_window(&data->new_image, &data->player->knife.knife_move,
 		data->player->knife.knif_m_i * WIN_WIDTH);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:24:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/15 12:09:23 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/17 15:51:28 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,32 +36,26 @@ t_map_data	*initialize_map(void)
 	return (map);
 }
 
-// t_oldmove	*initialize_old_move(void)
-// {
-// 	t_oldmove	*old;
-
-// 	old = malloc(sizeof(t_oldmove));
-// 	old->back = 0;
-// 	old->forw = 0;
-// 	old->left = 0;
-// 	old->right = 0;
-// 	old->turn_left = 0;
-// 	old->turn_right = 0;
-// 	return (old);
-// }
-
-
-void initialize_knife(t_player *player)
+void	initialize_knife(t_player *player)
 {
-	t_knife *knife;
-	
+	t_knife	*knife;
+
 	knife = &player->knife;
 	knife->knife_state = 'N';
+	player->walking_speed = 5;
+	player->rotation_speed = (PI / 180);
+	player->walk_direction.now = 0;
+	player->walk_direction.before = 0;
+	player->side_direction.now = 0;
+	player->side_direction.before = 0;
+	player->rotation_direction.now = 0;
+	player->rotation_direction.before = 0;
 }
 
 t_player	*initialize_player(char c, int x, int y)
 {
 	t_player	*player;
+
 	player = ft_calloc(1, sizeof(t_player));
 	if (player == NULL)
 	{
@@ -79,13 +73,6 @@ t_player	*initialize_player(char c, int x, int y)
 	if (c == 'W')
 		player->rotation_angle = PI;
 	player->walking_speed = 5;
-	player->rotation_speed = (PI / 180);
-	player->walk_direction.now = 0;
-	player->walk_direction.before = 0;
-	player->side_direction.now = 0;
-	player->side_direction.before = 0;
-	player->rotation_direction.now = 0;
-	player->rotation_direction.before = 0;
 	initialize_knife(player);
 	return (player);
 }

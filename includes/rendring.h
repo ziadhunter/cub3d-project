@@ -1,23 +1,33 @@
-#ifndef RENDRING_H
-#define RENDRING_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rendring.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/17 16:28:44 by zfarouk           #+#    #+#             */
+/*   Updated: 2025/12/17 16:28:45 by zfarouk          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <cub3d.h>
+#ifndef RENDRING_H
+# define RENDRING_H
+
+# include <cub3d.h>
 
 /*knife*/
-int     pick_pixel(t_img *data, int x, int y);
+int		pick_pixel(t_img *data, int x, int y);
 void	pput_pixel(t_img *data, int x, int y, int color);
 void	put_image_to_window(t_img *dst, t_img *src, int x_src);
-void	render_knife_hit(t_data *data);
 void	render_knife_move(t_data *data);
-void	render_knife(t_data *data); 
-
+void	render_knife(t_data *data);
 
 /*PROJACTION*/
 void	render_wall(t_data *data, int x, int y, int wall_hight);
 void	projaction(t_data *data);
 
 /*MINI MAP*/
-int     get_color_mini(t_data *data, char **map, int x, int y);
+int		get_color_mini(t_data *data, char **map, int x, int y);
 void	base_of_mini_map(t_data *data);
 void	mini_map(t_data *data, int x, int y, int color);
 void	render_player_mini_map(t_data *data);

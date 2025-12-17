@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:19:34 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/15 18:15:13 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/17 15:47:07 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	add_floor(t_map_data *map, char **str, char **lines, int i)
 	free_double_pointer(values);
 }
 
-void	which_element(char **line, int index, t_map_data *map, t_element element[6])
+void	which_element(char **line, int index, t_map_data *map,
+		t_element element[6])
 {
 	char	**splited_line;
 	int		i;
@@ -91,7 +92,7 @@ int	quick_check(char *line)
 
 t_map_data	*extract_element(char **lines)
 {
-	t_map_data		*map;
+	t_map_data	*map;
 	int			i;
 	t_element	elements[6];
 

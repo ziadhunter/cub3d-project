@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 16:58:28 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 18:44:48 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/17 17:03:21 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,17 @@ void	base_of_mini_map(t_data *data)
 	}
 }
 
-int get_color_mini(t_data *data, char **map, int x, int y)
+int	get_color_mini(t_data *data, char **map, int x, int y)
 {
-	int color;
+	int	color;
 
 	color = WHITE;
-	if (map[y][x] == '1' || (map[y][x] == 'D' && !door_is_valid(data, map, x, y)))
+	if (map[y][x] == '1' || (map[y][x] == 'D' && !door_is_valid(data, map, x,
+				y)) || map[y][x] == 'O')
 		color = BLACK;
-	return  (color);
+	if (map[y][x] == 'D' && door_is_valid(data, map, x, y))
+		color = BLUE;
+	return (color);
 }
 
 void	mini_map(t_data *data, int x, int y, int color)
@@ -62,7 +65,8 @@ void	mini_map(t_data *data, int x, int y, int color)
 								* MINIMAP_SCALE))) / TILE_SIZE;
 				if (y_map >= 0 && y_map < data->map_info->rows && x_map >= 0
 					&& x_map < data->map_info->columns)
-						color = get_color_mini(data, data->map_info->map, x_map, y_map);
+					color = get_color_mini(data, data->map_info->map, x_map,
+							y_map);
 				put_pixel(&data->new_image, x, y, color);
 			}
 			x++;

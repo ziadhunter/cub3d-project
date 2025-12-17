@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/11/01 13:33:16 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/17 15:48:22 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	add_we(t_map_data *map, char **str, char **lines, int i)
 {
 	int	fdd;
 
-	(void) i;
+	(void)i;
 	if (map->we)
 		error_exit(map, lines, &(t_db_pointer){str, NULL},
 			"Error\nWE element duplicated\n");
@@ -70,7 +70,7 @@ void	add_ea(t_map_data *map, char **str, char **lines, int i)
 {
 	int	fdd;
 
-	(void) i;
+	(void)i;
 	if (map->ea)
 		error_exit(map, lines, &(t_db_pointer){str, NULL},
 			"Error\nEA element duplicated\n");
@@ -96,7 +96,7 @@ void	add_so(t_map_data *map, char **str, char **lines, int i)
 {
 	int	fdd;
 
-	(void) i;
+	(void)i;
 	if (map->so)
 		error_exit(map, lines, &(t_db_pointer){str, NULL},
 			"Error\nSO element duplicated\n");
@@ -122,7 +122,7 @@ void	add_no(t_map_data *map, char **str, char **lines, int i)
 {
 	int	fdd;
 
-	(void) i;
+	(void)i;
 	if (map->no)
 		error_exit(map, lines, &(t_db_pointer){str, NULL},
 			"Error\nNO element duplicated\n");

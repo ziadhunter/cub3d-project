@@ -22,13 +22,13 @@ void	free_rays(t_ray **rays)
 	free(rays);
 }
 
-void delete_texture(void *mlx_ptr, void *img)
+void	delete_texture(void *mlx_ptr, void *img)
 {
 	if (img)
 		mlx_destroy_image(mlx_ptr, img);
 }
 
-void destroy_textures(t_data *data, t_texture *textures, t_player *player)
+void	destroy_textures(t_data *data, t_texture *textures, t_player *player)
 {
 	delete_texture(data->mlx->init, textures->door.img);
 	delete_texture(data->mlx->init, textures->close_door_btn.img);
@@ -42,9 +42,9 @@ void destroy_textures(t_data *data, t_texture *textures, t_player *player)
 	delete_texture(data->mlx->init, player->knife.knife_move.img);
 }
 
-void free_cells_map(t_data *data)
+void	free_cells_map(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (data->map == NULL)

@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:51:17 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/15 17:16:54 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/17 15:51:51 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void	invalid_position(t_map_data *map_info, t_player *player, char **lines,
 	}
 }
 
-void	check_element_position(t_map_data *map_info, t_player **player, char **lines,
-		t_cord cor)
+void	check_element_position(t_map_data *map_info, t_player **player,
+		char **lines, t_cord cor)
 {
-	int	i;
-	int	j;
-	char tmp;
+	int		i;
+	int		j;
+	char	tmp;
 
 	i = cor.x;
 	j = cor.y;
@@ -55,8 +55,7 @@ void	check_element_position(t_map_data *map_info, t_player **player, char **line
 		{
 			*player = initialize_player(tmp, i, j);
 			if (!(*player))
-				error_exit(map_info, lines, NULL,
-					NULL);
+				error_exit(map_info, lines, NULL, NULL);
 		}
 		else
 		{
@@ -67,16 +66,15 @@ void	check_element_position(t_map_data *map_info, t_player **player, char **line
 	}
 }
 
-void	check_space_position(t_map_data *map_info, t_player *player, char **lines,
-		t_cord cor)
+void	check_space_position(t_map_data *map_info, t_player *player,
+		char **lines, t_cord cor)
 {
 	int	i;
 	int	j;
 
 	i = cor.x;
 	j = cor.y;
-	if (i <= 0 || j <= 0 || i >= map_info->columns || j
-		+ 1 >= map_info->rows)
+	if (i <= 0 || j <= 0 || i >= map_info->columns || j + 1 >= map_info->rows)
 		return ;
 	if (!is_space_or_wall(lines[j + 1][i]) ||
 		!is_space_or_wall(lines[j - 1][i]) ||
@@ -115,10 +113,10 @@ t_player	*valid_map(t_map_data *map_info, char **map, int i, int j)
 
 t_data	*parsing(char *file_name)
 {
-	int		fd;
+	int			fd;
 	t_map_data	*map_info;
-	t_data	*data;
-	char	**lines;
+	t_data		*data;
+	char		**lines;
 
 	check_extension(file_name, ".cub", NULL, NULL);
 	if (!file_isvalid(file_name))

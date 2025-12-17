@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:27:12 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/15 18:38:23 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/17 15:53:28 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	find_empty_line(t_map_data *map_info, char **lines, char *line, int fd)
 					while (line)
 					{
 						free(line);
-						line = get_next_line(fd);	
+						line = get_next_line(fd);
 					}
 					close(fd);
 					error_exit(map_info, lines, NULL,
@@ -45,9 +45,7 @@ void	check_empty_line(t_map_data *map_info, char **lines, char *file_name)
 {
 	int		fd;
 	char	*line;
-	// int		i;
 
-	// i = map_info->map_start;
 	fd = open(file_name, O_RDONLY);
 	line = get_next_line(fd);
 	while (ft_strncmp(lines[0], line, ft_strlen(lines[0])) != 0)

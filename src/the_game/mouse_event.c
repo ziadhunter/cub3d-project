@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 16:43:37 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 20:46:16 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/17 16:15:54 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	mouse_press(int key, int x, int y, t_data *data)
 
 int	mouse_move(int x, int y, t_data *data)
 {
-	if (data->hide_mousse)
-		return (0);
 	int	center_x;
 	int	center_y;
 	int	delta_x;
 
+	if (data->hide_mousse)
+		return (0);
 	(void)y;
 	center_x = WIN_WIDTH / 2;
 	center_y = WIN_HEIGHT / 2;

@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/15 20:27:30 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/17 15:59:12 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	key_press(int key, t_data *data)
 	else if (key == 'e')
 		update_door_state(data);
 	else if (key == MOUSSE_HIDE)
-		data->hide_mousse = !data->hide_mousse;	
+		data->hide_mousse = !data->hide_mousse;
 	return (0);
 }
 
