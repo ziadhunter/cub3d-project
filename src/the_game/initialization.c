@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:49:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/13 21:27:43 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/19 00:19:01 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,8 @@ void	initialization(t_data *data)
 	data->map_info->map_height = data->map_info->rows * TILE_SIZE;
 	data->map_info->map_width = data->map_info->columns * TILE_SIZE;
 	data->player->is_looking_at_door = false;
+	data->game_data.map_size = (WIN_HEIGHT / 3) - TILE_SIZE;
+	data->game_data.map_radius = data->game_data.map_size / 2;
+	data->game_data.map_center.x = X_START_POINT + data->game_data.map_radius;
+	data->game_data.map_center.y = Y_START_POINT + data->game_data.map_radius;
 }

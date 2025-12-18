@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:28:59 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 17:00:22 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/19 00:18:03 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,35 +29,35 @@
 # include <ray_cast.h>
 # include <rendring.h>
 
-// =================== DEFINES ===================
+/* =================== DEFINES =================== */
 # define PI 3.14159265358979323846
 # define TILE_SIZE 64
 # define MINIMAP_SCALE 2
-# define WIN_WIDTH 1280   // number of columns
-# define WIN_HEIGHT 720   // number of rows
-# define FOV 1.0471975512 // 60° field of view in radians
-# define NUM_COLUMNS 1280 // how many rays to cast (e.g. screen width)
+# define WIN_WIDTH 1280
+# define WIN_HEIGHT 720
+# define FOV 1.0471975512
+# define NUM_COLUMNS 1280
 # define MIN_WALK_SPEED 0.5
 # define MAX_WALK_SPEED 6
-# define MIN_ROTATION_SPEED (PI / 180) / 5
-# define MAX_ROTATION_SPEED (PI / 180)
+# define MIN_ROTATION_SPEED 0.003491
+# define MAX_ROTATION_SPEED 0.017453
 
 # define WEAPON_XPM_WIDTH 1280
 # define WEAPON_XPM_HEIGHT 719
 
-// Colors (RGBA or 0x00RRGGBB depending on MLX build)
+/* Colors */
 # define WHITE 0xFFFFFF
 # define BLACK 0x000000
 # define RED 0xFF0000
 # define BLUE 0x0000FF
 
-// Mini map macros
+/* Mini map macros */
 # define X_START_POINT TILE_SIZE
 # define Y_START_POINT 64
-# define MAP_SIZE (((WIN_HEIGHT) / 3) - TILE_SIZE)
-# define MAP_RADIUS (MAP_SIZE / 2)
-# define CENTER_MAP_X (X_START_POINT + MAP_RADIUS)
-# define CENTER_MAP_Y (Y_START_POINT + MAP_RADIUS)
+// # define MAP_SIZE (((WIN_HEIGHT) / 3) - TILE_SIZE)
+// # define MAP_RADIUS (MAP_SIZE / 2)
+// # define CENTER_MAP_X (X_START_POINT + MAP_RADIUS)
+// # define CENTER_MAP_Y (Y_START_POINT + MAP_RADIUS)
 
 # define DIRECTION_LENGTH 20         // length of player direction line
 # define VERTICAL_RAY_THRESHOLD 1e-6 // epsilon for vertical ray checks
@@ -122,6 +122,13 @@ typedef struct s_icoordinates
 	int			x;
 	int			y;
 }				t_icord;
+
+typedef struct s_game_data
+{
+	int		map_size;
+	int		map_radius;
+	t_cord	map_center;
+}	t_game_data;
 
 typedef struct s_ray
 {
@@ -188,6 +195,7 @@ typedef struct s_data
 	t_map_data	*map_info;
 	t_cell		**map;
 	bool		hide_mousse;
+	t_game_data	game_data;
 }				t_data;
 
 void			load_game_data(t_data *data);
@@ -207,5 +215,7 @@ double			safe_tan(double n);
 void			free_rays(t_ray **rays);
 void			free_all_data_and_exit(t_data *data, char *str,
 					int exit_status);
+
+t_game_data		*get_game_data(void);
 
 #endif
