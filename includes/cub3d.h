@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:28:59 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/19 00:37:05 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/19 00:40:24 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 
 /* Cub3d header files */
 # include <door.h>
-# include <gb_collector.h>
 # include <keys.h>
 # include <libft.h>
 # include <parsing.h>
