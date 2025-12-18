@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:28:59 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/19 00:18:03 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/19 00:37:05 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,13 +123,6 @@ typedef struct s_icoordinates
 	int			y;
 }				t_icord;
 
-typedef struct s_game_data
-{
-	int		map_size;
-	int		map_radius;
-	t_cord	map_center;
-}	t_game_data;
-
 typedef struct s_ray
 {
 	int			start_x;
@@ -195,7 +188,9 @@ typedef struct s_data
 	t_map_data	*map_info;
 	t_cell		**map;
 	bool		hide_mousse;
-	t_game_data	game_data;
+	int			map_s;
+	int			map_r;
+	t_cord		map_c;
 }				t_data;
 
 void			load_game_data(t_data *data);
@@ -215,7 +210,5 @@ double			safe_tan(double n);
 void			free_rays(t_ray **rays);
 void			free_all_data_and_exit(t_data *data, char *str,
 					int exit_status);
-
-t_game_data		*get_game_data(void);
 
 #endif

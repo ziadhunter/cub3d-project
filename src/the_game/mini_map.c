@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 19:01:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/19 00:21:36 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/19 00:38:51 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	render_player_mini_map(t_data *data)
 	int	y;
 	int	r;
 
-	cx = X_START_POINT + (data->game_data.map_size / 2);
-	cy = Y_START_POINT + (data->game_data.map_size / 2);
+	cx = X_START_POINT + (data->map_s / 2);
+	cy = Y_START_POINT + (data->map_s / 2);
 	x = cx - data->player->radius;
 	y = cy - data->player->radius;
 	r = data->player->radius;
@@ -55,8 +55,9 @@ void	render_mini_map_rays(t_data *data, t_cord cord, double z, double w)
 	yi = (w - cord.y) / step;
 	while (i < step)
 	{
-		if ((cord.x - data->game_data.map_center.x) * (cord.x - data->game_data.map_center.x) + (cord.y
-				- data->game_data.map_center.y) * (cord.y - data->game_data.map_center.y) > pow(data->game_data.map_radius, 2))
+		if ((cord.x - data->map_c.x) * (cord.x - data->map_c.x)
+			+ (cord.y - data->map_c.y)
+			* (cord.y - data->map_c.y) > pow(data->map_r, 2))
 			break ;
 		put_pixel(&data->new_image, cord.x, cord.y, RED);
 		cord.x += xi;
@@ -72,8 +73,8 @@ void	render_rays_mini_map(t_data *data, int i)
 	double		y_end;
 	double		x_end;
 
-	x = X_START_POINT + (data->game_data.map_size / 2);
-	y = Y_START_POINT + (data->game_data.map_size / 2);
+	x = X_START_POINT + (data->map_s / 2);
+	y = Y_START_POINT + (data->map_s / 2);
 	while (i < NUM_COLUMNS)
 	{
 		y_end = y + ((data->rays[i]->end_y - data->player->y) / MINIMAP_SCALE);
