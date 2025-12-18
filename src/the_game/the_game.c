@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:13:01 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 17:06:37 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/18 16:30:38 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	put_pixel(t_img *data, int x, int y, int color)
 {
 	char	*dst;
 
+	if (!data || !data->addr)
+    	return ;
 	if (x < 0 || y < 0 || x >= WIN_WIDTH || y >= WIN_HEIGHT)
 		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
@@ -65,7 +67,6 @@ int	the_animation(t_data *data)
 
 void	start_the_game(t_data *data)
 {
-	printf("max_rotation_speed = %f\n", data->player->rotation_speed);
 	initialization(data);
 	load_game_data(data);
 	data->map = create_map(data, data->map_info->map);

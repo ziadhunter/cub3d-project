@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 19:01:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 17:05:56 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/18 16:29:40 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,37 +65,19 @@ void	render_mini_map_rays(t_data *data, t_cord cord, double z, double w)
 	}
 }
 
-void	add_pixel(t_direction *facing, t_ray *ray)
-{
-	if (ray->intersection == HORIZONTAL
-		&& ray->ray_direction.y == -1)
-		facing->y = 1;
-	else if (ray->intersection == HORIZONTAL)
-		facing->y = 0;
-	else if (ray->intersection == VERTICAL
-		&& ray->ray_direction.x == 1)
-		facing->x = 1;
-	else
-		facing->x = 0;
-}
-
 void	render_rays_mini_map(t_data *data, int i)
 {
 	double		x;
 	double		y;
 	double		y_end;
 	double		x_end;
-	t_direction	facing;
 
 	x = X_START_POINT + (MAP_SIZE / 2);
 	y = Y_START_POINT + (MAP_SIZE / 2);
 	while (i < NUM_COLUMNS)
 	{
-		// add_pixel(&facing, data->rays[i]);
-		y_end = y + ((data->rays[i]->end_y - data->player->y) / MINIMAP_SCALE)
-			+ facing.y;
-		x_end = x + ((data->rays[i]->end_x - data->player->x) / MINIMAP_SCALE)
-			+ facing.x;
+		y_end = y + ((data->rays[i]->end_y - data->player->y) / MINIMAP_SCALE);
+		x_end = x + ((data->rays[i]->end_x - data->player->x) / MINIMAP_SCALE);
 		render_mini_map_rays(data, (t_cord){x, y}, x_end, y_end);
 		i += 50;
 	}
