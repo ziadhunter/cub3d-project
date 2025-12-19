@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_cast.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:28:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 16:46:24 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/19 12:09:40 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ void	insert_end_ray(t_ray *ray, t_direction *dir,
 double	normalize_angle(double angle);
 void	short_ray(t_data *data, t_ray *ray,
 			t_direction *horizontal_inters, t_direction *vertical_inters);
-void	find_horizontal_intersiction(t_data *data, double ray_angle,
-			t_ray *ray, t_direction *horz_inter);
-void	find_vertical_intersiction(t_data *data, double ray_angle,
-			t_ray *ray, t_direction *vert_inter);
-void	define_ray_position(t_data *data,
-			double ray_angle, t_ray *ray);
+void	find_horizontal_intersiction(t_data *data,
+			t_ray *ray, t_direction *horz_inter,
+			bool checker(t_data *, t_ray_info, t_direction *, int));
+void	find_vertical_intersiction(t_data *data,
+			t_ray *ray, t_direction *vert_inter,
+			bool checker(t_data *, t_ray_info, t_direction *, int));
+void	define_ray_position(t_data *data, t_ray *ray);
 void	creat_ray_casting(t_data *data);
 void	get_info_about_target_cell(t_data *data,
 			t_ray *ray);
