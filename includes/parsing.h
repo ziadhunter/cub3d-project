@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:28:03 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 16:29:34 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/19 11:53:08 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void							check_extension(char *file_name, char *ext,
 									t_db_pointer *pointers);
 char							**get_lines_of_file(int fd);
 int								ft_atoi_c(const char *str);
+bool							result_out_of_range(int result);
 int								is_map_element(char c);
 void							invalid_position(t_map_data *map_info,
 									t_player *player, char **lines, t_cord cor);

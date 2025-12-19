@@ -6,18 +6,11 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:29:10 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/14 14:10:10 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/19 11:55:21 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-int	is_space_or_wall(char c)
-{
-	if (c == ' ' || c == '1' || c == '\0')
-		return (1);
-	return (0);
-}
 
 void	check_extension(char *file_name, char *ext, t_map_data *map_info,
 		t_db_pointer *pointers)
@@ -78,20 +71,12 @@ int	ft_atoi_c(const char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		result = (result * 10) + (str[i] - 48);
+		if (result_out_of_range(result * sign))
+			return (-1);
 		i++;
 	}
 	if (str[i] && (str[i] != '\n' || (str[i] == '\n' && i == 0)))
 		return (-1);
 	result *= sign;
-	if (result > 255 || result < 0)
-		return (-1);
 	return (result);
-}
-
-int	is_map_element(char c)
-{
-	if (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W'
-		|| c == ' ' || c == 'D')
-		return (1);
-	return (0);
 }

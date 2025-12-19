@@ -13,6 +13,7 @@ SRC = cub3d.c \
 	src/parsing/initialization.c \
 	src/parsing/parsing_the_map.c \
 	src/parsing/parsing_utils.c \
+	src/parsing/parsing_utils2.c \
 	src/parsing/parsing.c \
 	src/the_game/load_game.c \
 	src/the_game/load_weapons_data.c \
