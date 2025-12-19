@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendring.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:28:44 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 16:28:45 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/19 12:21:51 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	render_knife_move(t_data *data);
 void	render_knife(t_data *data);
 
 /*PROJACTION*/
-void	render_wall(t_data *data, int x, int y, int wall_hight);
 void	projaction(t_data *data);
 
 /*MINI MAP*/

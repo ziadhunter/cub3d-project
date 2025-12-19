@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_mouvement.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 11:23:11 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 15:59:12 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/19 12:20:30 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	key_press(int key, t_data *data)
 		mouvement_adjustment(key, data);
 	else if (key == LEFT_ARROW || key == RIGHT_ARROW)
 		rotation_adjustment(key, data);
-	else if (key == 'e')
+	else if (key == E_BUTTON)
 		update_door_state(data);
 	else if (key == MOUSSE_HIDE)
 		data->hide_mousse = !data->hide_mousse;

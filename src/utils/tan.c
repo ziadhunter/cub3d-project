@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tan.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:25:46 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 16:25:47 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/19 12:18:25 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ double	safe_tan(double n)
 	double	new_n;
 
 	new_n = tan(n);
-	if (fabs(new_n) < VERTICAL_RAY_THRESHOLD)
-		new_n = VERTICAL_RAY_THRESHOLD;
+	if (fabs(new_n) < RAY_THRESHOLD)
+		new_n = RAY_THRESHOLD;
 	return (new_n);
 }

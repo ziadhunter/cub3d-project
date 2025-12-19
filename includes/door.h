@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:28:15 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 16:28:16 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/19 12:17:20 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,6 @@ void				append_dnode(t_dlist **head, t_dlist *node);
 void				append_door(t_dlist **head, t_door *door);
 void				clear_dlist(t_dlist **head);
 
-double				find_hy_intersection(t_data *data);
-double				find_hx_intersection(t_data *data, t_ray *ray,
-						double y_inter);
-double				find_vy_intersection(t_data *data, t_ray *ray,
-						double x_inter);
-double				find_vx_intersection(t_data *data);
 bool				is_dwall(t_data *data, t_ray_info ray_info,
 						t_direction *intr, int intersection_type);
 

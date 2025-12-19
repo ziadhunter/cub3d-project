@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabounou <rabounou@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:50:56 by rabounou          #+#    #+#             */
-/*   Updated: 2024/12/03 17:46:32 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/19 12:19:28 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ typedef struct s_func
 
 int			ft_printf(const char *str, ...);
 
-// int			ft_strlen(const char *s);
 int			ft_putchar(int c);
 int			ft_isdigit(int c);
 int			char_in_chaset(char c, char *set);

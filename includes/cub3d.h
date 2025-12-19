@@ -6,7 +6,7 @@
 /*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:28:59 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/19 00:40:24 by rabounou         ###   ########.fr       */
+/*   Updated: 2025/12/19 12:19:14 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,11 @@
 /* Mini map macros */
 # define X_START_POINT TILE_SIZE
 # define Y_START_POINT 64
-// # define MAP_SIZE (((WIN_HEIGHT) / 3) - TILE_SIZE)
-// # define MAP_RADIUS (MAP_SIZE / 2)
-// # define CENTER_MAP_X (X_START_POINT + MAP_RADIUS)
-// # define CENTER_MAP_Y (Y_START_POINT + MAP_RADIUS)
-
-# define DIRECTION_LENGTH 20         // length of player direction line
-# define VERTICAL_RAY_THRESHOLD 1e-6 // epsilon for vertical ray checks
+# define DIRECTION_LENGTH 20
+# define RAY_THRESHOLD 1e-6
 
 # define HORIZONTAL 1
 # define VERTICAL 2
-
-typedef enum e_cell_type
-{
-	NONE,
-	WALL,
-	DOOR
-}				t_cell_type;
 
 /* MLX */
 typedef struct mlxcenter_x
@@ -104,6 +92,13 @@ typedef struct s_texture
 }				t_texture;
 
 /* Game logic*/
+typedef enum e_cell_type
+{
+	NONE,
+	WALL,
+	DOOR
+}				t_cell_type;
+
 typedef struct s_facing_direction
 {
 	int			facing_up;
@@ -197,9 +192,9 @@ void			start_the_game(t_data *data);
 t_cell			**create_map(t_data *data, char **char_map);
 void			update_palyer_state(t_data *data, t_player *player);
 void			load_weapons(t_data *data);
-void			load_xpm(t_data *data, char *path, t_img *img); /* xpm tool */
+void			load_xpm(t_data *data, char *path, t_img *img);
 
-/* utils */
+/* Utils */
 bool			file_exists(const char *path);
 bool			file_readable(const char *path);
 bool			file_is_not_dir(char *path);

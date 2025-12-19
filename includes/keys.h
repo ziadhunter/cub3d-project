@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: rabounou <rabounou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:46:43 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/12/17 16:46:44 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/12/19 12:20:23 by rabounou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ typedef struct s_data	t_data;
 /* Enums */
 typedef enum e_keys
 {
+	E_BUTTON = 101,
 	UP_BUTTON = 119,
 	DOWN_BUTTON = 115,
 	LEFT_BUTTON = 97,
